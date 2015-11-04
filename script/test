@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/pre-req-check
+
+cd $DIR/../
+docker-compose run --rm go test -v ./...

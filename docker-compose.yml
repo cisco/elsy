@@ -1,0 +1,9 @@
+go:
+  build: .
+  volumes:
+    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
+  working_dir: /go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
+  environment:
+    - GOOS
+    - GOARCH
+  entrypoint: /usr/local/go/bin/go

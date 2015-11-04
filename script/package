@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/pre-req-check
+
+set -e
+cd $DIR/../
+
+export GOOS=darwin
+export GOARCH=amd64
+docker-compose run --rm go build -v -o target/lc-${GOOS}-${GOARCH} ./main
