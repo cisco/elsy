@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export COMPOSE_PROJECT_NAME=lc
+export COMPOSE_PROJECT_NAME=project-lifecycle
 
 command -v docker >/dev/null 2>&1 || {
   echo "did not find docker" >&2
