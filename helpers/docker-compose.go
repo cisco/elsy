@@ -2,6 +2,7 @@ package helpers
 
 import (
   "io/ioutil"
+  "path"
 
   "github.com/codegangsta/cli"
   "gopkg.in/yaml.v2"
@@ -15,7 +16,7 @@ type DockerComposeService struct {
 }
 
 func GetDockerCompose(c *cli.Context) DockerCompose {
-  return parseYAML(readYAML(c.GlobalString("docker-compose")))
+  return parseYAML(readYAML(path.Join(c.GlobalString("root"), "docker-compose.yml")))
 }
 
 func parseYAML(s []byte) (d DockerCompose) {

@@ -9,9 +9,9 @@ import (
 
 var GlobalFlags = []cli.Flag{
   cli.StringFlag{
-    Name:  "docker-compose",
-    Value: "docker-compose.yml",
-    Usage: "path to docker-compose.yml",
+    Name:  "root",
+    Value: "./",
+    Usage: "root directory of the project",
   },
 }
 
