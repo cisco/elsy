@@ -4,22 +4,21 @@ import (
   "io/ioutil"
   "path"
 
-  "github.com/codegangsta/cli"
   "gopkg.in/yaml.v2"
 )
 
-type DockerCompose map[string]DockerComposeService
+type DockerComposeMap map[string]DockerComposeService
 
 type DockerComposeService struct {
   Build string
   Image string
 }
 
-func GetDockerCompose(c *cli.Context) DockerCompose {
-  return parseYAML(readYAML(path.Join(c.GlobalString("root"), "docker-compose.yml")))
+func DockerCompose(root string) DockerComposeMap {
+  return parseYAML(readYAML(path.Join(root, "docker-compose.yml")))
 }
 
-func parseYAML(s []byte) (d DockerCompose) {
+func parseYAML(s []byte) (d DockerComposeMap) {
   if err := yaml.Unmarshal(s, &d); err != nil {
     panic(err)
   }
