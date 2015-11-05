@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/exec"
+
 	"github.com/codegangsta/cli"
 )
 
@@ -26,10 +27,10 @@ func main() {
 
 func preReqCheck() {
 	// TODO: replace this with checking presence and version of local-docker-stack
-	if _, ok := exec.LookPath("docker"); ok != nil {
+	if _, err := exec.LookPath("docker"); err != nil {
 		panic("could not find docker, please install local-docker-stack")
 	}
-	if _, ok := exec.LookPath("docker-compose"); ok != nil {
+	if _, err := exec.LookPath("docker-compose"); err != nil {
 		panic("could not find docker-compose, please install local-docker-stack")
 	}
 }
