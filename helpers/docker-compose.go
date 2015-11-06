@@ -61,7 +61,7 @@ func baseYAML(template string) string {
   switch template {
     case "sbt":
       return `
-sbt:
+sbt: &sbt
   image: arch-docker.eng.lancope.local:5000/sbt
   volumes:
     - ./:/opt/project
@@ -69,10 +69,13 @@ sbt:
   entrypoint: sbt
   volumes_from:
     - lc_shared_sbtdata
+test:
+  <<: *sbt
+  entrypoint: [sbt, test]
 `
     case "mvn":
       return `
-mvn:
+mvn: &mvn
   image: maven:3.2-jdk-8
   volumes:
     - ./:/opt/project
@@ -80,6 +83,9 @@ mvn:
   entrypoint: mvn
   volumes_from:
     - lc_shared_mvndata
+test:
+  <<: *mvn
+  entrypoint: [mvn, test]
 `
     default:
       return ""
