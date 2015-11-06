@@ -2,6 +2,8 @@ package helpers
 
 import (
   "io/ioutil"
+  "os"
+  "os/exec"
   "path"
 
   "gopkg.in/yaml.v2"
@@ -31,4 +33,11 @@ func readYAML(path string) []byte {
   } else {
     return s
   }
+}
+
+func DockerComposeExec(args ...string) error {
+  cmd := exec.Command("docker-compose", args...)
+  cmd.Stdout = os.Stdout
+  cmd.Stderr = os.Stderr
+  return cmd.Run()
 }

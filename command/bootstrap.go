@@ -24,4 +24,6 @@ func CmdBootstrap(c *cli.Context) {
     cmd.Stderr = os.Stderr
     cmd.Run()
   }
+
+  helpers.DockerComposeExec("build")
 }
