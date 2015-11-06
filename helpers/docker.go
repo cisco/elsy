@@ -21,6 +21,7 @@ func DockerContainerExists(name string) bool {
 }
 
 type DockerDataContainer struct {
+  Image string
   Name string
   Volumes []string
   Resilient bool
@@ -39,7 +40,7 @@ func (ddc *DockerDataContainer) Create() error {
   _, err := client.CreateContainer(docker.CreateContainerOptions{
     Name: ddc.Name,
     Config: &docker.Config{
-      Image: "busybox:latest",
+      Image: ddc.Image,
       Labels: labels,
       Volumes: volumeMap,
       Entrypoint: []string{"/bin/true"},

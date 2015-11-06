@@ -88,11 +88,13 @@ mvn:
 
 var dataContainers = map[string]DockerDataContainer{
   "sbt": {
+    Image: "busybox:latest",
     Name: "lc_shared_sbtdata",
     Volumes: []string{"/root/.ivy2"},
     Resilient: true,
   },
   "mvn": {
+    Image: "busybox:latest",
     Name: "lc_shared_mvndata",
     Volumes: []string{"/root/.m2/repository"},
     Resilient: true,
