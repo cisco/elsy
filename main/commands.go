@@ -17,6 +17,11 @@ var GlobalFlags = []cli.Flag{
     Name:  "project-name",
     Usage: "docker-compose project name. defaults to name of `root` option",
   },
+  cli.StringFlag{
+    Name:  "docker-compose",
+    Value: "docker-compose",
+    Usage: "command to use for docker-compose",
+  },
 }
 
 var Commands = []cli.Command{
@@ -30,6 +35,12 @@ var Commands = []cli.Command{
     Name:   "ci",
     Usage:  "",
     Action: command.CmdCi,
+    Flags:  []cli.Flag{},
+  },
+  {
+    Name:   "dc",
+    Usage:  "",
+    Action: command.CmdDockerCompose,
     Flags:  []cli.Flag{},
   },
   {
