@@ -5,7 +5,7 @@ import (
   "os/exec"
 
   "github.com/codegangsta/cli"
-  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 func main() {
@@ -21,7 +21,13 @@ func main() {
   app.CommandNotFound = CommandNotFound
   app.Before = func(c *cli.Context) error {
     preReqCheck(c)
-    command.DockerComposeSetenv(c)
+    helpers.DockerComposeBeforeHook(c)
+    return nil
+  }
+  app.After = func(c *cli.Context) error {
+    if err := helpers.DockerComposeAfterHook(c); err != nil {
+      return err
+    }
     return nil
   }
   app.Run(os.Args)
