@@ -9,11 +9,6 @@ import (
 
 var GlobalFlags = []cli.Flag{
   cli.StringFlag{
-    Name:  "root",
-    Value: "./",
-    Usage: "root directory of the project",
-  },
-  cli.StringFlag{
     Name:  "project-name",
     Usage: "docker-compose project name. defaults to name of `root` option",
   },

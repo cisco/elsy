@@ -16,8 +16,7 @@ func CmdDockerCompose(c *cli.Context) {
 }
 
 func dockerComposeExec(c *cli.Context, args ...string) error {
-  composeFile, _ := filepath.Abs(filepath.Join(c.GlobalString("root"), "docker-compose.yml"))
-  args = append([]string{"-f", composeFile}, args...)
+  args = append([]string{"-f", "docker-compose.yml"}, args...)
 
   yaml := baseYAML(c)
   if len(yaml) > 0 {
@@ -46,7 +45,7 @@ func dockerComposeProjectName(c *cli.Context) string {
   var invalidChars = regexp.MustCompile("[^a-z0-9]")
   projectName := c.GlobalString("project-name")
   if len(projectName) == 0 {
-    path, _ := filepath.Abs(c.GlobalString("root"))
+    path, _ := os.Getwd()
     projectName = filepath.Base(path)
   }
   return invalidChars.ReplaceAllString(strings.ToLower(projectName), "")
