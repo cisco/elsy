@@ -9,7 +9,7 @@ import (
 )
 
 func CmdDockerCompose(c *cli.Context) {
-  dockerComposeExec(c, c.Args().Tail()...)
+  dockerComposeExec(c, c.Args()...)
 }
 
 func dockerComposeExec(c *cli.Context, args ...string) error {
