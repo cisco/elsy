@@ -8,6 +8,7 @@ import (
   "strings"
 
   "github.com/codegangsta/cli"
+  "github.com/Sirupsen/logrus"
 )
 
 func DockerComposeBeforeHook(c *cli.Context) {
@@ -19,7 +20,7 @@ func DockerComposeBeforeHook(c *cli.Context) {
 
   if dataContainer, ok := dataContainers[c.GlobalString("template")]; ok {
     if err := dataContainer.Ensure(); err != nil {
-      panic("unable to create data container")
+      logrus.Panic("unable to create data container")
     }
   }
 }
@@ -46,12 +47,12 @@ func createTempDockerComposeFile(yaml string) string {
   cwd, _ := os.Getwd()
   fh, err := ioutil.TempFile(cwd, "lc_docker_compose_template")
   if err != nil {
-    panic("could not create temporary yaml file")
+    logrus.Panic("could not create temporary yaml file")
   }
   defer fh.Close()
   _, err = fh.WriteString(yaml)
   if err != nil {
-    panic("could not write to temporary yaml file")
+    logrus.Panic("could not write to temporary yaml file")
   }
   return fh.Name()
 }

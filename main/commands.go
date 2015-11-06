@@ -21,6 +21,10 @@ var GlobalFlags = []cli.Flag{
     Name:  "template",
     Usage: "project template to include",
   },
+  cli.BoolFlag{
+    Name:  "debug",
+    Usage: "turn on debug level logging",
+  },
 }
 
 var Commands = []cli.Command{
