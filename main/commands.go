@@ -22,6 +22,10 @@ var GlobalFlags = []cli.Flag{
     Value: "docker-compose",
     Usage: "command to use for docker-compose",
   },
+  cli.StringFlag{
+    Name:  "template",
+    Usage: "project template to include",
+  },
 }
 
 var Commands = []cli.Command{
