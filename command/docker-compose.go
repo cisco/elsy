@@ -22,6 +22,7 @@ func dockerComposeExec(c *cli.Context, args ...string) error {
   cmd := exec.Command(c.GlobalString("docker-compose"), args...)
   cmd.Stdout = os.Stdout
   cmd.Stderr = os.Stderr
+  cmd.Stdin  = os.Stdin
   logrus.Debugf("running command %s with args %v", cmd.Path, cmd.Args)
   return cmd.Run()
 }
