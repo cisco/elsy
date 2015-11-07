@@ -1,8 +1,15 @@
 package command
 
-import "github.com/codegangsta/cli"
+import (
+  "os/exec"
+
+  "github.com/codegangsta/cli"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+)
 
 func CmdTeardown(c *cli.Context) {
-  dockerComposeExec(c, "kill")
-  dockerComposeExec(c, "rm", "-f", "-v")
+  helpers.ChainCommands([]*exec.Cmd{
+    dockerComposeCommand(c, "kill"),
+    dockerComposeCommand(c, "rm", "-f", "-v"),
+  })
 }

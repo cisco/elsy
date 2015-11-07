@@ -32,7 +32,10 @@ func main() {
     }
     return nil
   }
-  app.Run(os.Args)
+  app.RunAndExitOnError()
+  if !helpers.LastCommandSuccess {
+    os.Exit(1)
+  }
 }
 
 func preReqCheck(c *cli.Context) {

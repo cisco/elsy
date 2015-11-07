@@ -5,24 +5,18 @@ import (
   "os/exec"
 
   "github.com/codegangsta/cli"
-  "github.com/Sirupsen/logrus"
 )
 
 func CmdDockerCompose(c *cli.Context) {
-  dockerComposeExec(c, c.Args()...)
+  dockerComposeCommand(c, c.Args()...)
 }
 
-func dockerComposeExec(c *cli.Context, args ...string) error {
+func dockerComposeCommand(c *cli.Context, args ...string) *exec.Cmd {
   args = append([]string{"-f", "docker-compose.yml"}, args...)
 
   if baseComposeFile := os.Getenv("LC_BASE_COMPOSE_FILE"); len(baseComposeFile) > 0 {
     args = append([]string{"-f", baseComposeFile}, args...)
   }
 
-  cmd := exec.Command(c.GlobalString("docker-compose"), args...)
-  cmd.Stdout = os.Stdout
-  cmd.Stderr = os.Stderr
-  cmd.Stdin  = os.Stdin
-  logrus.Debugf("running command %s with args %v", cmd.Path, cmd.Args)
-  return cmd.Run()
+  return exec.Command(c.GlobalString("docker-compose"), args...)
 }
