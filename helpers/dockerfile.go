@@ -11,7 +11,7 @@ import (
 
 func DockerfileImages(root string) (images []string) {
   for _, file := range dockerfiles(root) {
-    if image, err := dockerImage(file); err != nil {
+    if image, err := DockerImage(file); err != nil {
       fmt.Println(err)
     } else {
       images = append(images, image)
@@ -34,7 +34,7 @@ func dockerfiles(root string) (d []string) {
   return
 }
 
-func dockerImage(dockerfile string) (string, error) {
+func DockerImage(dockerfile string) (string, error) {
   dockerFrom := regexp.MustCompile("^FROM\\s+?(.+)")
   fh, err := os.Open(dockerfile)
   if err != nil {

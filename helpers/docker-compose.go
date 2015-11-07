@@ -73,6 +73,9 @@ sbt: &sbt
 test:
   <<: *sbt
   entrypoint: [sbt, test]
+package:
+  <<: *sbt
+  command: [assembly]
 `
     case "mvn":
       return `
@@ -87,6 +90,9 @@ mvn: &mvn
 test:
   <<: *mvn
   entrypoint: [mvn, test]
+package
+  <<: *mvn
+  command: [package, "-DskipTests=true"]
 `
     default:
       return ""
