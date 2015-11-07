@@ -1,5 +1,5 @@
-go:
-  build: .
+go: &go
+  build: dev-env
   volumes:
     - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
   working_dir: /go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
@@ -7,3 +7,10 @@ go:
     - GOOS
     - GOARCH
   entrypoint: /usr/local/go/bin/go
+
+package:
+  <<: *go
+  environment:
+    - GOOS=darwin
+    - GOARCH=amd64
+  command: ["build", "-v", "-o", "target/lc-darwin-amd64", "./main"]
