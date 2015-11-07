@@ -15,7 +15,9 @@ func DockerComposeBeforeHook(c *cli.Context) {
   os.Setenv("COMPOSE_PROJECT_NAME", dockerComposeProjectName(c))
 
   if yaml := baseYAML(c.GlobalString("template")); len(yaml) > 0 {
-    os.Setenv("LC_BASE_COMPOSE_FILE", createTempDockerComposeFile(yaml))
+    file := createTempDockerComposeFile(yaml)
+    logrus.Debugf("setting LC_BASE_COMPOSE_FILE to %v", file)
+    os.Setenv("LC_BASE_COMPOSE_FILE", file)
   }
 
   if dataContainer, ok := dataContainers[c.GlobalString("template")]; ok {
@@ -26,9 +28,11 @@ func DockerComposeBeforeHook(c *cli.Context) {
 }
 
 func DockerComposeAfterHook(c *cli.Context) error {
-  file := os.Getenv("LC_BASE_COMPOSE_FILE")
-  if err := os.Remove(file); err != nil {
-    return err
+  if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
+    logrus.Debugf("attempting to remove base compose file: %v", file)
+    if err := os.Remove(file); err != nil {
+      return err
+    }
   }
   return nil
 }
