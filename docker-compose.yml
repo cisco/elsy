@@ -14,3 +14,7 @@ package:
     - GOOS=darwin
     - GOARCH=amd64
   command: ["build", "-v", "-o", "target/lc-darwin-amd64", "./main"]
+
+test:
+  <<: *go
+  command: ["test", "-v", "./..."]
