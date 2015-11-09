@@ -9,6 +9,7 @@ import (
 
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
+  "gopkg.in/yaml.v2"
 )
 
 func DockerComposeBeforeHook(c *cli.Context) {
@@ -116,4 +117,41 @@ var dataContainers = map[string]DockerDataContainer{
     Volumes: []string{"/root/.m2/repository"},
     Resilient: true,
   },
+}
+
+type DockerComposeMap map[string]DockerComposeService
+
+type DockerComposeService struct {
+  Build string
+  Image string
+}
+
+func DockerComposeServices() (services []string) {
+  for k := range getDockerComposeMap("docker-compose.yml") {
+    services = append(services, k)
+  }
+  if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
+    for k := range getDockerComposeMap(file) {
+      services = append(services, k)
+    }
+  }
+  return
+}
+
+func getDockerComposeMap(file string) (m DockerComposeMap) {
+  if s, err := ioutil.ReadFile(file); err != nil {
+    panic(err)
+  } else if err := yaml.Unmarshal(s, &m); err != nil {
+    panic(err)
+  }
+  return
+}
+
+func DockerComposeHasService(service string) bool {
+  for _, v := range DockerComposeServices() {
+    if v == service {
+      return true
+    }
+  }
+  return false
 }

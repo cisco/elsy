@@ -91,7 +91,16 @@ var Commands = []cli.Command{
     Name:   "publish",
     Usage:  "",
     Action: command.CmdPublish,
-    Flags:  []cli.Flag{},
+    Flags:  []cli.Flag{
+      cli.StringFlag{
+        Name:  "docker-image-name",
+        Usage: "local docker image name to publish",
+      },
+      cli.StringFlag{
+        Name:  "docker-registry",
+        Usage: "address of docker registry to publish to",
+      },
+    },
   },
   {
     Name:   "server",
