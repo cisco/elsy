@@ -52,3 +52,11 @@ func DockerImage(dockerfile string) (string, error) {
   }
   return "", errors.New(fmt.Sprintf("could not find FROM statement in %s", dockerfile))
 }
+
+func HasDockerfile() bool {
+  if _, err := os.Stat("Dockerfile"); err == nil {
+    return true
+  } else {
+    return false
+  }
+}

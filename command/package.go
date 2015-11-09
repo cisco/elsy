@@ -13,7 +13,7 @@ func CmdPackage(c *cli.Context) {
   commands := []*exec.Cmd{dockerComposeCommand(c, "run", "--rm", "package")}
 
   // docker build
-  if _, err := os.Stat("Dockerfile"); err == nil {
+  if helpers.HasDockerfile() {
     logrus.Debug("detected Dockerfile for packaging")
     if image, err := helpers.DockerImage("Dockerfile"); err == nil {
       commands = append(commands, exec.Command("docker", "pull", image))
