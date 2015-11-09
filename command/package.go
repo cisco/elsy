@@ -1,7 +1,6 @@
 package command
 
 import (
-  "os"
   "os/exec"
 
   "github.com/codegangsta/cli"
@@ -18,7 +17,11 @@ func CmdPackage(c *cli.Context) {
     if image, err := helpers.DockerImage("Dockerfile"); err == nil {
       commands = append(commands, exec.Command("docker", "pull", image))
     }
-    commands = append(commands, exec.Command("docker", "build", "-t", os.Getenv("COMPOSE_PROJECT_NAME"), "."))
+    dockerImageName := c.String("docker-image-name")
+    if len(dockerImageName) == 0 {
+      logrus.Panic("you must use `--docker-image-name` to package a docker image")
+    }
+    commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
   }
   helpers.ChainCommands(commands)
 }

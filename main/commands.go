@@ -80,7 +80,12 @@ var Commands = []cli.Command{
     Name:   "package",
     Usage:  "",
     Action: command.CmdPackage,
-    Flags:  []cli.Flag{},
+    Flags:  []cli.Flag{
+      cli.StringFlag{
+        Name:  "docker-image-name",
+        Usage: "docker image name to create",
+      },
+    },
   },
   {
     Name:   "publish",
