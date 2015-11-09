@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/pre-req-check
+
+set -e
+unbuffer ${DIR}/bootstrap
+unbuffer ${DIR}/test
+unbuffer ${DIR}/package
