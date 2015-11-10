@@ -42,8 +42,11 @@ func dockerComposeProjectName(c *cli.Context) string {
   var invalidChars = regexp.MustCompile("[^a-z0-9]")
   projectName := c.GlobalString("project-name")
   if len(projectName) == 0 {
+    logrus.Debug("using current working directory for compose project name")
     path, _ := os.Getwd()
     projectName = filepath.Base(path)
+  } else {
+    logrus.Debugf("using configured value: %q for project name", projectName)
   }
   return invalidChars.ReplaceAllString(strings.ToLower(projectName), "")
 }
