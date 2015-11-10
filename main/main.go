@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+  if err := LoadConfigFile(".lc.yaml"); err != nil {
+    panic(err)
+  }
+
   app := cli.NewApp()
   app.Name = Name
   app.Version = Version
@@ -17,8 +21,8 @@ func main() {
   app.Email = ""
   app.Usage = ""
 
-  app.Flags = GlobalFlags
-  app.Commands = Commands
+  app.Flags = GlobalFlags()
+  app.Commands = Commands()
   app.CommandNotFound = CommandNotFound
   app.Before = func(c *cli.Context) error {
     setLogLevel(c)

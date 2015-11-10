@@ -38,6 +38,20 @@ Then run the lifecycle test task like so:
 lc --template=sbt test
 ```
 
+## Configuration
+
+`lc` may be configured via `.lc.yaml` file at the root of a repo. It supports the following configuration options:
+
+```
+project_name: name of your docker-compose project which is used as COMPOSE_PROJECT_NAME
+docker_compose: basename or fully qualified path to the docker-compose binary.
+template: compose template to include
+docker_image_name: name of docker image to build
+docker_registry: address of docker registry to publish to
+```
+
+Configuration may also be specified as command line arguments in which case they take precedence over values in the configuration file.
+
 ## Keeping `lc` up-to-date
 
 TODO: figure this out
