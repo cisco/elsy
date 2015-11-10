@@ -18,6 +18,7 @@ func GlobalFlags() []cli.Flag {
       Name:  "docker-compose",
       Value: GetConfigFileStringWithDefault("docker_compose", "docker-compose"),
       Usage: "command to use for docker-compose",
+      EnvVar: "LC_DOCKER_COMPOSE",
     },
     cli.StringFlag{
       Name:  "template",
@@ -27,6 +28,7 @@ func GlobalFlags() []cli.Flag {
     cli.BoolFlag{
       Name:  "debug",
       Usage: "turn on debug level logging",
+      EnvVar: "LC_DEBUG",
     },
   }
 }
