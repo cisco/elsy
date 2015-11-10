@@ -119,6 +119,12 @@ func Commands() []cli.Command {
       Flags:  []cli.Flag{},
     },
     {
+      Name:   "smoketest",
+      Usage:  "run smoketest service. forwards arguments",
+      Action: command.CmdSmoketest,
+      Flags:  []cli.Flag{},
+    },
+    {
       Name:   "teardown",
       Usage:  "",
       Action: command.CmdTeardown,
