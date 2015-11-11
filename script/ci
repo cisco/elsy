@@ -7,3 +7,4 @@ set -e
 unbuffer ${DIR}/bootstrap
 unbuffer ${DIR}/test
 unbuffer ${DIR}/package
+unbuffer ${DIR}/smoketest
