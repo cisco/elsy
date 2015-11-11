@@ -18,3 +18,13 @@ package:
 test:
   <<: *go
   command: ["test", "-v", "./..."]
+
+smoketest:
+  build: smoketest
+  volumes:
+    - .:/opt/project/
+    - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
+  working_dir: /opt/project
+  entrypoint: ["rspec", "--require", "./smoketest/spec/spec_helper.rb"]
