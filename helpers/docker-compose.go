@@ -102,6 +102,43 @@ package
   <<: *mvn
   command: [package, "-DskipTests=true"]
 `
+    case "ember":
+      return `
+emberdata:
+  image: arch-docker.eng.lancope.local:5000/ember
+  volumes:
+   - /opt/app/bower_components
+   - /opt/app/dist
+   - /opt/app/node_modules
+   - /opt/app/vendor
+   - /opt/app/tmp
+  entrypoint: "/bin/true"
+ember: &ember
+  image: arch-docker.eng.lancope.local:5000/ember
+  volumes_from:
+   - emberdata
+  volumes:
+   - .:/opt/app
+  entrypoint: /usr/local/bin/ember
+ember:
+  <<: *ember
+npm:
+  <<: *ember
+  entrypoint: /usr/local/bin/npm
+bower:
+  <<: *ember
+  entrypoint: /usr/local/bin/bower
+installdependencies:
+  <<: *ember
+  entrypoint: /bin/bash
+  command: -c "/usr/local/bin/npm install update && /usr/local/bin/bower install update"
+test:
+  <<: *ember
+  command: [test]
+package:
+  <<: *ember
+  command: [build, "--environment='production'",  "--output-path=dist-production"]
+`
     default:
       return ""
   }
