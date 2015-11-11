@@ -13,6 +13,7 @@ func GlobalFlags() []cli.Flag {
       Name:  "project-name",
       Value: GetConfigFileString("project_name"),
       Usage: "docker-compose project name. defaults to name of `root` option",
+      EnvVar: "COMPOSE_PROJECT_NAME",
     },
     cli.StringFlag{
       Name:  "docker-compose",
