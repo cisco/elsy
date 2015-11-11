@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+if [ -z "$JENKINS_GIT_KEY" ] ; then
+  echo "JENKINS_GIT_KEY env var must be set" >&2
+  exit 1
+fi
+
+if [ "$GIT_BRANCH" != "origin/master" ] ; then
+  echo "Only publishing origin/master, found '$GIT_BRANCH', skipping"
+else
+
+  set -e
+
+  git config --global user.email "terrapin-jenkins@lancope-jenkins.com"
+  git config --global user.name "terrapin-jenkins"
+  git config --global push.default simple
+  git config --global http.sslVerify false
+
+  ## setup ssh
+  mkdir -p ~/.ssh/
+  echo "$JENKINS_GIT_KEY" > ~/.ssh/id_rsa
+  chmod 600  ~/.ssh/id_rsa
+  ssh-keyscan stash0.eng.lancope.local > ~/.ssh/known_hosts
+
+  ## stage files for pushing
+  mkdir -p /tmp/staging
+  arch=amd64
+  platforms=(darwin)
+  for platform in "${platforms[@]}"; do
+    cp target/lc-${platform}-${arch} /tmp/staging
+  done
+
+  ## push all binaries, this assumes there is always a previous commit and just rolls the current push into that one
+  ## to avoid maintaining all history of pushes since we just need the latest
+  ## TODO: support releases
+  cd /tmp
+  git clone ssh://git@stash0.eng.lancope.local/dev-infrastructure/binaries.git
+  cd binaries && git pull --rebase &&  git checkout snapshots
+
+  mv /tmp/staging/* lc/
+  git add *
+  git commit -a --fixup HEAD
+
+  ## squash commit and update timestamp to now()
+  EDITOR=cat git rebase --autosquash  -i -s recursive -X theirs HEAD~3
+  EDITOR=cat git commit --amend --reset-author
+  git push -f
+
+fi

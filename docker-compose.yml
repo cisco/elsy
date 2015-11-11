@@ -15,6 +15,13 @@ package:
     - GOARCH=amd64
   command: ["build", "-v", "-o", "target/lc-darwin-amd64", "./main"]
 
+publish:
+  <<: *go
+  environment:
+    - JENKINS_GIT_KEY
+  entrypoint: bash
+  command: -c "/opt/publish"
+
 test:
   <<: *go
   command: ["test", "-v", "./..."]
