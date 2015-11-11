@@ -18,7 +18,7 @@ func CmdPublish(c *cli.Context) {
       return
     }
   }
-  if !helpers.HasDockerfile() {
+  if helpers.HasDockerfile() {
     // check required flags
     dockerImageName := c.String("docker-image-name")
     if len(dockerImageName) == 0 {
