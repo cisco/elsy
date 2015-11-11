@@ -13,4 +13,8 @@ func CmdBootstrap(c *cli.Context) {
     dockerComposeCommand(c, "build", "--pull"),
     dockerComposeCommand(c, "pull", "--ignore-pull-failures"),
   })
+  if !helpers.LastCommandSuccess {
+    return
+  }
+  CmdInstallDependencies(c)
 }
