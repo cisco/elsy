@@ -42,6 +42,12 @@ func Commands() []cli.Command {
       Flags:  []cli.Flag{},
     },
     {
+      Name:   "install",
+      Usage:  "",
+      Action: command.CmdInstallDependencies,
+      Flags:  []cli.Flag{},
+    },
+    {
       Name:   "ci",
       Usage:  "",
       Action: command.CmdCi,
