@@ -168,8 +168,10 @@ type DockerComposeService struct {
 }
 
 func DockerComposeServices() (services []string) {
-  for k := range getDockerComposeMap("docker-compose.yml") {
-    services = append(services, k)
+  if _, err := os.Stat("docker-compose.yml"); err == nil {
+    for k := range getDockerComposeMap("docker-compose.yml") {
+      services = append(services, k)
+    }
   }
   if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
     for k := range getDockerComposeMap(file) {
