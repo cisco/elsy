@@ -120,8 +120,6 @@ ember: &ember
   volumes:
    - .:/opt/app
   entrypoint: /usr/local/bin/ember
-ember:
-  <<: *ember
 npm:
   <<: *ember
   entrypoint: /usr/local/bin/npm
