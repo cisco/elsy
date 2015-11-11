@@ -5,6 +5,8 @@ source $DIR/pre-req-check
 set -e
 cd $DIR/../
 
-export GOOS=darwin
-export GOARCH=amd64
-docker-compose run --rm go build -v -o target/lc-${GOOS}-${GOARCH} ./main
+arch=amd64
+platforms=(darwin linux)
+for platform in "${platforms[@]}"; do
+  docker-compose run --rm -e GOOS=${platform} -e GOARCH=${arch} go build -v -o target/lc-${platform}-${arch} ./main
+done
