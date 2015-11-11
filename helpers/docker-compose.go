@@ -87,6 +87,16 @@ package:
 `
     case "mvn":
       return `
+mvnscratch:
+  image: busybox
+  volumes:
+    - /opt/project/target/classes
+    - /opt/project/target/journal
+    - /opt/project/target/maven-archiver
+    - /opt/project/target/maven-status
+    - /opt/project/target/snapshots
+    - /opt/project/target/test-classes
+  entrypoint: /bin/true
 mvn: &mvn
   image: maven:3.2-jdk-8
   volumes:
@@ -95,10 +105,11 @@ mvn: &mvn
   entrypoint: mvn
   volumes_from:
     - lc_shared_mvndata
+    - mvnscratch
 test:
   <<: *mvn
   entrypoint: [mvn, test]
-package
+package:
   <<: *mvn
   command: [package, "-DskipTests=true"]
 `

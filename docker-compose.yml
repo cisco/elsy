@@ -37,8 +37,10 @@ smoketest:
   volumes:
     - .:/opt/project/
     - /var/run/docker.sock:/var/run/docker.sock
+    - /tmp/lc_smoketest:/tmp/lc_smoketest
   environment:
     - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
+    - TMPDIR=/tmp/lc_smoketest
   working_dir: /opt/project
   entrypoint: ["rspec", "--require", "./smoketest/spec/spec_helper.rb"]
   command: ["--pattern", "smoketest/spec/**/*.feature"]
