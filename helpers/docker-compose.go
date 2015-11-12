@@ -107,17 +107,17 @@ package
 emberdata:
   image: arch-docker.eng.lancope.local:5000/ember
   volumes:
-   - /opt/app/bower_components
-   - /opt/app/dist
-   - /opt/app/node_modules
-   - /opt/app/vendor
-   - /opt/app/tmp
+   - /opt/project/bower_components
+   - /opt/project/dist
+   - /opt/project/node_modules
+   - /opt/project/vendor
+   - /opt/project/tmp
   entrypoint: "/bin/true"
 ember: &ember
   image: arch-docker.eng.lancope.local:5000/ember
   volumes:
-   - .:/opt/app
-  working_dir: /opt/app
+   - .:/opt/project
+  working_dir: /opt/project
   entrypoint: /usr/local/bin/ember
   volumes_from:
    - emberdata
