@@ -53,8 +53,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>export JENKINS_GIT_KEY=&quot;$(cat $JENKINS_GIT_KEY_LOCATION)&quot;
-unbuffer ./script/ci</command>
+      <command>unbuffer ./script/ci</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -128,13 +127,11 @@ unbuffer ./script/ci</command>
     </jenkins.plugins.slack.SlackNotifier>
   </publishers>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.4">
-      <bindings>
-        <org.jenkinsci.plugins.credentialsbinding.impl.FileBinding>
-          <credentialsId>d394f7b7-0be8-420f-8c93-889135367024</credentialsId>
-          <variable>JENKINS_GIT_KEY_LOCATION</variable>
-        </org.jenkinsci.plugins.credentialsbinding.impl.FileBinding>
-      </bindings>
-    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.5">
+      <credentialIds>
+        <string>71500344-2b24-4482-aacb-07e8c15d86aa</string>
+      </credentialIds>
+      <ignoreMissing>false</ignoreMissing>
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
   </buildWrappers>
 </project>
