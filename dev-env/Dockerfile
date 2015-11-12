@@ -13,4 +13,4 @@ RUN GOOS=darwin GOARCH=amd64 go install -v github.com/fsouza/go-dockerclient
 RUN go get -v github.com/Sirupsen/logrus
 RUN GOOS=darwin GOARCH=amd64 go install -v github.com/Sirupsen/logrus
 
-COPY ./publish /opt/publish
+COPY publish package /opt/lifecycle/

@@ -10,10 +10,7 @@ go: &go
 
 package:
   <<: *go
-  environment:
-    - GOOS=darwin
-    - GOARCH=amd64
-  command: ["build", "-v", "-o", "target/lc-darwin-amd64", "./main"]
+  entrypoint: /opt/lifecycle/package
 
 ## shares the host ssh-agent with the container so that we can provide jenkins ssh-agent for publishing actions
 ## NOTE: this will only work on a pure linux box
@@ -25,8 +22,7 @@ publish:
   environment:
     - SSH_AUTH_SOCK=/opt/ssh-agent
     - GIT_BRANCH
-  entrypoint: bash
-  command: -c "/opt/publish"
+  entrypoint: /opt/lifecycle/publish
 
 test:
   <<: *go
