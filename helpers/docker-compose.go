@@ -112,6 +112,8 @@ emberdata:
    - /opt/project/node_modules
    - /opt/project/vendor
    - /opt/project/tmp
+  labels:
+    com.lancope.docker-gc.keep: "True"
   entrypoint: "/bin/true"
 ember: &ember
   image: arch-docker.eng.lancope.local:5000/ember
