@@ -115,11 +115,12 @@ emberdata:
   entrypoint: "/bin/true"
 ember: &ember
   image: arch-docker.eng.lancope.local:5000/ember
-  volumes_from:
-   - emberdata
   volumes:
    - .:/opt/app
+  working_dir: /opt/app
   entrypoint: /usr/local/bin/ember
+  volumes_from:
+   - emberdata
 npm:
   <<: *ember
   entrypoint: /usr/local/bin/npm
@@ -128,8 +129,8 @@ bower:
   entrypoint: /usr/local/bin/bower
 installdependencies:
   <<: *ember
-  entrypoint: /bin/bash
-  command: -c "/usr/local/bin/npm install update && /usr/local/bin/bower install update"
+  entrypoint: bash
+  command: -c "npm install && npm update && bower install && bower update"
 test:
   <<: *ember
   command: [test]
