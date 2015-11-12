@@ -5,6 +5,11 @@ if [ -z "$JENKINS_GIT_KEY" ] ; then
   exit 1
 fi
 
+if [ -z "$GIT_BRANCH" ] ; then
+  echo "$0 expects GIT_BRANCH to be set. Are you running in a jenkins job?" >&2
+  exit 1
+fi
+
 if [ "$GIT_BRANCH" != "origin/master" ] ; then
   echo "Only publishing origin/master, found '$GIT_BRANCH', skipping"
 else

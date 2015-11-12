@@ -19,6 +19,7 @@ publish:
   <<: *go
   environment:
     - JENKINS_GIT_KEY
+    - GIT_BRANCH
   entrypoint: bash
   command: -c "/opt/publish"
 
