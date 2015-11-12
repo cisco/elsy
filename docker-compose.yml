@@ -41,3 +41,4 @@ smoketest:
     - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
   working_dir: /opt/project
   entrypoint: ["rspec", "--require", "./smoketest/spec/spec_helper.rb"]
+  command: ["--pattern", "smoketest/spec/**/*.feature"]
