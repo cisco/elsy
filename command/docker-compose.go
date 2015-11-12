@@ -5,10 +5,11 @@ import (
   "os/exec"
 
   "github.com/codegangsta/cli"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdDockerCompose(c *cli.Context) {
-  dockerComposeCommand(c, c.Args()...)
+func CmdDockerCompose(c *cli.Context) error {
+  return helpers.RunCommand(dockerComposeCommand(c, c.Args()...))
 }
 
 func dockerComposeCommand(c *cli.Context, args ...string) *exec.Cmd {
