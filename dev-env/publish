@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -z "$JENKINS_GIT_KEY" ] ; then
-  echo "JENKINS_GIT_KEY env var must be set" >&2
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  echo "SSH_AUTH_SOCK env var must be set" >&2
   exit 1
 fi
 
@@ -21,10 +21,8 @@ else
   git config --global push.default simple
   git config --global http.sslVerify false
 
-  ## setup ssh
-  mkdir -p ~/.ssh/
-  echo "$JENKINS_GIT_KEY" > ~/.ssh/id_rsa
-  chmod 600  ~/.ssh/id_rsa
+  ## setup ssh known_hosts to avoid interactive prompts
+  mkdir -p ~/.ssh
   ssh-keyscan stash0.eng.lancope.local > ~/.ssh/known_hosts
 
   ## stage files for pushing

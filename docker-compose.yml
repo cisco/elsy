@@ -15,10 +15,15 @@ package:
     - GOARCH=amd64
   command: ["build", "-v", "-o", "target/lc-darwin-amd64", "./main"]
 
+## shares the host ssh-agent with the container so that we can provide jenkins ssh-agent for publishing actions
+## NOTE: this will only work on a pure linux box
 publish:
   <<: *go
+  volumes:
+    - $SSH_AUTH_SOCK:/opt/ssh-agent
+    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
   environment:
-    - JENKINS_GIT_KEY
+    - SSH_AUTH_SOCK=/opt/ssh-agent
     - GIT_BRANCH
   entrypoint: bash
   command: -c "/opt/publish"
