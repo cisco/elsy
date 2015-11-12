@@ -147,6 +147,7 @@ func Commands() []cli.Command {
 }
 
 func CommandNotFound(c *cli.Context, command string) {
-  fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
+  fmt.Fprintf(os.Stderr, "ERROR: %s: %q is not a valid command.\n\n", c.App.Name, command)
+  cli.ShowAppHelp(c)
   os.Exit(2)
 }
