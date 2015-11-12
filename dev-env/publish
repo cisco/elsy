@@ -28,7 +28,7 @@ else
   ## stage files for pushing
   mkdir -p /tmp/staging
   arch=amd64
-  platforms=(darwin)
+  platforms=(darwin linux)
   for platform in "${platforms[@]}"; do
     cp target/lc-${platform}-${arch} /tmp/staging
   done
