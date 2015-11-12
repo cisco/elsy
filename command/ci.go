@@ -5,24 +5,20 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdCi(c *cli.Context) {
-  CmdBootstrap(c)
-  if !helpers.LastCommandSuccess {
-    return
+func CmdCi(c *cli.Context) error {
+  if err := CmdBootstrap(c); err != nil {
+    return err
   }
-  CmdTest(c)
-  if !helpers.LastCommandSuccess {
-    return
+  if err := CmdTest(c); err != nil {
+    return err
   }
-  CmdPackage(c)
-  if !helpers.LastCommandSuccess {
-    return
+  if err := CmdPackage(c); err != nil {
+    return err
   }
   if helpers.DockerComposeHasService("smoketest") {
-    CmdSmoketest(c)
-    if !helpers.LastCommandSuccess {
-      return
+    if err := CmdSmoketest(c); err != nil {
+      return err
     }
   }
-  CmdPublish(c)
+  return CmdPublish(c)
 }

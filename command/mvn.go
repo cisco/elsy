@@ -5,7 +5,7 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdMvn(c *cli.Context) {
+func CmdMvn(c *cli.Context) error {
   args := append([]string{"run", "--rm", "mvn"}, c.Args()...)
-  helpers.RunCommand(dockerComposeCommand(c, args...))
+  return helpers.RunCommand(dockerComposeCommand(c, args...))
 }

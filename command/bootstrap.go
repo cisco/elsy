@@ -7,14 +7,14 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdBootstrap(c *cli.Context) {
+func CmdBootstrap(c *cli.Context) error {
   CmdTeardown(c)
-  helpers.ChainCommands([]*exec.Cmd{
+  commands := []*exec.Cmd{
     dockerComposeCommand(c, "build", "--pull"),
     dockerComposeCommand(c, "pull", "--ignore-pull-failures"),
-  })
-  if !helpers.LastCommandSuccess {
-    return
   }
-  CmdInstallDependencies(c)
+  if err := helpers.ChainCommands(commands); err != nil {
+    return err
+  }
+  return CmdInstallDependencies(c)
 }

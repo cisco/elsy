@@ -12,10 +12,10 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdPublish(c *cli.Context) {
+func CmdPublish(c *cli.Context) error {
   if helpers.DockerComposeHasService("publish") {
     if err := helpers.RunCommand(dockerComposeCommand(c, "run", "--rm", "publish")); err != nil {
-      return
+      return err
     }
   }
   if helpers.HasDockerfile() {
@@ -34,11 +34,12 @@ func CmdPublish(c *cli.Context) {
       logrus.Panic(err)
     }
     remoteSpec := fmt.Sprintf("%s/%s:%s", dockerRegistry, dockerImageName, tagName)
-    helpers.ChainCommands([]*exec.Cmd{
+    return helpers.ChainCommands([]*exec.Cmd{
       exec.Command("docker", "tag", "-f", dockerImageName, remoteSpec),
       exec.Command("docker", "push", remoteSpec),
     })
   }
+  return nil
 }
 
 var releaseRegexp = regexp.MustCompile("^origin/release/(.+)$")

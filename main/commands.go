@@ -39,61 +39,61 @@ func Commands() []cli.Command {
     {
       Name:   "bootstrap",
       Usage:  "",
-      Action: command.CmdBootstrap,
+      Action: func(c *cli.Context) { command.CmdBootstrap(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "install",
       Usage:  "",
-      Action: command.CmdInstallDependencies,
+      Action: func(c *cli.Context) { command.CmdInstallDependencies(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "ci",
       Usage:  "",
-      Action: command.CmdCi,
+      Action: func(c *cli.Context) { command.CmdCi(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "dc",
       Usage:  "",
-      Action: command.CmdDockerCompose,
+      Action: func(c *cli.Context) { command.CmdDockerCompose(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "jenkins",
       Usage:  "",
-      Action: command.CmdJenkins,
+      Action: func(c *cli.Context) { command.CmdJenkins(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "mvn",
       Usage:  "",
-      Action: command.CmdMvn,
+      Action: func(c *cli.Context) { command.CmdMvn(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "sbt",
       Usage:  "",
-      Action: command.CmdSbt,
+      Action: func(c *cli.Context) { command.CmdSbt(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "bower",
       Usage:  "",
-      Action: command.CmdBower,
+      Action: func(c *cli.Context) { command.CmdBower(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "npm",
       Usage:  "",
-      Action: command.CmdNpm,
+      Action: func(c *cli.Context) { command.CmdNpm(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "package",
       Usage:  "",
-      Action: command.CmdPackage,
+      Action: func(c *cli.Context) { command.CmdPackage(c) },
       Flags:  []cli.Flag{
         cli.StringFlag{
           Name:  "docker-image-name",
@@ -105,7 +105,7 @@ func Commands() []cli.Command {
     {
       Name:   "publish",
       Usage:  "",
-      Action: command.CmdPublish,
+      Action: func(c *cli.Context) { command.CmdPublish(c) },
       Flags:  []cli.Flag{
         cli.StringFlag{
           Name:  "docker-image-name",
@@ -122,25 +122,25 @@ func Commands() []cli.Command {
     {
       Name:   "server",
       Usage:  "",
-      Action: command.CmdServer,
+      Action: func(c *cli.Context) { command.CmdServer(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "smoketest",
       Usage:  "run smoketest service. forwards arguments",
-      Action: command.CmdSmoketest,
+      Action: func(c *cli.Context) { command.CmdSmoketest(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "teardown",
       Usage:  "",
-      Action: command.CmdTeardown,
+      Action: func(c *cli.Context) { command.CmdTeardown(c) },
       Flags:  []cli.Flag{},
     },
     {
       Name:   "test",
       Usage:  "",
-      Action: command.CmdTest,
+      Action: func(c *cli.Context) { command.CmdTest(c) },
       Flags:  []cli.Flag{},
     },
   }

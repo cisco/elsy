@@ -7,8 +7,8 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdTeardown(c *cli.Context) {
-  helpers.ChainCommands([]*exec.Cmd{
+func CmdTeardown(c *cli.Context) error {
+  return helpers.ChainCommands([]*exec.Cmd{
     dockerComposeCommand(c, "kill"),
     dockerComposeCommand(c, "rm", "-f", "-v"),
   })

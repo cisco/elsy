@@ -8,7 +8,7 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-func CmdPackage(c *cli.Context) {
+func CmdPackage(c *cli.Context) error {
   commands := []*exec.Cmd{dockerComposeCommand(c, "run", "--rm", "package")}
 
   // docker build
@@ -23,5 +23,5 @@ func CmdPackage(c *cli.Context) {
     }
     commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
   }
-  helpers.ChainCommands(commands)
+  return helpers.ChainCommands(commands)
 }
