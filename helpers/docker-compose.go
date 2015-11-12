@@ -70,6 +70,17 @@ func baseYAML(template string) string {
   switch template {
     case "sbt":
       return `
+sbtscratch:
+  image: busybox
+  command: /bin/true
+  volumes:
+    - /opt/project/target/resolution-cache
+    - /opt/project/target/scala-2.11/classes
+    - /opt/project/target/scala-2.11/test-classes
+    - /opt/project/target/streams
+    - /opt/project/project/project
+    - /opt/project/project/target
+
 sbt: &sbt
   image: arch-docker.eng.lancope.local:5000/sbt
   volumes:
@@ -78,6 +89,7 @@ sbt: &sbt
   entrypoint: sbt
   volumes_from:
     - lc_shared_sbtdata
+    - sbtscratch
 test:
   <<: *sbt
   entrypoint: [sbt, test]
