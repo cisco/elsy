@@ -33,20 +33,17 @@ else
     cp target/lc-${platform}-${arch} /tmp/staging
   done
 
-  ## push all binaries, this assumes there is always a previous commit and just rolls the current push into that one
-  ## to avoid maintaining all history of pushes since we just need the latest
+  ## push all binaries, this assumes that this is the only script pushing to 'binaries/snapshot'
+  ## so we just replace the branch to avoid building up useless history about binaries
   ## TODO: support releases
   cd /tmp
   git clone ssh://git@stash0.eng.lancope.local/dev-infrastructure/binaries.git
-  cd binaries && git pull --rebase &&  git checkout snapshots
+  cd binaries &&  git checkout -b snapshots && git branch -u origin/snapshots
 
-  mv /tmp/staging/* lc/
-  git add *
-  git commit -a --fixup HEAD
-
-  ## squash commit and update timestamp to now()
-  EDITOR=cat git rebase --autosquash  -i -s recursive -X theirs HEAD~3
-  EDITOR=cat git commit --amend --reset-author
+  mkdir lc
+  mv /tmp/staging/* ./lc
+  git add lc
+  git commit -am "push from jenkins"
   git push -f
 
 fi
