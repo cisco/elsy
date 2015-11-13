@@ -26,7 +26,8 @@ publish:
 
 test:
   <<: *go
-  command: ["test", "-v", "./..."]
+  entrypoint: ["/usr/local/go/bin/go", "test", "-v"]
+  command: "./..."
 
 smoketest:
   build: smoketest
