@@ -143,6 +143,12 @@ func Commands() []cli.Command {
       Action: func(c *cli.Context) { command.CmdTest(c) },
       Flags:  []cli.Flag{},
     },
+    {
+      Name:   "upgrade",
+      Usage:  "",
+      Action: func(c *cli.Context) { command.CmdUpgrade(c) },
+      Flags:  []cli.Flag{},
+    },
   }
 }
 
