@@ -62,12 +62,6 @@ func Commands() []cli.Command {
       Flags:  []cli.Flag{},
     },
     {
-      Name:   "jenkins",
-      Usage:  "",
-      Action: panicOnError(command.CmdJenkins),
-      Flags:  []cli.Flag{},
-    },
-    {
       Name:   "mvn",
       Usage:  "",
       Action: panicOnError(command.CmdMvn),
