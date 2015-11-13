@@ -1,11 +1,16 @@
 package main
 
 import (
+  "io/ioutil"
+  "os"
   "os/exec"
+  "path/filepath"
+  "regexp"
+  "strings"
 
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
-  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/template"
 )
 
 func main() {
@@ -23,19 +28,36 @@ func main() {
   app.Flags = GlobalFlags()
   app.Commands = Commands()
   app.CommandNotFound = CommandNotFound
-  app.Before = func(c *cli.Context) error {
-    setLogLevel(c)
-    preReqCheck(c)
-    helpers.DockerComposeBeforeHook(c)
-    return nil
-  }
-  app.After = func(c *cli.Context) error {
-    if err := helpers.DockerComposeAfterHook(c); err != nil {
+  app.Before = beforeHook
+  app.After = afterHook
+  app.RunAndExitOnError()
+}
+
+func beforeHook(c *cli.Context) error {
+  setLogLevel(c)
+  preReqCheck(c)
+  setComposeProjectName(c)
+  setComposeTemplate(c)
+  return nil
+}
+
+func afterHook(c *cli.Context) error {
+  // clean up compose template if it exists
+  if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
+    logrus.Debugf("attempting to remove base compose file: %v", file)
+    if err := os.Remove(file); err != nil {
       return err
     }
-    return nil
   }
-  app.RunAndExitOnError()
+  return nil
+}
+
+func setLogLevel(c *cli.Context) {
+  if c.GlobalBool("debug") {
+    logrus.SetLevel(logrus.DebugLevel)
+  } else {
+    logrus.SetLevel(logrus.InfoLevel)
+  }
 }
 
 func preReqCheck(c *cli.Context) {
@@ -49,10 +71,50 @@ func preReqCheck(c *cli.Context) {
   }
 }
 
-func setLogLevel(c *cli.Context) {
-  if c.GlobalBool("debug") {
-    logrus.SetLevel(logrus.DebugLevel)
+func setComposeProjectName(c *cli.Context) {
+  var invalidChars = regexp.MustCompile("[^a-z0-9]")
+  projectName := c.GlobalString("project-name")
+  if len(projectName) == 0 {
+    logrus.Debug("using current working directory for compose project name")
+    path, _ := os.Getwd()
+    projectName = filepath.Base(path)
   } else {
-    logrus.SetLevel(logrus.InfoLevel)
+    logrus.Debugf("using configured value: %q for project name", projectName)
   }
+  projectName = invalidChars.ReplaceAllString(strings.ToLower(projectName), "")
+  os.Setenv("COMPOSE_PROJECT_NAME", projectName)
+}
+
+func setComposeTemplate(c *cli.Context) {
+  templateName := c.GlobalString("template")
+  if len(templateName) > 0 {
+    if yaml, err := template.Get(templateName); err == nil {
+      file := createTempComposeFile(yaml)
+      logrus.Debugf("setting LC_BASE_COMPOSE_FILE to %v", file)
+      os.Setenv("LC_BASE_COMPOSE_FILE", file)
+    } else {
+      logrus.Panicf("template %q does not exist", templateName)
+    }
+  }
+
+  dataContainers := template.GetSharedExternalDataContainers(templateName)
+  for _, dataContainer := range dataContainers {
+    if err := dataContainer.Ensure(); err != nil {
+      logrus.Panic("unable to create data container")
+    }
+  }
+}
+
+func createTempComposeFile(yaml string) string {
+  cwd, _ := os.Getwd()
+  fh, err := ioutil.TempFile(cwd, "lc_docker_compose_template")
+  if err != nil {
+    logrus.Panic("could not create temporary yaml file")
+  }
+  defer fh.Close()
+  _, err = fh.WriteString(yaml)
+  if err != nil {
+    logrus.Panic("could not write to temporary yaml file")
+  }
+  return fh.Name()
 }
