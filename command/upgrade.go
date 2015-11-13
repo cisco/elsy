@@ -8,6 +8,7 @@ import (
   "net/http"
   "crypto/tls"
   "crypto/md5"
+  "runtime"
 
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
@@ -16,9 +17,15 @@ import (
 )
 
 // TODO: make the binary target configurable
-const binaryUrl = "https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/binaries/browse/lc/lc-darwin-amd64?at=refs%2Fheads%2Fsnapshots&raw"
+const binaryUrl = "https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/binaries/browse/lc/lc-%s-%s"
+const urlParams = "?at=refs%2Fheads%2Fsnapshots&raw"
 
 func CmdUpgrade(c *cli.Context) error {
+  platform := runtime.GOOS
+  arch := runtime.GOARCH
+  url := fmt.Sprintf(binaryUrl, platform, arch) + urlParams
+  logrus.Debugf("using url: %s", url)
+
   // find location of lc currently running
   oldLc, err := getLcLocation()
   if err != nil {
@@ -40,7 +47,7 @@ func CmdUpgrade(c *cli.Context) error {
   defer os.Remove(tmpDir)
 
   // do the upgrade
-  if err := installNew(binaryUrl, oldLc); err != nil {
+  if err := installNew(url, oldLc); err != nil {
     err := swap(tmpLocation, oldLc); if err != nil {
       logrus.Errorf("failed replacing your lc, your old binary is located at '%s'", tmpLocation, err)
     }
