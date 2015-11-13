@@ -60,7 +60,7 @@ Feature: maven template
         }
     }
     """
-    And a file named ".lc.yaml" with:
+    And a file named "lc.yml" with:
     """
     template: mvn
     """

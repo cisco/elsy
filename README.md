@@ -40,7 +40,7 @@ lc --template=sbt test
 
 ## Configuration
 
-`lc` may be configured via `.lc.yaml` file at the root of a repo. It supports the following configuration options:
+`lc` may be configured via `lc.yml` file at the root of a repo. It supports the following configuration options:
 
 ```
 project_name: name of your docker-compose project which is used as COMPOSE_PROJECT_NAME

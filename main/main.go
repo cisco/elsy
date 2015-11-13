@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-  if err := LoadConfigFile(".lc.yaml"); err != nil {
+  if err := LoadConfigFile("lc.yml"); err != nil {
     panic(err)
   }
 
