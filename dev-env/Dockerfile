@@ -16,4 +16,7 @@ RUN GOOS=darwin GOARCH=amd64 go install -v github.com/Sirupsen/logrus
 RUN go get -v github.com/kardianos/osext
 RUN GOOS=darwin GOARCH=amd64 go install -v github.com/kardianos/osext
 
+RUN go get -v github.com/fatih/color
+RUN GOOS=darwin GOARCH=amd64 go install -v github.com/fatih/color
+
 COPY publish package /opt/lifecycle/

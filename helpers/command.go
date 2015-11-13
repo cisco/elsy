@@ -19,6 +19,18 @@ func RunCommand(command *exec.Cmd) error {
   return nil
 }
 
+func RunCommandWithOutput(command *exec.Cmd) (string, error) {
+  logrus.Debugf("running command %s with args %v", command.Path, command.Args)
+
+  out, err := command.Output()
+
+  if err != nil {
+    logrus.Debug("last command was not successful")
+  }
+  
+  return string(out[:]), err
+}
+
 func ChainCommands(commands []*exec.Cmd) error {
   for _, command := range commands {
     if err := RunCommand(command); err != nil {

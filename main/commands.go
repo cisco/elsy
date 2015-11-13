@@ -116,9 +116,14 @@ func Commands() []cli.Command {
     },
     {
       Name:   "server",
-      Usage:  "",
-      Action: panicOnError(command.CmdServer),
-      Flags:  []cli.Flag{},
+      Usage:  "manage the project's server (default is devserver)",
+      Action: func(c *cli.Context) { command.CmdServer(c) },
+      Flags:  []cli.Flag{
+        cli.BoolFlag{
+          Name:  "prod, p",
+          Usage: "operate on the production server",
+        },
+      },
     },
     {
       Name:   "smoketest",
