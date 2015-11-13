@@ -23,6 +23,14 @@ func RunCommand(command *exec.Cmd) error {
   return nil
 }
 
+// will signal the pipeline that a failure has happened
+// this currently returns the same error passed to it, but we may do more
+// processing of the error in the future
+func SignalFailure(err error) error{
+  LastCommandSuccess = false
+  return err
+}
+
 func ChainCommands(commands []*exec.Cmd) error {
   for _, command := range commands {
     if err := RunCommand(command); err != nil {
