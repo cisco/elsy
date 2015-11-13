@@ -5,6 +5,7 @@ import (
   "os"
   "github.com/codegangsta/cli"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 )
 
 func GlobalFlags() []cli.Flag {
@@ -144,10 +145,16 @@ func Commands() []cli.Command {
       Flags:  []cli.Flag{},
     },
     {
-      Name:   "upgrade",
-      Usage:  "",
-      Action: func(c *cli.Context) { command.CmdUpgrade(c) },
-      Flags:  []cli.Flag{},
+      Name:   "system",
+      Usage:  "commands for managing lc",
+      Subcommands: []cli.Command{
+        {
+          Name:  "upgrade",
+          Usage: "upgrade this lc binary",
+          Action: func(c *cli.Context) { system.CmdUpgrade(c) },
+          Flags:  []cli.Flag{},
+        },
+      },
     },
   }
 }
