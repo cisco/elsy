@@ -1,7 +1,6 @@
 package main
 
 import (
-  "os"
   "os/exec"
 
   "github.com/codegangsta/cli"
@@ -37,9 +36,6 @@ func main() {
     return nil
   }
   app.RunAndExitOnError()
-  if !helpers.LastCommandSuccess {
-    os.Exit(1)
-  }
 }
 
 func preReqCheck(c *cli.Context) {

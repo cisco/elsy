@@ -40,61 +40,61 @@ func Commands() []cli.Command {
     {
       Name:   "bootstrap",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdBootstrap(c) },
+      Action: panicOnError(command.CmdBootstrap),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "install",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdInstallDependencies(c) },
+      Action: panicOnError(command.CmdInstallDependencies),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "ci",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdCi(c) },
+      Action: panicOnError(command.CmdCi),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "dc",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdDockerCompose(c) },
+      Action: panicOnError(command.CmdDockerCompose),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "jenkins",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdJenkins(c) },
+      Action: panicOnError(command.CmdJenkins),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "mvn",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdMvn(c) },
+      Action: panicOnError(command.CmdMvn),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "sbt",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdSbt(c) },
+      Action: panicOnError(command.CmdSbt),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "bower",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdBower(c) },
+      Action: panicOnError(command.CmdBower),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "npm",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdNpm(c) },
+      Action: panicOnError(command.CmdNpm),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "package",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdPackage(c) },
+      Action: panicOnError(command.CmdPackage),
       Flags:  []cli.Flag{
         cli.StringFlag{
           Name:  "docker-image-name",
@@ -106,7 +106,7 @@ func Commands() []cli.Command {
     {
       Name:   "publish",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdPublish(c) },
+      Action: panicOnError(command.CmdPublish),
       Flags:  []cli.Flag{
         cli.StringFlag{
           Name:  "docker-image-name",
@@ -123,25 +123,25 @@ func Commands() []cli.Command {
     {
       Name:   "server",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdServer(c) },
+      Action: panicOnError(command.CmdServer),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "smoketest",
       Usage:  "run smoketest service. forwards arguments",
-      Action: func(c *cli.Context) { command.CmdSmoketest(c) },
+      Action: panicOnError(command.CmdSmoketest),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "teardown",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdTeardown(c) },
+      Action: panicOnError(command.CmdTeardown),
       Flags:  []cli.Flag{},
     },
     {
       Name:   "test",
       Usage:  "",
-      Action: func(c *cli.Context) { command.CmdTest(c) },
+      Action: panicOnError(command.CmdTest),
       Flags:  []cli.Flag{},
     },
     {
@@ -151,11 +151,20 @@ func Commands() []cli.Command {
         {
           Name:  "upgrade",
           Usage: "upgrade this lc binary",
-          Action: func(c *cli.Context) { system.CmdUpgrade(c) },
+          Action: panicOnError(system.CmdUpgrade),
           Flags:  []cli.Flag{},
         },
       },
     },
+  }
+}
+
+type cmdWithError func(c *cli.Context) error
+func panicOnError(f cmdWithError) func(c *cli.Context) {
+  return func(c *cli.Context) {
+    if err := f(c); err != nil {
+      panic(err)
+    }
   }
 }
 

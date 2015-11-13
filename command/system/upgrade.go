@@ -13,7 +13,6 @@ import (
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
   "github.com/kardianos/osext"
-  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 // TODO: make the binary target configurable
@@ -30,7 +29,7 @@ func CmdUpgrade(c *cli.Context) error {
   oldLc, err := getLcLocation()
   if err != nil {
     logrus.Errorf("could not find location of current lc")
-    return helpers.SignalFailure(err)
+    return err
   }
 
   // hash current binary for comparison with new binary
@@ -42,7 +41,7 @@ func CmdUpgrade(c *cli.Context) error {
   // rename current binary in preparation for replacing
   tmpDir, tmpLocation, err := mvLc(oldLc)
   if err != nil {
-    return helpers.SignalFailure(err)
+    return err
   }
   defer os.Remove(tmpDir)
 
@@ -52,7 +51,7 @@ func CmdUpgrade(c *cli.Context) error {
       logrus.Errorf("failed replacing your lc, your old binary is located at '%s'", tmpLocation, err)
     }
     logrus.Errorf("failed upgrading lc")
-    return helpers.SignalFailure(err)
+    return err
   }
 
   if newMd5, err := computeMd5(oldLc); err != nil {
