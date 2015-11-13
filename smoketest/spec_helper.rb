@@ -1,7 +1,7 @@
 require 'turnip/rspec'
 
 RSpec.configure do |config|
-  Dir.glob("smoketest/spec/steps/**/*_steps.rb") { |f| load f, true }
+  Dir.glob("smoketest/steps/**/*_steps.rb") { |f| load f, true }
 end
 
 # add `lc` to our path

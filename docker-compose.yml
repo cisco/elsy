@@ -38,5 +38,5 @@ smoketest:
     - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
     - TMPDIR=/tmp/lc_smoketest
   working_dir: /opt/project
-  entrypoint: ["rspec", "--require", "./smoketest/spec/spec_helper.rb", "--format", "documentation"]
-  command: ["--pattern", "smoketest/spec/**/*.feature"]
+  entrypoint: ["rspec", "--require", "./smoketest/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "smoketest/**/*.feature"]
