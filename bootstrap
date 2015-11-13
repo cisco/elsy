@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+# This script should *only* be called when `lc` is not available.
+# The script will create `lc` binaries in the `./target/` directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
 export COMPOSE_PROJECT_NAME=projectlifecycle
+set -e
 
 command -v docker >/dev/null 2>&1 || {
   echo "did not find docker" >&2
@@ -13,3 +17,7 @@ command -v docker-compose >/dev/null 2>&1 || {
   echo "install local-docker-stack https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/local-docker-stack/browse" >&2
   exit 1
 }
+
+docker pull golang:latest
+docker-compose build
+docker-compose run --rm package
