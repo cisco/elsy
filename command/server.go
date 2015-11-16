@@ -14,10 +14,12 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
+const usageMessage = "You must specify one of [start|stop|status|restart|logs] [-prod]"
+
 func CmdServer(c *cli.Context) error {
   if len(c.Args()) == 0 {
-    logrus.Info("You must specify one of [start|stop|status|restart] [-prod]")
-    return errors.New("You must specify one of [start|stop|status|restart] [-prod]")
+    logrus.Info(usageMessage)
+    return errors.New(usageMessage)
   }
 
   cmd := c.Args()[0]
@@ -37,7 +39,6 @@ func CmdServer(c *cli.Context) error {
       logrus.Fatalf("Unable to start %s: %s", serverName, err)
       return err
     }
-
     showServerAddress(c, serverName, "80")
   } else if cmd == "stop" {
     logrus.Info("Stopping ", serverName)
@@ -54,8 +55,15 @@ func CmdServer(c *cli.Context) error {
     }
   } else if cmd == "status" || cmd == "stat" {
     serviceStatus(c, serverName)
+  } else if cmd == "logs" || cmd == "log" {
+    logrus.Info("Press Ctrl-C to stop...")
+    if err := helpers.RunCommand(dockerComposeCommand(c, "logs", serverName)); err != nil {
+      logrus.Fatalf("Unable to get logs for %s: %s", serverName, err)
+      return err
+    }
   } else {
-    logrus.Fatal("The only options are [start|stop|status|restart]")
+    logrus.Fatal(usageMessage)
+    return errors.New(usageMessage)
   }
 
   return nil
@@ -110,9 +118,14 @@ func showServerAddress(c *cli.Context, serviceName string, containerPort string)
   green := color.New(color.FgGreen).SprintFunc()
 
   msg := fmt.Sprintf("%s running at http://%s:%s", serviceName, ip, port)
+  var logsMsg = "lc server logs"
+
+  if serviceName == "prodserver" {
+    logsMsg = "lc server logs --prod"
+  }
 
   logrus.Info(green(msg))
-  logrus.Infof("%s %s\n", green("to view the server log, run"), red("./script/logs"))
+  logrus.Infof("%s %s\n", green("to view the server log, run"), red(logsMsg))
 }
 
 func serviceStatus(c *cli.Context, serviceName string) {
