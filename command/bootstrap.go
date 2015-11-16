@@ -10,8 +10,8 @@ import (
 func CmdBootstrap(c *cli.Context) error {
   CmdTeardown(c)
   commands := []*exec.Cmd{
-    dockerComposeCommand(c, "build", "--pull"),
-    dockerComposeCommand(c, "pull", "--ignore-pull-failures"),
+    helpers.DockerComposeCommand("build", "--pull"),
+    helpers.DockerComposeCommand("pull", "--ignore-pull-failures"),
   }
   if err := helpers.ChainCommands(commands); err != nil {
     return err

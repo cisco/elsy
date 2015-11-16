@@ -9,7 +9,7 @@ import (
 )
 
 func CmdPackage(c *cli.Context) error {
-  commands := []*exec.Cmd{dockerComposeCommand(c, "run", "--rm", "package")}
+  commands := []*exec.Cmd{helpers.DockerComposeCommand("run", "--rm", "package")}
 
   // docker build
   if helpers.HasDockerfile() {

@@ -35,29 +35,29 @@ func CmdServer(c *cli.Context) error {
 
   if cmd == "start" {
     logrus.Info("Starting ", serverName)
-    if err := helpers.RunCommand(dockerComposeCommand(c, "up", "-d", serverName)); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("up", "-d", serverName)); err != nil {
       logrus.Fatalf("Unable to start %s: %s", serverName, err)
       return err
     }
     showServerAddress(c, serverName, "80")
   } else if cmd == "stop" {
     logrus.Info("Stopping ", serverName)
-    if err := helpers.RunCommand(dockerComposeCommand(c, "stop", serverName)); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("stop", serverName)); err != nil {
       return err
     }
   } else if cmd == "restart" {
     logrus.Info("Restarting ", serverName)
-    if err := helpers.RunCommand(dockerComposeCommand(c, "stop", serverName)); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("stop", serverName)); err != nil {
       return err
     }
-    if err := helpers.RunCommand(dockerComposeCommand(c, "up", "-d", serverName)); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("up", "-d", serverName)); err != nil {
       return err
     }
   } else if cmd == "status" || cmd == "stat" {
     serviceStatus(c, serverName)
   } else if cmd == "logs" || cmd == "log" {
     logrus.Info("Press Ctrl-C to stop...")
-    if err := helpers.RunCommand(dockerComposeCommand(c, "logs", serverName)); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("logs", serverName)); err != nil {
       logrus.Fatalf("Unable to get logs for %s: %s", serverName, err)
       return err
     }
@@ -91,7 +91,7 @@ func dockerIp() string {
 func servicePort(c *cli.Context, serviceName string, containerPort string) string {
   var port = ""
 
-  cmd := dockerComposeCommand(c, "port", serviceName, containerPort)
+  cmd := helpers.DockerComposeCommand("port", serviceName, containerPort)
 
   out, err := helpers.RunCommandWithOutput(cmd)
 
@@ -129,7 +129,7 @@ func showServerAddress(c *cli.Context, serviceName string, containerPort string)
 }
 
 func serviceStatus(c *cli.Context, serviceName string) {
-  out, err := helpers.RunCommandWithOutput(dockerComposeCommand(c, "ps", "-q", serviceName))
+  out, err := helpers.RunCommandWithOutput(helpers.DockerComposeCommand("ps", "-q", serviceName))
   if err != nil {
     logrus.Fatal("Unable to get server status: ", err)
   } else {

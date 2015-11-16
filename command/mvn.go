@@ -7,5 +7,5 @@ import (
 
 func CmdMvn(c *cli.Context) error {
   args := append([]string{"run", "--rm", "mvn"}, c.Args()...)
-  return helpers.RunCommand(dockerComposeCommand(c, args...))
+  return helpers.RunCommand(helpers.DockerComposeCommand(args...))
 }

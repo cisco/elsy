@@ -11,13 +11,13 @@ import (
 )
 
 func CmdTeardown(c *cli.Context) error {
-  if err := helpers.RunCommand(dockerComposeCommand(c, "kill")); err != nil {
+  if err := helpers.RunCommand(helpers.DockerComposeCommand("kill")); err != nil {
     return err
   }
 
   if c.Bool("force") {
     logrus.Debugf("found -f flag on teardown, removing all containers")
-    if err := helpers.RunCommand(dockerComposeCommand(c, "rm", "-f", "-v")); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("rm", "-f", "-v")); err != nil {
       return err
     }
     return nil

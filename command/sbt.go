@@ -7,5 +7,5 @@ import (
 
 func CmdSbt(c *cli.Context) error {
   args := append([]string{"run", "--rm", "sbt"}, c.Args()...)
-  return helpers.RunCommand(dockerComposeCommand(c, args...))
+  return helpers.RunCommand(helpers.DockerComposeCommand(args...))
 }

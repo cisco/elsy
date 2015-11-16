@@ -14,7 +14,7 @@ import (
 
 func CmdPublish(c *cli.Context) error {
   if helpers.DockerComposeHasService("publish") {
-    if err := helpers.RunCommand(dockerComposeCommand(c, "run", "--rm", "publish")); err != nil {
+    if err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "publish")); err != nil {
       return err
     }
   }

@@ -1,17 +1,29 @@
 package helpers
 
 import (
+  "errors"
   "io/ioutil"
   "os"
   "os/exec"
-  "errors"
-  "strings"
   "strconv"
+  "strings"
 
   "github.com/Sirupsen/logrus"
   "github.com/codegangsta/cli"
   "gopkg.in/yaml.v2"
 )
+
+func DockerComposeCommand(args ...string) *exec.Cmd {
+  if _, err := os.Stat("docker-compose.yml"); err == nil {
+    args = append([]string{"-f", "docker-compose.yml"}, args...)
+  }
+
+  if baseComposeFile := os.Getenv("LC_BASE_COMPOSE_FILE"); len(baseComposeFile) > 0 {
+    args = append([]string{"-f", baseComposeFile}, args...)
+  }
+
+  return exec.Command(os.Getenv("DOCKER_COMPOSE_BINARY"), args...)
+}
 
 type DockerComposeMap map[string]DockerComposeService
 

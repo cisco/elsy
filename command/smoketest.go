@@ -7,5 +7,5 @@ import (
 
 func CmdSmoketest(c *cli.Context) error {
   args := append([]string{"run", "--rm", "smoketest"}, c.Args()...)
-  return helpers.RunCommand(dockerComposeCommand(c, args...))
+  return helpers.RunCommand(helpers.DockerComposeCommand(args...))
 }

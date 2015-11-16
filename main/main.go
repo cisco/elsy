@@ -41,6 +41,7 @@ func main() {
 func beforeHook(c *cli.Context) error {
   setLogLevel(c)
   preReqCheck(c)
+  setComposeBinary(c)
   setComposeProjectName(c)
   setComposeTemplate(c)
   return nil
@@ -84,6 +85,10 @@ func preReqCheck(c *cli.Context) {
       logrus.Fatalf("found docker-compose version %s, lc only supports docker-compose 1.5.0 or higher", versionString)
     }
   }
+}
+
+func setComposeBinary(c *cli.Context) {
+  os.Setenv("DOCKER_COMPOSE_BINARY", c.GlobalString("docker-compose"))
 }
 
 func setComposeProjectName(c *cli.Context) {
