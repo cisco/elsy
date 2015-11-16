@@ -7,7 +7,3 @@ step "it should report a correct address" do
 
   expect(@output).to match(%r{.*#{ip}.*}im)
 end
-
-step "it should report :text" do |text|
-  expect(@output).to match(%r{.*#{text}.*}im)
-end
