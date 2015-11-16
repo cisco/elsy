@@ -30,7 +30,7 @@ func CmdServer(c *cli.Context) error {
   }
 
   if ! helpers.DockerComposeHasService(serverName) {
-    return nil
+    return fmt.Errorf("no %q service defined", serverName)
   }
 
   if cmd == "start" {
