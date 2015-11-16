@@ -5,6 +5,7 @@ import (
   "os"
   "os/exec"
   "regexp"
+  "runtime"
   "strings"
   "github.com/codegangsta/cli"
   "github.com/fatih/color"
@@ -67,6 +68,8 @@ func dockerIp() string {
     } else {
       logrus.Fatal("DOCKER_HOST environment variable is in the wrong format")
     }
+  } else if runtime.GOOS == "linux" {
+    ip = "127.0.0.1"
   } else {
     logrus.Fatal("You do not have a DOCKER_HOST environment variable set")
   }
