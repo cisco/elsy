@@ -4,6 +4,7 @@ import (
   "fmt"
   "os"
   "github.com/codegangsta/cli"
+    "github.com/Sirupsen/logrus"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 )
@@ -163,11 +164,17 @@ func Commands() []cli.Command {
   }
 }
 
+var CommandSuccess = true
 type cmdWithError func(c *cli.Context) error
 func panicOnError(f cmdWithError) func(c *cli.Context) {
   return func(c *cli.Context) {
     if err := f(c); err != nil {
-      panic(err)
+      CommandSuccess = false
+      if c.GlobalBool("debug"){
+        panic(err)
+      } else {
+        logrus.Errorf("command failed with %q, use --debug to see full stacktrace", err)
+      }
     }
   }
 }
