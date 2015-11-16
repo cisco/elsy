@@ -23,6 +23,10 @@ step "the output should contain :expected" do |expected|
   expect(@output).to include(expected)
 end
 
+step "the output should not contain :expected" do |expected|
+  expect(@output).not_to include(expected)
+end
+
 step "the output should contain all of these:" do |table|
   table.raw.flatten.each do |string|
     expect(@output).to include(string)
