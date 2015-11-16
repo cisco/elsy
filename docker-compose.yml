@@ -37,7 +37,6 @@ smoketest:
   environment:
     - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
     - TMPDIR=/tmp/lc_smoketest
-    # - DOCKER_HOST
   working_dir: /opt/project
   entrypoint: ["rspec", "--require", "./smoketest/spec/spec_helper.rb", "--format", "documentation"]
   command: ["--pattern", "smoketest/spec/**/*.feature"]
