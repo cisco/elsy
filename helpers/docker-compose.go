@@ -98,3 +98,22 @@ func DockerComposeHasService(service string) bool {
   }
   return false
 }
+
+func DockerComposeServiceIsRunning(serviceName string) (bool, error) {
+  cmd := DockerComposeCommand("ps", "-q", serviceName)
+  if out, err := RunCommandWithOutput(cmd); err != nil {
+    return false, err
+  } else {
+    containerId := strings.TrimSpace(out)
+
+    if (len(containerId) == 0) {
+      return false, nil
+    }
+
+    if status, err := GetDockerClient().InspectContainer(containerId); err != nil {
+      return false, err
+    } else {
+      return status.State.Running, nil
+    }
+  }
+}

@@ -3,11 +3,8 @@ package command
 import (
   "errors"
   "fmt"
-  "os"
-  "os/exec"
   "regexp"
-  "runtime"
-  "strings"
+
   "github.com/codegangsta/cli"
   "github.com/fatih/color"
   "github.com/Sirupsen/logrus"
@@ -54,7 +51,13 @@ func CmdServer(c *cli.Context) error {
       return err
     }
   } else if cmd == "status" || cmd == "stat" {
-    serviceStatus(c, serverName)
+    if status, err := helpers.DockerComposeServiceIsRunning(serverName); err != nil {
+      return err
+    } else if status {
+      logrus.Infof("%s: up", serverName)
+    } else {
+      logrus.Infof("%s: down", serverName)
+    }
   } else if cmd == "logs" || cmd == "log" {
     logrus.Info("Press Ctrl-C to stop...")
     if err := helpers.RunCommand(helpers.DockerComposeCommand("logs", serverName)); err != nil {
@@ -67,25 +70,6 @@ func CmdServer(c *cli.Context) error {
   }
 
   return nil
-}
-
-func dockerIp() string {
-  var ip = ""
-
-  if dockerHost := os.Getenv("DOCKER_HOST"); dockerHost != "" {
-    pattern := regexp.MustCompile("^tcp://([^:]+).*$")
-    if matches := pattern.FindStringSubmatch(dockerHost); len(matches) > 0 {
-      ip = matches[1]
-    } else {
-      logrus.Fatal("DOCKER_HOST environment variable is in the wrong format")
-    }
-  } else if runtime.GOOS == "linux" {
-    ip = "127.0.0.1"
-  } else {
-    logrus.Fatal("You do not have a DOCKER_HOST environment variable set")
-  }
-
-  return ip
 }
 
 func servicePort(c *cli.Context, serviceName string, containerPort string) string {
@@ -111,7 +95,11 @@ func servicePort(c *cli.Context, serviceName string, containerPort string) strin
 }
 
 func showServerAddress(c *cli.Context, serviceName string, containerPort string) {
-  ip := dockerIp()
+  ip, err := helpers.DockerIp()
+  if err != nil {
+    logrus.Fatal(err)
+    return
+  }
   port := servicePort(c, serviceName, containerPort)
 
   red := color.New(color.FgRed).SprintFunc()
@@ -126,30 +114,4 @@ func showServerAddress(c *cli.Context, serviceName string, containerPort string)
 
   logrus.Info(green(msg))
   logrus.Infof("%s %s\n", green("to view the server log, run"), red(logsMsg))
-}
-
-func serviceStatus(c *cli.Context, serviceName string) {
-  out, err := helpers.RunCommandWithOutput(helpers.DockerComposeCommand("ps", "-q", serviceName))
-  if err != nil {
-    logrus.Fatal("Unable to get server status: ", err)
-  } else {
-    containerId := strings.TrimSpace(out)
-
-    if (containerId == "") {
-      logrus.Info(serviceName, ": down")
-      return
-    }
-
-    cmd := exec.Command("docker", "inspect", "-f", "{{.State.Running}}", containerId)
-    out, err = helpers.RunCommandWithOutput(cmd)
-    if err != nil {
-      logrus.Fatal("Unable to get server details: ", err)
-    } else {
-      if strings.TrimSpace(out) == "true" {
-        logrus.Info(serviceName, ": up")
-      } else {
-        logrus.Info(serviceName, ": down")
-      }
-    }
-  }
 }

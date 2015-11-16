@@ -1,6 +1,11 @@
 package helpers
 
 import (
+  "fmt"
+  "os"
+  "regexp"
+  "runtime"
+
   "github.com/fsouza/go-dockerclient"
   "github.com/Sirupsen/logrus"
 )
@@ -71,4 +76,21 @@ func GetDockerClient() *docker.Client {
   } else {
   }
   return dockerClient
+}
+
+func DockerIp() (string, error) {
+  var ip string
+  if dockerHost := os.Getenv("DOCKER_HOST"); dockerHost != "" {
+    pattern := regexp.MustCompile("^tcp://([^:]+).*$")
+    if matches := pattern.FindStringSubmatch(dockerHost); len(matches) > 0 {
+      ip = matches[1]
+    } else {
+      return "", fmt.Errorf("DOCKER_HOST environment variable is in the wrong format")
+    }
+  } else if runtime.GOOS == "linux" {
+    ip = "127.0.0.1"
+  } else {
+    return "", fmt.Errorf("Unable to determine Docker daemon IP")
+  }
+  return ip, nil
 }
