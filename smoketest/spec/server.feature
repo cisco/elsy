@@ -58,7 +58,7 @@ Feature: server task
      - "80"
   """
   When I run `lc server start`
-  Then it should report "devserver running at http://172.17.8.101"
+  Then it should report a correct address
 
   Scenario: stopping a running devserver
   Given a file named "docker-compose.yml" with:
