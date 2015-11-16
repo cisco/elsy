@@ -1,6 +1,7 @@
 package command
 
 import (
+  "errors"
   "fmt"
   "os"
   "os/exec"
@@ -16,7 +17,7 @@ import (
 func CmdServer(c *cli.Context) error {
   if len(c.Args()) == 0 {
     logrus.Info("You must specify one of [start|stop|status|restart] [-prod]")
-    return
+    return errors.New("You must specify one of [start|stop|status|restart] [-prod]")
   }
 
   cmd := c.Args()[0]
@@ -27,35 +28,37 @@ func CmdServer(c *cli.Context) error {
   }
 
   if ! helpers.DockerComposeHasService(serverName) {
-    return
+    return nil
   }
 
   if cmd == "start" {
     logrus.Info("Starting ", serverName)
     if err := helpers.RunCommand(dockerComposeCommand(c, "up", "-d", serverName)); err != nil {
       logrus.Fatalf("Unable to start %s: %s", serverName, err)
-      return
+      return err
     }
 
     showServerAddress(c, serverName, "80")
   } else if cmd == "stop" {
     logrus.Info("Stopping ", serverName)
     if err := helpers.RunCommand(dockerComposeCommand(c, "stop", serverName)); err != nil {
-      return
+      return err
     }
   } else if cmd == "restart" {
     logrus.Info("Restarting ", serverName)
     if err := helpers.RunCommand(dockerComposeCommand(c, "stop", serverName)); err != nil {
-      return
+      return err
     }
     if err := helpers.RunCommand(dockerComposeCommand(c, "up", "-d", serverName)); err != nil {
-      return
+      return err
     }
   } else if cmd == "status" || cmd == "stat" {
     serviceStatus(c, serverName)
   } else {
     logrus.Fatal("The only options are [start|stop|status|restart]")
   }
+
+  return nil
 }
 
 func dockerIp() string {
