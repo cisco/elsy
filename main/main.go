@@ -11,6 +11,7 @@ import (
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/template"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 func main() {
@@ -68,6 +69,16 @@ func preReqCheck(c *cli.Context) {
   dockerCompose := c.GlobalString("docker-compose")
   if _, err := exec.LookPath(dockerCompose); err != nil {
     logrus.Panicf("could not find docker compose binary: %q, please install local-docker-stack", dockerCompose)
+  }
+
+  if versionString, versionComponents, err := helpers.GetDockerComposeVersion(c); err != nil {
+    logrus.Warnf("failed checking docker-compose version. Note that lc only supports docker-compose 1.5.0 or higher")
+  } else {
+    major, minor := versionComponents[0], versionComponents[1]
+    // assuming we won't see any docker-compose versions less than 1.x
+    if major == 1 && minor < 5 {
+      logrus.Panicf("found docker-compose version %s, lc only supports docker-compose 1.5.0 or higher", versionString)
+    }
   }
 }
 
