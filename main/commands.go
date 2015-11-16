@@ -133,9 +133,14 @@ func Commands() []cli.Command {
     },
     {
       Name:   "teardown",
-      Usage:  "",
+      Usage:  "kill all running containers and remove containers that do not have gc protection",
       Action: panicOnError(command.CmdTeardown),
-      Flags:  []cli.Flag{},
+      Flags:  []cli.Flag{
+        cli.BoolFlag{
+          Name:  "force, f",
+          Usage: "will remove all containers, even those with gc protection",
+        },
+      },
     },
     {
       Name:   "test",

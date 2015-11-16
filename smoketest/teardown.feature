@@ -35,3 +35,21 @@ Feature: teardown task
     Then it should succeed
     And I run `lc dc ps`
     Then the output should contain 'teardowntestcontainerwithgc'
+
+  Scenario: with gc labels and -f flag
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    teardowntestcontainer:
+      image: busybox
+      labels:
+        com.lancope.docker-gc.keep: "True"
+      command: /bin/true
+    """
+    When I run `lc dc up teardowntestcontainer`
+    Then it should succeed
+    When I run `lc dc ps`
+    Then the output should contain 'teardowntestcontainer'
+    When I run `lc teardown -f`
+    Then it should succeed
+    And I run `lc dc ps`
+    Then the output should not contain 'teardowntestcontainer'

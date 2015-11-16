@@ -11,10 +11,22 @@ import (
 )
 
 func CmdTeardown(c *cli.Context) error {
-  if err := helpers.RunCommand(dockerComposeCommand(c, "rm", "-f", "-v")); err != nil {
+  if err := helpers.RunCommand(dockerComposeCommand(c, "kill")); err != nil {
     return err
   }
 
+  if c.Bool("force") {
+    logrus.Debugf("found -f flag on teardown, removing all containers")
+    if err := helpers.RunCommand(dockerComposeCommand(c, "rm", "-f", "-v")); err != nil {
+      return err
+    }
+    return nil
+  } else {
+    return removeContainersWithoutGcLabel()
+  }
+}
+
+func removeContainersWithoutGcLabel() error {
   // only remove containers that don't have the com.lancope.docker-gc.keep set
   client := helpers.GetDockerClient()
   project := fmt.Sprintf("com.docker.compose.project=%s", os.Getenv("COMPOSE_PROJECT_NAME"))
