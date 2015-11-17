@@ -1,14 +1,4 @@
-require 'tmpdir'
 require 'fileutils'
-
-RSpec.configure do |config|
-  config.before(:type => :feature) do
-    @dir = Dir.mktmpdir("project-lifecycle-smoketest")
-  end
-  config.after(:type => :feature) do
-    FileUtils.rm_rf(@dir)
-  end
-end
 
 step "a file named :name with:" do |name, contents|
   parts = [@dir]

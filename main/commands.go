@@ -3,9 +3,11 @@ package main
 import (
   "fmt"
   "os"
+
   "github.com/codegangsta/cli"
-    "github.com/Sirupsen/logrus"
+  "github.com/Sirupsen/logrus"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/server"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 )
 
@@ -118,11 +120,37 @@ func Commands() []cli.Command {
     {
       Name:   "server",
       Usage:  "manage the project's server (default is devserver)",
-      Action: panicOnError(command.CmdServer),
-      Flags:  []cli.Flag{
-        cli.BoolFlag{
-          Name:  "prod, p",
-          Usage: "operate on the production server",
+      Subcommands: []cli.Command{
+        {
+          Name: "status",
+          Usage: "get status of server. exits 0 if up, non-zero if down. prints out status as well as dynamic ports",
+          Action: panicOnError(server.CmdStatus),
+        },
+        {
+          Name: "start",
+          Usage: "start the devserver or prodserver",
+          Action: panicOnError(server.CmdStart),
+          Flags:  []cli.Flag{
+            cli.BoolFlag{
+              Name:  "prod, p",
+              Usage: "operate on the production server",
+            },
+          },
+        },
+        {
+          Name: "stop",
+          Usage: "stops any running devserver or prodserver",
+          Action: panicOnError(server.CmdStop),
+        },
+        {
+          Name: "restart",
+          Usage: "calls stop then start",
+          Action: panicOnError(server.CmdRestart),
+        },
+        {
+          Name: "log",
+          Usage: "follows the log of the running server",
+          Action: panicOnError(server.CmdLog),
         },
       },
     },

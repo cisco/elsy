@@ -100,20 +100,26 @@ func DockerComposeHasService(service string) bool {
 }
 
 func DockerComposeServiceIsRunning(serviceName string) (bool, error) {
-  cmd := DockerComposeCommand("ps", "-q", serviceName)
-  if out, err := RunCommandWithOutput(cmd); err != nil {
+  if containerId, err := DockerComposeServiceId(serviceName); err != nil {
+    return false, err
+  } else if len(containerId) == 0 {
+    return false, nil
+  } else if running, err := DockerContainerIsRunning(containerId); err != nil {
     return false, err
   } else {
+    return running, nil
+  }
+}
+
+func DockerComposeServiceId(serviceName string) (string, error) {
+  cmd := DockerComposeCommand("ps", "-q", serviceName)
+  if out, err := RunCommandWithOutput(cmd); err != nil {
+    return "", err
+  } else {
     containerId := strings.TrimSpace(out)
-
     if (len(containerId) == 0) {
-      return false, nil
+      return "", nil
     }
-
-    if status, err := GetDockerClient().InspectContainer(containerId); err != nil {
-      return false, err
-    } else {
-      return status.State.Running, nil
-    }
+    return containerId, nil
   }
 }

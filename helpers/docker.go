@@ -94,3 +94,28 @@ func DockerIp() (string, error) {
   }
   return ip, nil
 }
+
+func DockerContainerIsRunning(id string) (bool, error) {
+  if status, err := GetDockerClient().InspectContainer(id); err != nil {
+    return false, err
+  } else {
+    return status.State.Running, nil
+  }
+}
+
+func DockerContainerDyanmicPorts(id string) (map[string]string, error) {
+  status, err := GetDockerClient().InspectContainer(id);
+  if err != nil {
+    return nil, err
+  }
+  portBindings := make(map[string]string)
+  for port, bindings := range status.HostConfig.PortBindings {
+    // NB: PortBindings is an array of docker.PortBinding. Currently we only read the first one.
+    // not sure when we would have more than 1
+    binding := bindings[0]
+    if len(binding.HostPort) == 0 {
+      portBindings[string(port)] = status.NetworkSettings.Ports[port][0].HostPort
+    }
+  }
+  return portBindings, nil
+}
