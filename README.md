@@ -73,6 +73,10 @@ $ lc test && lc smoketest
 $ lc package
 ```
 
+### Adding a dependency
+
+To add a dependency, just add a new entry to the `dependencies` array in `./dev-env/dependencies`. After adding the new dependency you will need to run `lc bootstrap` to import it into the project.
+
 ### IDE Integration
 
 **TODO: Figure out if we can share the full $GOPATH from the container**
