@@ -36,14 +36,14 @@ func removeContainersWithoutGcLabel() error {
 
   containers, err := client.ListContainers(queryAll)
   if err != nil {
-    logrus.Errorf("could not query containers to remove", err)
+    logrus.Error("could not query containers to remove", err)
     return err
   }
   logrus.Debugf("found %d container(s) for possible removal", len(containers))
 
   gcSafeContainers, err := client.ListContainers(queryGc)
   if err != nil {
-    logrus.Errorf("could not query containers to remove", err)
+    logrus.Error("could not query containers to remove", err)
     return err
   }
   logrus.Debugf("found %d container(s) with gc protection", len(gcSafeContainers))
@@ -55,7 +55,7 @@ func removeContainersWithoutGcLabel() error {
   logrus.Debugf("removing %d containers", len(idsToRemove))
   for _, id := range idsToRemove {
     if err := client.RemoveContainer(docker.RemoveContainerOptions{ID: id, RemoveVolumes: true}); err != nil {
-      logrus.Errorf("error removing container with ID: %s", id, err)
+      logrus.Errorf("error removing container with ID: %q, err: %q", id, err)
     }
   }
   return nil

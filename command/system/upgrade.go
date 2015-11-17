@@ -48,7 +48,7 @@ func CmdUpgrade(c *cli.Context) error {
   // do the upgrade
   if err := installNew(url, oldLc); err != nil {
     err := swap(tmpLocation, oldLc); if err != nil {
-      logrus.Errorf("failed replacing your lc, your old binary is located at '%s'", tmpLocation, err)
+      logrus.Errorf("failed replacing your lc, your old binary is located at %q, err: %q", tmpLocation, err)
     }
     logrus.Errorf("failed upgrading lc")
     return err
