@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+echo "running 'go test -v $@'"
+go test -v "$@"
+echo -e "\nrunning 'go vet -v $@''"
+go vet -v "$@"

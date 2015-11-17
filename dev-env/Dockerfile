@@ -5,4 +5,4 @@ COPY dependencies go-gets go-installs /opt/build/
 RUN /opt/build/go-gets
 RUN /opt/build/go-installs
 
-COPY publish package /opt/lifecycle/
+COPY test publish package /opt/lifecycle/

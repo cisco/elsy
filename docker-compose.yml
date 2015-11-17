@@ -26,17 +26,12 @@ publish:
 
 test:
   <<: *go
-  entrypoint: ["/usr/local/go/bin/go", "test", "-v"]
+  entrypoint: /opt/lifecycle/test
   command: "./..."
 
 lint:
   <<: *go
   entrypoint: ["/go/bin/golint"]
-  command: "./..."
-
-vet:
-  <<: *go
-  entrypoint: ["/usr/local/go/bin/go", "vet", "-v"]
   command: "./..."
 
 smoketest:
