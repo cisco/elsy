@@ -55,3 +55,46 @@ Configuration may also be specified as command line arguments in which case they
 ## Keeping `lc` up-to-date
 
 TODO: figure this out
+
+## Local Development
+
+Use `lc` to develop `lc`!
+
+This repo exposes all of the core `lc` tasks for ongoing development:
+
+```
+## bootstrap repo
+$ lc bootstrap
+
+## test your code
+$ lc test && lc smoketest
+
+## package a new binary, will show up in ./target/
+$ lc package
+```
+
+### IDE Integration
+
+**TODO: Figure out if we can share the full $GOPATH from the container**
+
+Follow these instructions to enable IDE integration during development. IDE integration is purely for speeding
+local work, developers should still run `lc test && lc smoketest` to validate code before pushing.
+
+[Atom](https://atom.io/) is the recommended editor for `golang` projects and it is also recommended that you use the [go-plus](https://atom.io/packages/go-plus) package for live `golinting` and `govetting`
+
+To setup your IDE to work with this repo ensure that you have cloned the repo into your `gopath`:
+
+```
+$ cd $GOPATH
+$ mkdir -p stash0.eng.lancope.local/dev-infrastructure && cd stash0.eng.lancope.local/dev-infrastructure
+$ git clone ssh://git@stash0.eng.lancope.local/dev-infrastructure/project-lifecycle.git
+```
+
+With the repo cloned, all you need to do is make sure to `go get` all the dependencies:
+
+```
+$ cd project-lifecycle
+$ ./dev-env/go-gets
+```
+
+Now, open atom by running `atom .`

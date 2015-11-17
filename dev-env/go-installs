@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/dependencies
+
+set -e
+
+for dep in "${dependencies[@]}"
+do
+  GOOS=darwin GOARCH=amd64 go install -v $dep
+done

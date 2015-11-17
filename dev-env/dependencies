@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+export dependencies=( "github.com/codegangsta/cli" \
+                      "gopkg.in/yaml.v2" \
+                      "github.com/fsouza/go-dockerclient" \
+                      "github.com/Sirupsen/logrus" \
+                      "github.com/kardianos/osext" \
+                      "github.com/fatih/color" \
+                    )

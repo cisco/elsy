@@ -1,22 +1,8 @@
 FROM golang:latest
 RUN GOOS=darwin GOARCH=amd64 go install -v std
 
-RUN go get -v github.com/codegangsta/cli
-RUN GOOS=darwin GOARCH=amd64 go install -v github.com/codegangsta/cli
-
-RUN go get -v gopkg.in/yaml.v2
-RUN GOOS=darwin GOARCH=amd64 go install -v gopkg.in/yaml.v2
-
-RUN go get -v github.com/fsouza/go-dockerclient
-RUN GOOS=darwin GOARCH=amd64 go install -v github.com/fsouza/go-dockerclient
-
-RUN go get -v github.com/Sirupsen/logrus
-RUN GOOS=darwin GOARCH=amd64 go install -v github.com/Sirupsen/logrus
-
-RUN go get -v github.com/kardianos/osext
-RUN GOOS=darwin GOARCH=amd64 go install -v github.com/kardianos/osext
-
-RUN go get -v github.com/fatih/color
-RUN GOOS=darwin GOARCH=amd64 go install -v github.com/fatih/color
+COPY dependencies go-gets go-installs /opt/build/
+RUN /opt/build/go-gets
+RUN /opt/build/go-installs
 
 COPY publish package /opt/lifecycle/
