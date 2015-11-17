@@ -2,7 +2,6 @@ package command
 
 import (
   "fmt"
-  "os"
   "os/exec"
   "regexp"
   "strings"
@@ -29,7 +28,7 @@ func CmdPublish(c *cli.Context) error {
       logrus.Panic("you must use `--docker-registry` to publish a docker image")
     }
 
-    tagName, err := extractTagFromBranch(os.Getenv("GIT_BRANCH"))
+    tagName, err := extractTagFromBranch(c.String("git-branch"))
     if err != nil {
       logrus.Panic(err)
     }
@@ -56,7 +55,7 @@ var validTagName = regexp.MustCompile(`^[\w][\w.-]{0,127}$`)
 func extractTagFromBranch(gitBranch string) (string, error) {
   var tagName string
   if len(gitBranch) == 0 {
-    return "", fmt.Errorf("the publish task expects GIT_BRANCH to be set. Are you running in a jenkins job")
+    return "", fmt.Errorf("the publish task expects the git branch to be set. Are you running in a jenkins job")
   } else if gitBranch == "origin/master" {
     tagName = "latest"
   } else if matches := releaseRegexp.FindStringSubmatch(gitBranch); matches != nil {

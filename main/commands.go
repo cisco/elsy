@@ -115,6 +115,11 @@ func Commands() []cli.Command {
           Value: GetConfigFileString("docker_registry"),
           Usage: "address of docker registry to publish to",
         },
+        cli.StringFlag{
+          Name:  "git-branch",
+          Usage: "Git branch which is being published",
+          EnvVar: "GIT_BRANCH",
+        },
       },
     },
     {
