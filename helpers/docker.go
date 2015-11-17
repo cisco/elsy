@@ -3,6 +3,7 @@ package helpers
 import (
   "fmt"
   "os"
+  "strings"
   "regexp"
   "runtime"
 
@@ -25,6 +26,34 @@ func DockerContainerExists(name string) bool {
     }
   }
   return false
+}
+
+// DockerImageExists returns true if docker image:tag exists in local docker daemon
+func DockerImageExists(image string, tag string) (bool, error) {
+  client := GetDockerClient()
+  images, err := client.ListImages(docker.ListImagesOptions{All: true, Filter: image})
+  if err != nil {
+    return false, err
+  }
+  expectedRepoTag := fmt.Sprintf("%s:%s", image, tag)
+  for _, img := range images {
+    for _, tg := range img.RepoTags {
+      if tg == expectedRepoTag {
+        return true, nil
+      }
+    }
+  }
+  return false, nil
+}
+
+// PullDockerImage blindly pulls the image:tag
+func PullDockerImage(image string, tag string) error {
+  // TODO: support more advanced PullImageOptions
+  client := GetDockerClient()
+  if err := client.PullImage(docker.PullImageOptions{Repository: image, Tag: tag}, docker.AuthConfiguration{}); err != nil {
+    return err
+  }
+  return nil
 }
 
 type DockerDataContainer struct {
@@ -58,8 +87,25 @@ func (ddc *DockerDataContainer) Create() error {
 }
 
 func (ddc *DockerDataContainer) Ensure() error {
+  imageComponents := strings.Split(ddc.Image, ":")
+  image, tag := imageComponents[0], ""
+  if (len(imageComponents) > 1){
+    tag = imageComponents[1]
+  }
+  if err := ensureImageExists(image, tag); err != nil {
+    logrus.Debugf("error ensuring image exits, attempting to create anyway, err: %q", err)
+  }
   if !DockerContainerExists(ddc.Name) {
     return ddc.Create()
+  }
+  return nil
+}
+
+func ensureImageExists(image string, tag string) error {
+  logrus.Debugf("checking if image '%s:%s' exists", image, tag)
+  if exists, _ := DockerImageExists(image, tag); !exists {
+    logrus.Debugf("image ''%s:%s' does not exist locally, pulling", image, tag)
+    return PullDockerImage(image, tag)
   }
   return nil
 }
