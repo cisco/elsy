@@ -29,6 +29,11 @@ test:
   entrypoint: ["/usr/local/go/bin/go", "test", "-v"]
   command: "./..."
 
+lint:
+  <<: *go
+  entrypoint: ["/go/bin/golint"]
+  command: "./..."
+
 smoketest:
   build: smoketest
   volumes:

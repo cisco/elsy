@@ -7,4 +7,5 @@ export dependencies=( "github.com/codegangsta/cli" \
                       "github.com/Sirupsen/logrus" \
                       "github.com/kardianos/osext" \
                       "github.com/fatih/color" \
+                      "github.com/golang/lint/golint" \
                     )
