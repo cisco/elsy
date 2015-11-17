@@ -34,6 +34,18 @@ Feature: server start task
     When I run `lc server start`
     Then it should fail with 'no \"devserver\" service defined'
 
+  ## this is mainly testing that this error condition provides a sensible error to the user
+  Scenario: starting server with no image should attempt to pull the image
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    devserver:
+      image: somefakeimagethatdoesntexist
+      ports:
+       - "80"
+    """
+    When I run `lc server start`
+    Then it should fail with 'image library/somefakeimagethatdoesntexist:latest not found'
+
   @teardown
   Scenario: starting prod server with no prodserver service defined
     Given a file named "docker-compose.yml" with:
