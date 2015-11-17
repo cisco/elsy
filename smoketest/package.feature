@@ -47,3 +47,21 @@ Feature: package task
     """
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
+
+  Scenario: with a docker artifact and configured image name via lc.yml
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "Dockerfile" with:
+    """
+    FROM alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: projectlifecyclesmoketests_docker_artifact
+    """
+    When I run `lc package`
+    Then it should succeed with "Image is up to date for alpine:latest"
