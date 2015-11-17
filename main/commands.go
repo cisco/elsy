@@ -173,7 +173,8 @@ func panicOnError(f cmdWithError) func(c *cli.Context) {
       if c.GlobalBool("debug"){
         panic(err)
       } else {
-        logrus.Errorf("command failed with %q, use --debug to see full stacktrace", err)
+        logrus.Error(err)
+        logrus.Error("command failed. use --debug to see full stacktrace")
       }
     }
   }
