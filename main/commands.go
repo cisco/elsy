@@ -56,7 +56,23 @@ func Commands() []cli.Command {
       Name:   "ci",
       Usage:  "",
       Action: panicOnError(command.CmdCi),
-      Flags:  []cli.Flag{},
+      Flags:  []cli.Flag{
+        cli.StringFlag{
+          Name:  "docker-image-name",
+          Value: GetConfigFileString("docker_image_name"),
+          Usage: "local docker image name to publish",
+        },
+        cli.StringFlag{
+          Name:  "docker-registry",
+          Value: GetConfigFileString("docker_registry"),
+          Usage: "address of docker registry to publish to",
+        },
+        cli.StringFlag{
+          Name:  "git-branch",
+          Usage: "Git branch which is being published",
+          EnvVar: "GIT_BRANCH",
+        },
+      },
     },
     {
       Name:   "dc",
