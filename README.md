@@ -23,6 +23,19 @@ The core `lc` tasks are:
 * bower: calls the `bower` service, forwarding arguments
 * ember: calls the `ember` service, forwarding arguments
 
+Sometimes you just need to run `docker-compose` commands using the composite `docker-compose.yml` files that `lc creates`. `lc` supports this using `lc dc --`, where everything after the [double dash](http://unix.stackexchange.com/a/11382) are the arguments passed to `docker-compose`. Some examples:
+
+```
+# get command help for 'docker-compose ps'
+$ lc dc -- ps --help
+
+# get docker-compose version
+$ lc dc -- --version
+
+# get an ssh shell into one of your services
+$ lc dc -- run --entrypoint=bash package -c bash
+```
+
 ## Project Templates
 
 `lc` contains docker-compose templates for the most commonly used build tools used in Lancope. A project template provides a base set of docker-compose services which you may override in a project's `docker-compose.yml` file. The _overlaying_ of docker-compose services is accomplished by passing multiple `-f` arguments to docker-compose where each subsequent yaml file may extend services defined in previous yaml files. For example, the `sbt` template provides a `test` service which calls `sbt test`. If you wanted the test task to also include code coverage, you would add this to your repo's `docker-compose.yml` file:
