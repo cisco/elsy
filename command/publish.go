@@ -12,9 +12,17 @@ import (
 )
 
 func CmdPublish(c *cli.Context) error {
+  gitBranch := c.String("git-branch")
+  if len(gitBranch) == 0 {
+    return fmt.Errorf("The publish task requires that the git branch to be set.")
+  }
   if helpers.DockerComposeHasService("publish") {
-    if err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "publish")); err != nil {
-      return err
+    if isStableBranch(gitBranch) {
+      if err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "publish")); err != nil {
+        return err
+      }
+    } else {
+      logrus.Infof("skipping publish task because %q is not a stable branch", gitBranch)
     }
   }
   if helpers.HasDockerfile() {
@@ -54,20 +62,27 @@ var validTagName = regexp.MustCompile(`^[\w][\w.-]{0,127}$`)
 */
 func extractTagFromBranch(gitBranch string) (string, error) {
   var tagName string
-  if len(gitBranch) == 0 {
-    return "", fmt.Errorf("the publish task expects the git branch to be set. Are you running in a jenkins job")
-  } else if gitBranch == "origin/master" {
+  if gitBranch == "origin/master" {
     tagName = "latest"
   } else if matches := releaseRegexp.FindStringSubmatch(gitBranch); matches != nil {
     tagName = matches[1]
   } else if matches := snapshotRegexp.FindStringSubmatch(gitBranch); matches != nil {
     tagName = "snapshot."+matches[1]
   } else {
-    return "", fmt.Errorf("could not determine branch from GIT_BRANCH: %q", gitBranch)
+    return "", fmt.Errorf("could not determine tag from git branch: %q", gitBranch)
   }
   tagName = strings.Replace(tagName, "/", ".", -1)
   if !validTagName.MatchString(tagName) {
     return "", fmt.Errorf("tagName: %q is not valid", tagName)
   }
   return tagName, nil
+}
+
+func isStableBranch(gitBranch string) bool {
+  if gitBranch == "origin/master" {
+    return true
+  } else if releaseRegexp.MatchString(gitBranch) {
+    return true
+  }
+  return false
 }
