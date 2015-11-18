@@ -208,6 +208,12 @@ func Commands() []cli.Command {
           Action: panicOnError(system.CmdUpgrade),
           Flags:  []cli.Flag{},
         },
+        {
+          Name:  "view-template",
+          Usage: "view the YAML of a template",
+          Action: panicOnError(system.CmdViewTemplate),
+          Flags:  []cli.Flag{},
+        },
       },
     },
   }
