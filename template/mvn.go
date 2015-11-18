@@ -36,5 +36,8 @@ test:
 package:
   <<: *mvn
   command: [package, "-DskipTests=true"]
+publish:
+  <<: *mvn
+  entrypoint: /bin/true
 `)
 }
