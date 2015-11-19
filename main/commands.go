@@ -72,6 +72,11 @@ func Commands() []cli.Command {
           Usage: "Git branch which is being published",
           EnvVar: "GIT_BRANCH",
         },
+        cli.StringFlag{
+          Name:  "git-tag",
+          Usage: "Git tag which is being published",
+          EnvVar: "GIT_TAG_NAME",
+        },
       },
     },
     {
@@ -135,6 +140,11 @@ func Commands() []cli.Command {
           Name:  "git-branch",
           Usage: "Git branch which is being published",
           EnvVar: "GIT_BRANCH",
+        },
+        cli.StringFlag{
+          Name:  "git-tag",
+          Usage: "Git tag which is being published",
+          EnvVar: "GIT_TAG_NAME",
         },
       },
     },
