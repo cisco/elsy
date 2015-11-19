@@ -85,6 +85,12 @@ func preReqCheck(c *cli.Context) {
       logrus.Fatalf("found docker-compose version %s, lc only supports docker-compose 1.5.0 or higher", versionString)
     }
   }
+
+  if err := helpers.EnsureDockerConnectivity(); err != nil {
+    ip, _ := helpers.DockerIp()
+    logrus.Fatalf("could not connect to docker daemon at %q, err: %q.\n%s", ip, err, helpers.DockerDebugMsg)
+
+  }
 }
 
 func setComposeBinary(c *cli.Context) {

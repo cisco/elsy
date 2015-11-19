@@ -11,6 +11,31 @@ import (
   "github.com/Sirupsen/logrus"
 )
 
+
+// DockerDebugMsg contains a string to provide to the user for help debugging docker connectivity issues
+const DockerDebugMsg = `
+Can't connect to 'docker' daemon. The process cannot continue without the daemon running. Possible causes and solutions follow:
+
+- On Mac OS X:
+  - Make sure you have lds installed, see: https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/local-docker-stack/browse
+  - Ensure lds environment variables are in your $PATH:
+    - Running 'lds' should print something like 'lds only supports commands' followed by a list of commands
+    - If running 'lds' prints 'command not found: lds', then you need to run 'source shell/docker.sh' from within the local-docker-stack repo
+  - Run 'lds troubleshoot' for help troubleshooting lds
+- On Linux, Docker daemon hasn't been started or has crashed
+
+If none of the above works, surface your issue in the #arch room in slack
+`
+
+// EnsureDockerConnectivity will return an error if the docker daemon is not accessible
+func EnsureDockerConnectivity() error {
+  client := GetDockerClient()
+  if err := client.Ping(); err != nil {
+    return err
+  }
+  return nil
+}
+
 func DockerContainerExists(name string) bool {
   client := GetDockerClient()
   if containers, err := client.ListContainers(docker.ListContainersOptions{All: true}); err != nil {
