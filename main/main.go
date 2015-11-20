@@ -4,9 +4,11 @@ import (
   "io/ioutil"
   "os"
   "os/exec"
+  "os/signal"
   "path/filepath"
   "regexp"
   "strings"
+  "syscall"
 
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
@@ -44,10 +46,25 @@ func beforeHook(c *cli.Context) error {
   setComposeBinary(c)
   setComposeProjectName(c)
   setComposeTemplate(c)
+  addSignalListener()
   return nil
 }
 
 func afterHook(c *cli.Context) error {
+  return removeComposeTemplate()
+}
+
+func addSignalListener() {
+  c := make(chan os.Signal, 1)
+  signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+  go func() {
+    <-c
+    removeComposeTemplate()
+    os.Exit(2)
+  }()
+}
+
+func removeComposeTemplate() error {
   // clean up compose template if it exists
   if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
     logrus.Debugf("attempting to remove base compose file: %v", file)
