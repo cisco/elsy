@@ -149,6 +149,21 @@ func Commands() []cli.Command {
       },
     },
     {
+      Name:   "release",
+      Usage:  "Create a release tag for the current repo",
+      Action: panicOnError(command.CmdRelease),
+      Flags:  []cli.Flag{
+        cli.StringFlag{
+          Name:  "git-commit",
+          Usage: "commit to tag",
+        },
+        cli.StringFlag{
+          Name:  "version",
+          Usage: "version to release, must be of the format vX.Y.Z[-Q], where X, Y, and Z are ints and Q is a string qualifier.",
+        },
+      },
+    },
+    {
       Name:   "server",
       Usage:  "manage the project's server (default is devserver)",
       Subcommands: []cli.Command{

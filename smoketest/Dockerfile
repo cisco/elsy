@@ -3,6 +3,10 @@ FROM ruby:latest
 RUN gem install \
     turnip
 
+## setup git so smoke tests can make git calls
+RUN git config --global user.email "test@lancopetest.com"
+RUN git config --global user.name "Project Lifecycle"
+
 ENV DOCKER_VERSION 1.7.1
 RUN curl -so /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}
 RUN chmod a+x /usr/bin/docker
