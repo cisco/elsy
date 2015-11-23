@@ -24,7 +24,7 @@ Feature: teardown task
     teardowntestcontainerwithgc:
       image: busybox
       labels:
-        com.lancope.docker-gc.keep: "True"
+        com.lancope.docker-gc.keep: "value-does-not-matter"
       command: /bin/true
     """
     When I run `lc dc up teardowntestcontainerwithgc`

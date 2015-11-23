@@ -32,7 +32,7 @@ func removeContainersWithoutGcLabel() error {
   project := fmt.Sprintf("com.docker.compose.project=%s", os.Getenv("COMPOSE_PROJECT_NAME"))
   queryAll := docker.ListContainersOptions{All: true, Filters: map[string][]string{"label": []string{project}}}
   queryGc := docker.ListContainersOptions{All: true,
-    Filters: map[string][]string{"label": []string{project, "com.lancope.docker-gc.keep=True"}}}
+    Filters: map[string][]string{"label": []string{project, "com.lancope.docker-gc.keep"}}}
 
   containers, err := client.ListContainers(queryAll)
   if err != nil {
