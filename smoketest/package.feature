@@ -10,6 +10,10 @@ Feature: package task
     When I run `lc package`
     Then it should succeed with "foo"
 
+  Scenario: without a package service
+    When I run `lc package`
+    Then it should succeed
+
   Scenario: with a failing package service
     Given a file named "docker-compose.yml" with:
     """yaml

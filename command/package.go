@@ -8,8 +8,15 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
+// CmdPackage runs package service if present and then attempts to build Dockerfile
 func CmdPackage(c *cli.Context) error {
-  commands := []*exec.Cmd{helpers.DockerComposeCommand("run", "--rm", "package")}
+  commands := []*exec.Cmd{}
+
+  if helpers.DockerComposeHasService("package") {
+    commands = append(commands, helpers.DockerComposeCommand("run", "--rm", "package"))
+  } else {
+    logrus.Debug("no package service found, skipping")
+  }
 
   // docker build
   if helpers.HasDockerfile() {
