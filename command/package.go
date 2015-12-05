@@ -21,7 +21,7 @@ func CmdPackage(c *cli.Context) error {
   // docker build
   if helpers.HasDockerfile() {
     logrus.Debug("detected Dockerfile for packaging")
-    if image, err := helpers.DockerImage("Dockerfile"); err == nil {
+    if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
       commands = append(commands, exec.Command("docker", "pull", image.String()))
     }
     dockerImageName := c.String("docker-image-name")
