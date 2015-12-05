@@ -7,6 +7,7 @@ import (
   "os"
   "path/filepath"
   "regexp"
+  "strings"
 )
 
 func DockerfileImages(root string) (images []string) {
@@ -14,7 +15,7 @@ func DockerfileImages(root string) (images []string) {
     if image, err := DockerImage(file); err != nil {
       fmt.Println(err)
     } else {
-      images = append(images, image)
+      images = append(images, image.String())
     }
   }
   return
@@ -34,7 +35,15 @@ func dockerfiles(root string) (d []string) {
   return
 }
 
-func DockerImage(dockerfile string) (string, error) {
+type DockerImageString string
+func (s DockerImageString) IsRemote() bool {
+  return strings.Contains(string(s), "/")
+}
+func (s DockerImageString) String() string {
+  return string(s)
+}
+
+func DockerImage(dockerfile string) (DockerImageString, error) {
   dockerFrom := regexp.MustCompile("^FROM\\s+?(.+)")
   fh, err := os.Open(dockerfile)
   if err != nil {
@@ -44,7 +53,7 @@ func DockerImage(dockerfile string) (string, error) {
   scanner := bufio.NewScanner(fh)
   for scanner.Scan() {
     if matches := dockerFrom.FindStringSubmatch(scanner.Text()); matches != nil {
-      return matches[1], nil
+      return DockerImageString(matches[1]), nil
     }
   }
   if err := scanner.Err(); err != nil {

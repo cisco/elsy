@@ -21,7 +21,7 @@ func TestDockerfileImages(t *testing.T) {
 
   files := map[string]string {
     path.Join(dir, "Dockerfile"): "FROM bar",
-    path.Join(nestedDockerDir, "Dockerfile"): "FROM foo",
+    path.Join(nestedDockerDir, "Dockerfile"): "FROM library/foo",
     path.Join(otherDir, "Dockerfile"): "BLERG",
   }
   for file, content := range files {
@@ -30,7 +30,19 @@ func TestDockerfileImages(t *testing.T) {
     }
   }
 
-  if images := DockerfileImages(dir); !reflect.DeepEqual(images, []string{"bar", "foo"}) {
+  if images := DockerfileImages(dir); !reflect.DeepEqual(images, []string{"bar", "library/foo"}) {
     t.Errorf("did not get expected string slice. got %v", images)
+  }
+
+  // test DockerImage()
+  if image, err := DockerImage(path.Join(dir, "Dockerfile")); err != nil {
+    t.Fatal(err)
+  } else if image.IsRemote() {
+    t.Errorf("expected image 'bar' to not be remote")
+  }
+  if image, err := DockerImage(path.Join(nestedDockerDir, "Dockerfile")); err != nil {
+    t.Fatal(err)
+  } else if !image.IsRemote() {
+    t.Errorf("expected image 'library/foo' to be remote")
   }
 }
