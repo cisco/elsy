@@ -7,7 +7,7 @@ RUN gem install \
 RUN git config --global user.email "test@lancopetest.com"
 RUN git config --global user.name "Project Lifecycle"
 
-ENV DOCKER_VERSION 1.7.1
+ENV DOCKER_VERSION 1.8.3
 RUN curl -so /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}
 RUN chmod a+x /usr/bin/docker
 
