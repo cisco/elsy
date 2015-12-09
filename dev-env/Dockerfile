@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM library/golang:latest
 RUN GOOS=darwin GOARCH=amd64 go install -v std
 
 COPY dependencies go-gets go-installs /opt/build/

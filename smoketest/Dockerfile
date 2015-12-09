@@ -1,4 +1,4 @@
-FROM ruby:latest
+FROM library/ruby:latest
 
 RUN gem install \
     turnip
