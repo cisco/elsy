@@ -29,7 +29,8 @@ func CmdCi(c *cli.Context) error {
 
   if helpers.DockerComposeHasService("smoketest") {
     logrus.Info("Running smoketest")
-    if err := CmdSmoketest(c); err != nil {
+
+    if err := RunSmoketest(c); err != nil {
       return err
     }
   }

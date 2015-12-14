@@ -204,7 +204,17 @@ func Commands() []cli.Command {
       Name:   "smoketest",
       Usage:  "run smoketest service. forwards arguments",
       Action: panicOnError(command.CmdSmoketest),
-      Flags:  []cli.Flag{},
+      Flags:  []cli.Flag{
+        cli.BoolFlag{
+          Name:  "skip-package",
+          Usage: "do not run package service prior to executing smoketests",
+        },
+        cli.StringFlag{
+          Name:  "docker-image-name",
+          Value: GetConfigFileString("docker_image_name"),
+          Usage: "docker image name to create",
+        },
+      },
     },
     {
       Name:   "teardown",
