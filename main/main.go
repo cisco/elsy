@@ -84,7 +84,7 @@ func setLogLevel(c *cli.Context) {
 }
 
 func preReqCheck(c *cli.Context) {
-  if c.Args()[0] == "system" {
+  if len(c.Args()) == 0 || c.Args()[0] == "system" {
     // system commands do not need docker
     return
   }

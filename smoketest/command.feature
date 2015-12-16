@@ -24,3 +24,7 @@ Scenario: with successful command
   Then it should succeed
   When I run `lc --debug test`
   Then it should succeed
+
+Scenario: with no command
+  When I run `lc`
+  Then it should succeed
