@@ -84,6 +84,11 @@ func setLogLevel(c *cli.Context) {
 }
 
 func preReqCheck(c *cli.Context) {
+  if c.Args()[0] == "system" {
+    // system commands do not need docker
+    return
+  }
+
   // TODO: replace this with checking presence and version of local-docker-stack
   if _, err := exec.LookPath("docker"); err != nil {
     logrus.Fatal("could not find docker, please install local-docker-stack")
