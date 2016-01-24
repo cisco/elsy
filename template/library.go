@@ -26,7 +26,10 @@ func Add(name string, yaml string) error {
   return nil
 }
 
-func Get(name string) (string, error) {
+// Get will return the template if it exists
+// If 'enableScratchVolume' is true and the target template supports
+// scratch-space optimization then Get will enable it.
+func Get(name string, enableScratchVolume bool) (string, error) {
   yaml, present := templates[name]
   if !present {
     return "", fmt.Errorf("template %q is not registered", name)

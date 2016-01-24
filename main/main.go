@@ -135,8 +135,9 @@ func setComposeProjectName(c *cli.Context) {
 
 func setComposeTemplate(c *cli.Context) {
   templateName := c.GlobalString("template")
-  if len(templateName) > 0 {
-    if yaml, err := template.Get(templateName); err == nil {
+  enableScratchVolume := c.GlobalBool("enable-scratch-volumes")
+	if len(templateName) > 0 {
+		if yaml, err := template.Get(templateName, enableScratchVolume); err == nil {
       file := createTempComposeFile(yaml)
       logrus.Debugf("setting LC_BASE_COMPOSE_FILE to %v", file)
       os.Setenv("LC_BASE_COMPOSE_FILE", file)

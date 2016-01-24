@@ -31,6 +31,10 @@ func GlobalFlags() []cli.Flag {
       Usage: "project template to include",
     },
     cli.BoolFlag{
+      Name:  "enable-scratch-volumes",
+      Usage: "EXPERIMENTAL: if true, will put scratch resources in a data container; defaults to 'false'. Turn this on to speed up local builds.",
+    },
+    cli.BoolFlag{
       Name:  "debug",
       Usage: "turn on debug level logging",
       EnvVar: "LC_DEBUG",
