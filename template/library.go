@@ -2,6 +2,8 @@ package template
 
 import (
   "fmt"
+  "bytes"
+  tmpl "text/template"
 
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
@@ -17,12 +19,45 @@ func GetSharedExternalDataContainers(templateName string) []helpers.DockerDataCo
   return sharedExternalDataContainers[templateName]
 }
 
-var templates = make(map[string]string)
-func Add(name string, yaml string) error {
-  if _, ok := templates[name]; ok {
-    return fmt.Errorf("template %q already exists", name)
+// template contains the data necessary to construct a lc template
+type template struct {
+  name string
+  composeYmlTmpl string
+	scratchVolumes string
+}
+
+// toYml will take a template and prepare it for use by other packages
+// the string returned will be a valid docker-compose.yml string.
+func (t *template) toYml(enableScratchVolume bool) (string, error) {
+  goTemplate, err := tmpl.New("composeTemplate").Parse(t.composeYmlTmpl)
+  if err != nil {
+    return "", fmt.Errorf("could not parse docker-compose yml for template %q, error: %q", t.name, err)
   }
-  templates[name] = yaml
+
+  var scratchVolumes string
+  if enableScratchVolume {
+    scratchVolumes = t.scratchVolumes
+  }
+  data := struct {
+    ScratchVolumes string
+  }{
+      scratchVolumes,
+  }
+  var finalYml bytes.Buffer
+  err = goTemplate.Execute(&finalYml, data)
+  if err != nil {
+    return "", fmt.Errorf("could not interpolate docker-compose yml for template %q, error: %q", t.name, err)
+  }
+  return finalYml.String(), nil
+}
+
+var templates = make(map[string]template)
+// Add will add the given template to a registry for use by external packages
+func Add(template template) error {
+  if _, ok := templates[template.name]; ok {
+    return fmt.Errorf("template %q already exists", template.name)
+  }
+  templates[template.name] = template
   return nil
 }
 
@@ -30,9 +65,13 @@ func Add(name string, yaml string) error {
 // If 'enableScratchVolume' is true and the target template supports
 // scratch-space optimization then Get will enable it.
 func Get(name string, enableScratchVolume bool) (string, error) {
-  yaml, present := templates[name]
+  template, present := templates[name]
   if !present {
     return "", fmt.Errorf("template %q is not registered", name)
   }
-  return yaml, nil
+  yml, err := template.toYml(enableScratchVolume)
+  if err != nil {
+    return "", err
+  }
+  return yml, nil
 }

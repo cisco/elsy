@@ -2,24 +2,15 @@ package template
 
 import "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 
-func init() {
-  AddSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
-    Image: "busybox:latest",
-    Name: "lc_shared_mvndata",
-    Volumes: []string{"/root/.m2/repository"},
-    Resilient: true,
-  })
-
-  Add("mvn", `
+var mvnTemplate = template{
+  name: "mvn",
+  composeYmlTmpl: `
 mvnscratch:
   image: busybox
+{{if .ScratchVolumes}}
   volumes:
-    - /opt/project/target/classes
-    - /opt/project/target/journal
-    - /opt/project/target/maven-archiver
-    - /opt/project/target/maven-status
-    - /opt/project/target/snapshots
-    - /opt/project/target/test-classes
+    {{.ScratchVolumes}}
+{{end}}
   entrypoint: /bin/true
 mvn: &mvn
   image: maven:3.2-jdk-8
@@ -39,5 +30,23 @@ package:
 publish:
   <<: *mvn
   entrypoint: /bin/true
-`)
+`,
+  scratchVolumes: `
+  - /opt/project/target/classes
+  - /opt/project/target/journal
+  - /opt/project/target/maven-archiver
+  - /opt/project/target/maven-status
+  - /opt/project/target/snapshots
+  - /opt/project/target/test-classes
+`,}
+
+func init() {
+  AddSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
+    Image: "busybox:latest",
+    Name: "lc_shared_mvndata",
+    Volumes: []string{"/root/.m2/repository"},
+    Resilient: true,
+  })
+
+  Add(mvnTemplate)
 }
