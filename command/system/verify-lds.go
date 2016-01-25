@@ -28,7 +28,7 @@ func CmdVerifyLds(c *cli.Context) error {
   args := []string{"run", "--rm", "-v", volume, "--entrypoint=/bin/sh", "busybox", "-c", fileCheck}
   cmd := exec.Command("docker", args...)
   if err := helpers.RunCommand(cmd); err != nil {
-    return errors.New("It appears that your local disk is not mounted into the LDS VM See SAI-32 for instructions on how to fix.")
+    return errors.New("It appears that your local disk is not mounted into the LDS VM. See SAI-32 for instructions on how to fix.")
   }
   return nil
 }
