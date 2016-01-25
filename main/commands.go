@@ -249,6 +249,12 @@ func Commands() []cli.Command {
           Action: panicOnError(system.CmdViewTemplate),
           Flags:  []cli.Flag{},
         },
+        {
+          Name:  "verify-lds",
+          Usage: "runs a series of checks to verify the lds is running correctly. This must be run inside a repo.",
+          Action: panicOnError(system.CmdVerifyLds),
+          Flags:  []cli.Flag{},
+        },
       },
     },
   }
