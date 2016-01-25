@@ -6,10 +6,14 @@ import (
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 )
 
 // CmdPackage runs package service if present and then attempts to build Dockerfile
 func CmdPackage(c *cli.Context) error {
+  if err := system.CmdVerifyLds(c); err != nil {
+    return err
+  }
   commands := []*exec.Cmd{}
 
   if helpers.DockerComposeHasService("package") {

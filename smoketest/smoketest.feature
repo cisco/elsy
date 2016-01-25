@@ -9,6 +9,10 @@ Feature: smoketest task
       image: busybox
       command: /bin/true
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
+    """
     When I run `lc smoketest`
     Then it should succeed
 
@@ -19,6 +23,10 @@ Feature: smoketest task
       image: busybox
       command: /bin/false
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
+    """
     When I run `lc smoketest`
     Then it should fail
 
@@ -28,6 +36,10 @@ Feature: smoketest task
     smoketest:
       image: busybox
       entrypoint: echo
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
     """
     When I run `lc smoketest fdsa`
     Then it should succeed with "fdsa"

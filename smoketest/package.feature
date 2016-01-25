@@ -7,10 +7,18 @@ Feature: package task
       image: busybox
       command: echo foo
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
     When I run `lc package`
     Then it should succeed with "foo"
 
   Scenario: without a package service
+    Given a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
     When I run `lc package`
     Then it should succeed
 
@@ -19,6 +27,10 @@ Feature: package task
     """
     FROM library/alpine
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
 
@@ -26,6 +38,10 @@ Feature: package task
     Given a file named "Dockerfile" with:
     """
     FROM projectlifecyclesmoketests_docker_artifact
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
     """
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact2`
     Then it should succeed with "Successfully built "
@@ -36,6 +52,10 @@ Feature: package task
     package:
       image: busybox
       command: /bin/false
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
     """
     When I run `lc package`
     Then it should fail
@@ -51,6 +71,10 @@ Feature: package task
     """
     FROM busybox
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
     When I run `lc package`
     Then it should fail with "you must use `--docker-image-name` to package a docker image"
 
@@ -64,6 +88,10 @@ Feature: package task
     And a file named "Dockerfile" with:
     """
     FROM library/alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
     """
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"

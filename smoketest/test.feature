@@ -7,6 +7,10 @@ Feature: test task
       image: busybox
       command: /bin/true
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: test
+    """
     When I run `lc test`
     Then it should succeed
 
@@ -17,6 +21,10 @@ Feature: test task
       image: busybox
       command: /bin/false
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: test
+    """
     When I run `lc test`
     Then it should fail
 
@@ -26,6 +34,10 @@ Feature: test task
     test:
       image: busybox
       entrypoint: echo
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: test
     """
     When I run `lc test fdsa`
     Then it should succeed with "fdsa"

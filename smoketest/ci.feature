@@ -7,6 +7,10 @@ Feature: ci task
       image: busybox
       command: /bin/false
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testci
+    """
     When I run `lc ci`
     Then it should fail
 

@@ -8,6 +8,10 @@ Scenario: with failing command
     image: busybox
     command: /bin/false
   """
+  And a file named "lc.yml" with:
+  """yaml
+  name: testcommand
+  """
   When I run `lc test`
   Then it should fail
   When I run `lc --debug test`
@@ -19,6 +23,10 @@ Scenario: with successful command
   test:
     image: busybox
     command: /bin/true
+  """
+  And a file named "lc.yml" with:
+  """yaml
+  name: testcommand
   """
   When I run `lc test`
   Then it should succeed

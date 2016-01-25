@@ -6,6 +6,10 @@ Feature: bootstrap task
     test:
       image: busybox
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    """
     When I run `lc bootstrap`
     Then it should pull "busybox"
 
@@ -14,6 +18,10 @@ Feature: bootstrap task
     """yaml
     test:
       image: fdsafdsa
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
     """
     When I run `lc bootstrap`
     Then it should fail pulling "fdsafdsa"
@@ -28,6 +36,10 @@ Feature: bootstrap task
     test:
       build: dev-env
     """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    """
     When I run `lc bootstrap`
     Then it should succeed with "Building test"
 
@@ -40,6 +52,10 @@ Feature: bootstrap task
     """yaml
     test:
       build: dev-env
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
     """
     When I run `lc bootstrap`
     Then it should fail with "Service 'test' failed to build"
