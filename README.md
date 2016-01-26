@@ -66,6 +66,10 @@ docker_registry: address of docker registry to publish to
 
 Configuration may also be specified as command line arguments in which case they take precedence over values in the configuration file.
 
+## Improving `lc` performance (experimental)
+
+See the [Improving Performance](docs/improving-performance.md) doc.
+
 ## Keeping `lc` up-to-date
 
 TODO: figure this out
