@@ -32,6 +32,11 @@ package:
 publish:
   <<: *mvn
   entrypoint: /bin/true
+{{if not .ScratchVolumes}}
+teardown:
+  <<: *mvn
+  command: [clean]
+{{end}}
 `,
   scratchVolumes: `
   - /opt/project/target/classes
