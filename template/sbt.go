@@ -29,6 +29,11 @@ test:
 package:
   <<: *sbt
   command: [assembly]
+{{if not .ScratchVolumes}}
+teardown:
+  <<: *sbt
+  command: [clean]
+{{end}}
 `,
   scratchVolumes: `
     - /opt/project/target/resolution-cache
