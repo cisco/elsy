@@ -1,5 +1,21 @@
 Feature: maven template
 
+  Scenario: correct mvn template
+    When I run `lc system view-template mvn`
+    Then it should succeed
+    And the output should contain all of these:
+      | mvn:     |
+      | test:    |
+      | package: |
+    And the output should not contain "mvnscratch"
+    When I run `lc --enable-scratch-volumes system view-template mvn`
+    Then it should succeed
+    And the output should contain all of these:
+      | mvnscratch:     |
+      | mvn:     |
+      | test:    |
+      | package: |
+
   Scenario: standard maven project
     Given a file named "pom.xml" with:
     """

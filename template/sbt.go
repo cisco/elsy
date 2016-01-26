@@ -5,10 +5,10 @@ import "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 var sbtTemplate = template{
   name: "sbt",
   composeYmlTmpl: `
+{{if .ScratchVolumes}}
 sbtscratch:
   image: busybox
   command: /bin/true
-{{if .ScratchVolumes}}
   volumes:
     {{.ScratchVolumes}}
 {{end}}
@@ -20,7 +20,9 @@ sbt: &sbt
   entrypoint: sbt
   volumes_from:
     - lc_shared_sbtdata
+{{if .ScratchVolumes}}
     - sbtscratch
+{{end}}
 test:
   <<: *sbt
   entrypoint: [sbt, test]

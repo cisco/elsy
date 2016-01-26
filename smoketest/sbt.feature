@@ -1,5 +1,22 @@
 Feature: sbt template
 
+  Scenario: correct sbt template
+    When I run `lc system view-template sbt`
+    Then it should succeed
+    And the output should contain all of these:
+      | sbt:     |
+      | test:    |
+      | package: |
+    And the output should not contain "sbtscratch"
+    When I run `lc --enable-scratch-volumes system view-template sbt`
+    Then it should succeed
+    And the output should contain all of these:
+      | sbtscratch:     |
+      | sbt:     |
+      | test:    |
+      | package: |
+
+
   Scenario: standard sbt project
     Given a file named "hello.scala" with:
     """scala
