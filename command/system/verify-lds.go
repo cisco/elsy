@@ -5,6 +5,7 @@ import (
   "fmt"
   "os"
   "os/exec"
+  "path/filepath"
 
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
@@ -12,7 +13,8 @@ import (
 )
 
 // file that we will use to verify volume mounts are working, assumption is that every lc repo should include this
-var requiredFile = "/opt/project/lc.yml"
+var requiredFileRelative = "lc.yml"
+var requiredFile = fmt.Sprintf("/opt/project/%v", requiredFileRelative)
 
 // CmdVerifyLds will ensure lds disk mounting is functioning
 // This is mainly to address SAI-32.
@@ -21,6 +23,12 @@ func CmdVerifyLds(c *cli.Context) error {
   cwd, err := os.Getwd()
   if err != nil {
     return fmt.Errorf("could not find current working directory to verify repo: %q", err)
+  }
+
+  // first verify file exists locally
+  if _, err := os.Stat(filepath.Join(cwd, requiredFileRelative)); os.IsNotExist(err){
+    logrus.Warnf("could not find '%v' in the current directory, skipping lds verification", requiredFileRelative)
+    return nil
   }
 
   volume := fmt.Sprintf("%v:/opt/project", cwd)

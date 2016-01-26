@@ -5,12 +5,14 @@ Feature: system verify-lds task
 
   Scenario: calling with missing lc.yml file
     When I run `lc system verify-lds`
-    Then it should fail with "It appears that your local disk is not mounted into the LDS VM"
+    Then it should succeed
+    And the output should contain "could not find 'lc.yml' in the current directory, skipping lds verification"
 
-  Scenario: calling with missing lc.yml file
+  Scenario: calling with lc.yml file
     Given a file named "lc.yml" with:
     """yaml
     name: test-verify-lds
     """
     When I run `lc system verify-lds`
     Then it should succeed
+    And the output should not contain "could not find 'lc.yml' in the current directory, skipping lds verification"
