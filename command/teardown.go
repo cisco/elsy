@@ -10,7 +10,17 @@ import (
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
+// CmdTeardown will teardown repo services
 func CmdTeardown(c *cli.Context) error {
+  if helpers.DockerComposeHasService("teardown") {
+    err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "teardown"))
+    if err != nil {
+      logrus.Warnf("error running teardown service, moving on to teardown containers. Error: %q.", err)
+    }
+  } else {
+    logrus.Debug("no teardown service found, skipping")
+  }
+
   if err := helpers.RunCommand(helpers.DockerComposeCommand("kill")); err != nil {
     return err
   }

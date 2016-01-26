@@ -14,7 +14,8 @@ The core `lc` tasks are:
 * publish: calls the `publish` service. It will also publish the docker image if the repo contains a `Dockerfile` at its root directory.
 * ci: calls `bootstrap`, `test`, `package`, then `publish`
 * release: allows user to create a release of the repo
-* teardown: kills and removes all containers for the docker-compose project
+* teardown: calls the `teardown` service. It will also kill and remove all containers
+for the docker-compose project
 
 `lc` also supports tasks for commonly used project automation tools;
 

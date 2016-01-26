@@ -2,6 +2,20 @@ Feature: teardown task
 
   As a developer, I want to teardown containers associated with my project
 
+  Scenario: with a teardown service
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    teardown:
+      image: busybox
+      command: echo foo
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc teardown`
+    Then it should succeed with "foo"
+
   Scenario: with no gc labels
     Given a file named "docker-compose.yml" with:
     """yaml
