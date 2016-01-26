@@ -72,7 +72,7 @@ See the [Improving Performance](docs/improving-performance.md) doc.
 
 ## Keeping `lc` up-to-date
 
-TODO: figure this out
+Simply run `lc system upgrade` to download the latest `lc` binary.
 
 ## Local Development
 
