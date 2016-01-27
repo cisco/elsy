@@ -37,9 +37,9 @@ test:
   
 ```
 
-Note that the `mvn` section uses a yaml 'anchor' (`&`), which is then used in later sections using the yaml "include"
-("`<<: *`") syntax. What this does is copy/include the section marked by the anchor, into the section marked by the
-include. 
+Note that the `mvn` section uses a yaml '[anchor](http://www.yaml.org/spec/1.2/spec.html#id2785586)' (`&`), which is
+then used in later sections using the yaml "include" ("`<<: *`") syntax. What this does is copy/include the section
+marked by the anchor, into the section marked by the include.
 
 This is essentially a text import/include, so the `test:` (et. al.)  sections get an *entire copy* of
 the `mvn:` items, plus any extra things listed.  In the case above, `test:` will also get the `entrypoint:` entry. 

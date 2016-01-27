@@ -13,6 +13,9 @@ below.)
 Once you have `lc.yml` set up, you must determine what of the default templates (which constitute a default set of
 `docker-compose` services) you can use as-is, or need to change.
 
+> Note!  A build may opt to not use any template at all.  The template is just a convenient starting point, but is not
+> required.  In this case, the developer simply need create a `docker-compose.yml` file in its entirety.
+
 The template you use will broadly be named the same as the build tool you are using to build the project.  Here is a
 list of currently supported templates.
 
