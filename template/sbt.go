@@ -29,6 +29,9 @@ test:
 package:
   <<: *sbt
   command: [assembly]
+publish:
+  <<: *sbt
+  entrypoint: /bin/true
 {{if not .ScratchVolumes}}
 teardown:
   <<: *sbt
