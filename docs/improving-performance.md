@@ -45,6 +45,31 @@ $ lc dc -- run --entrypoint=bash mvn -c bash
 After running the above you will have a shell in with a working directory of `/opt/project`, which
 will contain all of your repo data, including the data inside the data container.
 
+## Inspecting build tool data
+
+When using `LC_ENABLE_SCRATCH_VOLUMES`, it is still possible to view the artifacts downloaded by your build tool. 
+
+For `sbt`, (assuming the `sbt` template), you can run the following command...
+```
+lc --enable-scratch-volumes dc -- run --entrypoint=sh sbt
+# optionally without --enable-scratch-volume if you have the env var set
+```
+... then `cd` and/or `ls` to `/root/.ivy2/cache` to see the things `sbt` downloaded.  
+
+What this command is doing is running a `sh` process in the `sbt` image from `docker-compose`, which _links_ to the
+shared `sbt` download data container. `entrypoint` is specified to override the given `entrypoint` in the
+`docker-compose` file.
+
+For `mvn`, (assuming the `mvn` template), the procedure is the same, but with a different directory (since it's a
+different build tool).
+```
+lc --enable-scratch-volumes dc -- run --entrypoint=sh mvn
+# optionally without --enable-scratch-volume if you have the env var set
+```
+... then `cd` to `/root/.m2/repository` and peruse at your liesure.
+
+
+
 ## Technical Details
 
 This section explains the technical mechanisms underpinning `LC_ENABLE_SCRATCH_VOLUMES`.
