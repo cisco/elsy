@@ -7,16 +7,14 @@ Feature: sbt template
       | sbt:     |
       | test:    |
       | package: |
-      | teardown:|
     And the output should not contain "sbtscratch"
     When I run `lc --enable-scratch-volumes system view-template sbt`
     Then it should succeed
     And the output should contain all of these:
       | sbtscratch:     |
-      | sbt:            |
-      | test:           |
-      | package:        |
-    And the output should not contain "teardown"
+      | sbt:     |
+      | test:    |
+      | package: |
 
 
   Scenario: standard sbt project
@@ -46,12 +44,10 @@ Feature: sbt template
     Then it should succeed
     And it should succeed with "Packaging /opt/project/target/scala-2.11/project-assembly-0.1-SNAPSHOT.jar"
     And the following folders should not be empty:
-      | target/resolution-cache           |
-      | target/scala-2.11/classes         |
-      | project/project                   |
-      | project/target                    |
-    And I run `lc teardown`
-    Then it should succeed
+    | target/resolution-cache           |
+    | target/scala-2.11/classes         |
+    | project/project                   |
+    | project/target                    |
 
   Scenario: with enable-scratch-volumes
     Given a file named "hello.scala" with:
@@ -80,9 +76,7 @@ Feature: sbt template
     Then it should succeed
     And it should succeed with "Packaging /opt/project/target/scala-2.11/project-assembly-0.1-SNAPSHOT.jar"
     And the following folders should be empty:
-      | target/resolution-cache           |
-      | target/scala-2.11/classes         |
-      | project/project                   |
-      | project/target                    |
-    And I run `lc teardown`
-    Then it should succeed
+    | target/resolution-cache           |
+    | target/scala-2.11/classes         |
+    | project/project                   |
+    | project/target                    |

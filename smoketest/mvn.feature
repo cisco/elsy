@@ -7,16 +7,14 @@ Feature: maven template
       | mvn:     |
       | test:    |
       | package: |
-      | teardown:|
     And the output should not contain "mvnscratch"
     When I run `lc --enable-scratch-volumes system view-template mvn`
     Then it should succeed
     And the output should contain all of these:
       | mvnscratch:     |
-      | mvn:            |
-      | test:           |
-      | package:        |
-    And the output should not contain "teardown"
+      | mvn:     |
+      | test:    |
+      | package: |
 
   Scenario: standard maven project
     Given a file named "pom.xml" with:
@@ -92,10 +90,8 @@ Feature: maven template
       | Building jar: /opt/project/target/my-app-1.0-SNAPSHOT.jar |
       | BUILD SUCCESS                                             |
     And the following folders should not be empty:
-      | target/classes           |
-      | target/test-classes      |
-    And I run `lc teardown`
-    Then it should succeed
+    | target/classes           |
+    | target/test-classes      |
 
   Scenario: with enable-scratch-volumes
     Given a file named "pom.xml" with:
@@ -171,7 +167,5 @@ Feature: maven template
       | Building jar: /opt/project/target/my-app-1.0-SNAPSHOT.jar |
       | BUILD SUCCESS                                             |
     And the following folders should be empty:
-      | target/classes           |
-      | target/test-classes      |
-    And I run `lc teardown`
-    Then it should succeed
+    | target/classes           |
+    | target/test-classes      |

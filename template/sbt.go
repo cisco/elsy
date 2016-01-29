@@ -32,11 +32,6 @@ package:
 publish:
   <<: *sbt
   entrypoint: /bin/true
-{{if not .ScratchVolumes}}
-teardown:
-  <<: *sbt
-  command: [clean]
-{{end}}
 `,
   scratchVolumes: `
     - /opt/project/target/resolution-cache
