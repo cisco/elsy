@@ -12,16 +12,12 @@ package:
   <<: *go
   entrypoint: /opt/lifecycle/package
 
-## shares the host ssh-agent with the container so that we can provide jenkins ssh-agent for publishing actions
-## NOTE: this will only work on a pure linux box
 publish:
   <<: *go
-  volumes:
-    - $SSH_AUTH_SOCK:/opt/ssh-agent
-    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
   environment:
-    - SSH_AUTH_SOCK=/opt/ssh-agent
-    - GIT_BRANCH
+    - LC_REPO_NETRC
+    - ARTIFACTORY_SERVER
+    - ARTIFACTORY_PATH
   entrypoint: /opt/lifecycle/publish
 
 test:
