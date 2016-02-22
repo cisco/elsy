@@ -98,6 +98,23 @@ $ lc package
 To add a dependency, just add a new entry to the `dependencies` array in `./dev-env/dependencies`. After adding the new
 dependency you will need to run `lc bootstrap` to import it into the project.
 
+### Setting up CI
+In order to have Jenkins build and publish `project-lifecycle`, you must
+configure the Jenkins server with credentials to upload to
+artifactory1.eng.lancope.local. First, create a local file called `netrc` with
+the contents:
+
+```
+machine artifactory1.eng.lancope.local login <username> password <password>
+```
+
+Visit your Jenkins Credentials management page, add a new credential of type
+*Secret File* then upload the `netrc` file you just created.
+
+In the `project-lifecycle` job configuration page, add _Use Secret text for
+file_ to the _Build Environment_ section. Select the credential you just added
+and specify an env variable of `LC_REPO_NETRC`.
+
 ### IDE Integration
 
 **TODO: Figure out if we can share the full $GOPATH from the container**

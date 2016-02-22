@@ -1,49 +1,22 @@
 #!/usr/bin/env bash
 
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  echo "SSH_AUTH_SOCK env var must be set" >&2
+: ${ARTIFACTORY_SERVER:=https://artifactory1.eng.lancope.local}
+: ${ARTIFACTORY_PATH:=generic-dev-infrastructure/lc}
+
+if [ -z $LC_REPO_NETRC ] ; then
+  echo "LC_REPO_NETRC env var not set, cannot publish" >&2
   exit 1
 fi
 
-if [ -z "$GIT_BRANCH" ] ; then
-  echo "$0 expects GIT_BRANCH to be set. Are you running in a jenkins job?" >&2
+if [ ! -f $LC_REPO_NETRC ] ; then
+  echo "missing netrc file for lc repo, cannot publish" >&2
   exit 1
 fi
 
-if [ "$GIT_BRANCH" != "origin/master" ] ; then
-  echo "Only publishing origin/master, found '$GIT_BRANCH', skipping"
-else
+set -e
 
-  set -e
-
-  git config --global user.email "terrapin-jenkins@lancope-jenkins.com"
-  git config --global user.name "terrapin-jenkins"
-  git config --global push.default simple
-  git config --global http.sslVerify false
-
-  ## setup ssh known_hosts to avoid interactive prompts
-  mkdir -p ~/.ssh
-  ssh-keyscan stash0.eng.lancope.local > ~/.ssh/known_hosts
-
-  ## stage files for pushing
-  mkdir -p /tmp/staging
-  arch=amd64
-  platforms=(darwin linux)
-  for platform in "${platforms[@]}"; do
-    cp target/lc-${platform}-${arch} /tmp/staging
-  done
-
-  ## push all binaries, this assumes that this is the only script pushing to 'binaries/snapshot'
-  ## so we just replace the branch to avoid building up useless history about binaries
-  ## TODO: support releases
-  cd /tmp
-  git clone ssh://git@stash0.eng.lancope.local/dev-infrastructure/binaries.git
-  cd binaries &&  git checkout -b snapshots && git branch -u origin/snapshots
-
-  mkdir lc
-  mv /tmp/staging/* ./lc
-  git add lc
-  git commit -am "push from jenkins"
-  git push -f
-
-fi
+echo "starting publish all binaries found in ./target"
+for path in target/*; do
+  file=${f##*/}
+  curl -ki --netrc-file $LC_REPO_NETRC -T "$path" "$ARTIFACTORY_SERVER/$ARTIFACTORY_PATH/$file"
+done
