@@ -40,6 +40,8 @@ publish:
   - /opt/project/target/maven-status
   - /opt/project/target/snapshots
   - /opt/project/target/test-classes
+  - /opt/project/target/war/work
+  - /opt/project/target/webappDirectory
 `,}
 
 func init() {
