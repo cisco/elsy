@@ -3,13 +3,8 @@
 : ${ARTIFACTORY_SERVER:=https://artifactory1.eng.lancope.local}
 : ${ARTIFACTORY_PATH:=generic-dev-infrastructure/lc}
 
-if [ -z $LC_REPO_NETRC ] ; then
-  echo "LC_REPO_NETRC env var not set, cannot publish" >&2
-  exit 1
-fi
-
-if [ ! -f $LC_REPO_NETRC ] ; then
-  echo "missing netrc file for lc repo, cannot publish" >&2
+if [ ! -f /opt/netrc ] ; then
+  echo "missing /opt/netrc file for lc repo, cannot publish" >&2
   exit 1
 fi
 
@@ -18,5 +13,5 @@ set -e
 echo "starting publish all binaries found in ./target"
 for path in target/*; do
   file=${f##*/}
-  curl -ki --netrc-file $LC_REPO_NETRC -T "$path" "$ARTIFACTORY_SERVER/$ARTIFACTORY_PATH/$file"
+  curl -ki --netrc-file /opt/netrc -T "$path" "$ARTIFACTORY_SERVER/$ARTIFACTORY_PATH/$file"
 done

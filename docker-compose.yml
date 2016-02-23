@@ -14,8 +14,9 @@ package:
 
 publish:
   <<: *go
+  volumes:
+    - $LC_REPO_NETRC:/opt/netrc
   environment:
-    - LC_REPO_NETRC
     - ARTIFACTORY_SERVER
     - ARTIFACTORY_PATH
   entrypoint: /opt/lifecycle/publish
