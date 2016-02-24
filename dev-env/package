@@ -6,6 +6,6 @@ platforms=(darwin linux)
 version=`cat ./VERSION`
 build=`git rev-parse HEAD`
 for platform in "${platforms[@]}"; do
-  GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch} \
+  GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
     --ldflags "-X main.version=$version -X main.build=$build" ./main
 done
