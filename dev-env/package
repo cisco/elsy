@@ -3,6 +3,8 @@ set -e
 
 arch=amd64
 platforms=(darwin linux)
+version=`cat ./VERSION`
 for platform in "${platforms[@]}"; do
-  GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch} ./main
+  GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch} \
+    --ldflags "-X main.Version=$version" ./main
 done
