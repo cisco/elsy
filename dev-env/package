@@ -5,6 +5,15 @@ arch=amd64
 platforms=(darwin linux)
 version=`cat ./VERSION`
 build=`git rev-parse HEAD`
+
+## the authoritative regex for release tags is in ./command/publish.go
+if [ -n "$GIT_TAG_NAME" ] && [[ "$GIT_TAG_NAME" =~ ^v[0-9]*\.[0-9]*\.[0-9]*(-.+)? ]]; then
+  echo "packaging release binary using version '$version'"
+else
+  version="$version-dev"
+  echo "packaging non-release binary using version '$version'"
+fi
+
 for platform in "${platforms[@]}"; do
   GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
     --ldflags "-X main.version=$version -X main.build=$build" ./main
