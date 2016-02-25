@@ -15,12 +15,13 @@ import (
   "github.com/kardianos/osext"
 )
 
-const binaryUrl = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s"
+const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s"
 
+// CmdUpgrade will upgrade the current lc binary
 func CmdUpgrade(c *cli.Context) error {
   platform := runtime.GOOS
   arch := runtime.GOARCH
-  url := fmt.Sprintf(binaryUrl, platform, arch)
+  url := fmt.Sprintf(binaryURL, platform, arch)
   logrus.Debugf("using url: %s", url)
 
   // find location of lc currently running
@@ -111,12 +112,12 @@ func computeMd5(filePath string) (string, error) {
 
 func getLcLocation() (string, error){
   // NOTE: if os.Args[0] is a symlink, this code will update the actual binary, not the link
-  if lcPath, err := osext.Executable(); err != nil {
+  lcPath, err := osext.Executable()
+  if err != nil {
     logrus.Debugf("lc not found", err)
     return "", err
-  } else {
-    return lcPath, nil
   }
+  return lcPath, nil
 }
 
 
