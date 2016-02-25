@@ -18,6 +18,7 @@ publish:
   <<: *go
   volumes:
     - $LC_REPO_NETRC:/opt/netrc
+    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
   environment:
     - ARTIFACTORY_SERVER
     - ARTIFACTORY_PATH
