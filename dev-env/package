@@ -21,3 +21,6 @@ for platform in "${platforms[@]}"; do
   GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
     --ldflags "-X main.version=$version -X main.build=$build" ./main
 done
+
+## create a binary for smoketests to use
+cp target/lc-linux-${arch}-${version} target/lc-smoke
