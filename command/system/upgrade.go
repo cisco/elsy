@@ -15,14 +15,12 @@ import (
   "github.com/kardianos/osext"
 )
 
-// TODO: make the binary target configurable
-const binaryUrl = "https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/binaries/browse/lc/lc-%s-%s"
-const urlParams = "?at=refs%2Fheads%2Fsnapshots&raw"
+const binaryUrl = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s"
 
 func CmdUpgrade(c *cli.Context) error {
   platform := runtime.GOOS
   arch := runtime.GOARCH
-  url := fmt.Sprintf(binaryUrl, platform, arch) + urlParams
+  url := fmt.Sprintf(binaryUrl, platform, arch)
   logrus.Debugf("using url: %s", url)
 
   // find location of lc currently running
