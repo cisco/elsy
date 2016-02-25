@@ -7,7 +7,7 @@ version=`cat ./VERSION`
 build=`git rev-parse HEAD`
 
 ## the authoritative regex for release tags is in ./command/publish.go
-if [ -n "$GIT_TAG_NAME" ] && [[ "$GIT_TAG_NAME" =~ ^v[0-9]*\.[0-9]*\.[0-9]*(-.+)? ]]; then
+if [ -n "$GIT_TAG_NAME" ] && [[ "$GIT_TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.+)?$ ]]; then
   echo "packaging release binary using version '$version'"
 else
   version="$version-dev"
