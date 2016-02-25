@@ -132,10 +132,14 @@ func installNew(url string, target string) error {
       TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
   }
   client := &http.Client{Transport: tr}
+
   resp, err := client.Get(url)
   if err != nil {
     logrus.Debugf("failed downloading binary", err)
   	return err
+  }
+  if resp.StatusCode != 200 {
+    return fmt.Errorf("failed downloading binary, invalid http response: %d", resp.StatusCode)
   }
   defer resp.Body.Close()
 
