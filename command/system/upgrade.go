@@ -3,6 +3,7 @@ package system
 import (
   "io"
   "io/ioutil"
+  "errors"
   "fmt"
   "os"
   "net/http"
@@ -15,13 +16,18 @@ import (
   "github.com/kardianos/osext"
 )
 
-const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s"
+const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s-%s"
 
 // CmdUpgrade will upgrade the current lc binary
 func CmdUpgrade(c *cli.Context) error {
+  version := c.String("version")
+  if len(version) == 0 {
+    return errors.New("upgrade command requires a version argument, none found")
+  }
+
   platform := runtime.GOOS
   arch := runtime.GOARCH
-  url := fmt.Sprintf(binaryURL, platform, arch)
+  url := fmt.Sprintf(binaryURL, platform, arch, version)
   logrus.Debugf("using url: %s", url)
 
   // find location of lc currently running
