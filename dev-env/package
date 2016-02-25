@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+## remove previous job's artifacts
+rm -f ./target/lc*
+
 arch=amd64
 platforms=(darwin linux)
 version=`cat ./VERSION`
