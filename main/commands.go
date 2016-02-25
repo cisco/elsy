@@ -246,7 +246,12 @@ func Commands() []cli.Command {
           Name:  "upgrade",
           Usage: "upgrade this lc binary",
           Action: panicOnError(system.CmdUpgrade),
-          Flags:  []cli.Flag{},
+          Flags:  []cli.Flag{
+            cli.StringFlag{
+              Name:  "version",
+              Usage: "lc version to use as upgrade target",
+            },
+          },
         },
         {
           Name:  "view-template",
