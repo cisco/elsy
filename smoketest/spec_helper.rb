@@ -18,4 +18,4 @@ end
 
 # add `lc` to our path
 require 'fileutils'
-FileUtils.ln_s("/opt/project/target/lc-linux-amd64", "/usr/local/bin/lc")
+FileUtils.ln_s("/opt/project/target/lc-smoke", "/usr/local/bin/lc")
