@@ -33,6 +33,9 @@ Feature: package task
     """
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
+    When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact --skip-docker`
+    Then it should succeed
+    And the output should not contain "Successfully built "
 
   Scenario: with a docker artifact based on a local image
     Given a file named "Dockerfile" with:

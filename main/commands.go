@@ -124,6 +124,10 @@ func Commands() []cli.Command {
           Value: GetConfigFileString("docker_image_name"),
           Usage: "docker image name to create",
         },
+        cli.BoolFlag{
+          Name:  "skip-docker",
+          Usage: "skip building of Dockerfile",
+        },
       },
     },
     {
