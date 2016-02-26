@@ -16,7 +16,6 @@ import (
   "github.com/kardianos/osext"
 )
 
-const tmpDirPrefix = "lcupgrade"
 const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s-%s"
 
 // CmdUpgrade will upgrade the current lc binary
@@ -44,19 +43,24 @@ func CmdUpgrade(c *cli.Context) error {
     logrus.Debugf("could not compute md5 for old lc binary")
   }
 
+  //create staging area to place tmp files
+  tmpDir, err := ioutil.TempDir("", "lcupgrade")
+  if err != nil {
+    return fmt.Errorf("failed creating temp dir, cannot proceed. err: %q", err)
+  }
+  defer os.RemoveAll(tmpDir)
+
   //download new binary to staging location
-  newTmpDir, newLcTmp, err := downloadNew(url)
+  newLcTmp, err := downloadNew(tmpDir, url)
   if err != nil {
     return err
   }
-  defer os.Remove(newTmpDir)
 
   // rename current binary in preparation for replacing
-  tmpDir, oldLcTmp, err := mvLc(lcPath)
+  oldLcTmp, err := mvLc(tmpDir, lcPath)
   if err != nil {
     return err
   }
-  defer os.Remove(tmpDir)
 
   //swap in new lc
   if err := swap(newLcTmp, lcPath); err != nil {
@@ -74,25 +78,6 @@ func CmdUpgrade(c *cli.Context) error {
     }
   }
   return nil
-}
-
-// move src file into a temp location
-// returns:
-//  * temporary directory that should be deleted after the upgrade finishes
-//  * filePath location of temporary location
-func mvLc(src string) (string, string, error) {
-  tmpDir, err := ioutil.TempDir("", tmpDirPrefix)
-  if err != nil {
-    logrus.Debugf("failed creating temp dir ", err)
-    return "", "", err
-  }
-  tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.old")
-  logrus.Debugf("moving binary '%s' to '%s'", src, tmpLocation)
-  if err := swap(src, tmpLocation); err != nil {
-      logrus.Debugf("failed moving binary ", err)
-      return "", "", err
-  }
-  return tmpDir, tmpLocation, nil
 }
 
 // swap will rename the src file to the dst file
@@ -132,21 +117,28 @@ func getLcLocation() (string, error){
   return lcPath, nil
 }
 
-// Will download the new binary from the given url to a temp location
-// returns (dir holding binary, full path of binary)
-func downloadNew(url string) (string, string, error) {
-  tmpDir, err := ioutil.TempDir("", tmpDirPrefix)
-  if err != nil {
-    logrus.Debugf("failed creating temp dir ", err)
-    return "", "", err
+// move src file into a tmp file in the given 'dir'
+// returns fullpath of new location
+func mvLc(tmpDir string, src string) (string, error) {
+  tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.old")
+  logrus.Debugf("moving binary '%s' to '%s'", src, tmpLocation)
+  if err := swap(src, tmpLocation); err != nil {
+      logrus.Debugf("failed moving binary ", err)
+      return "", err
   }
+  return tmpLocation, nil
+}
+
+// Will download the new binary from the given url into the given 'dir'
+// returns full path of binary
+func downloadNew(tmpDir string, url string) (string, error) {
   tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.new")
   logrus.Debugf("downloading new binary to '%s'", tmpLocation)
   if err := installNew(url, tmpLocation); err != nil {
     logrus.Debugf("failed downloading binary, err: %q", err)
-    return "", "", err
+    return "", err
   }
-  return tmpDir, tmpLocation, nil
+  return tmpLocation, nil
 }
 
 func installNew(url string, target string) error {
