@@ -16,6 +16,7 @@ import (
   "github.com/kardianos/osext"
 )
 
+const tmpDirPrefix = "lcupgrade"
 const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s-%s"
 
 // CmdUpgrade will upgrade the current lc binary
@@ -31,35 +32,39 @@ func CmdUpgrade(c *cli.Context) error {
   logrus.Debugf("using url: %s", url)
 
   // find location of lc currently running
-  oldLc, err := getLcLocation()
+  lcPath, err := getLcLocation()
   if err != nil {
     logrus.Errorf("could not find location of current lc")
     return err
   }
 
   // hash current binary for comparison with new binary
-  oldMd5, err := computeMd5(oldLc)
+  oldMd5, err := computeMd5(lcPath)
   if err != nil {
     logrus.Debugf("could not compute md5 for old lc binary")
   }
 
+  //download new binary to staging location
+  newTmpDir, newLcTmp, err := downloadNew(url)
+  if err != nil {
+    return err
+  }
+  defer os.Remove(newTmpDir)
+
   // rename current binary in preparation for replacing
-  tmpDir, tmpLocation, err := mvLc(oldLc)
+  tmpDir, oldLcTmp, err := mvLc(lcPath)
   if err != nil {
     return err
   }
   defer os.Remove(tmpDir)
 
-  // do the upgrade
-  if err := installNew(url, oldLc); err != nil {
-    logrus.Errorf("failed upgrading lc, error: %q", err)
-    if swapError := swap(tmpLocation, oldLc); swapError != nil {
-      logrus.Errorf("failed replacing your lc, your old binary is located at %q, err: %q", tmpLocation, swapError)
-    }
-    return err
+  //swap in new lc
+  if err := swap(newLcTmp, lcPath); err != nil {
+    logrus.Debugf("failed swaping new lc from %q to %q, err: %q", newLcTmp, lcPath, err)
+    return fmt.Errorf("failed replacing your lc, your old binary is located at %q", oldLcTmp)
   }
 
-  if newMd5, err := computeMd5(oldLc); err != nil {
+  if newMd5, err := computeMd5(lcPath); err != nil {
     logrus.Debugf("could not compute md5 for new lc binary, not comparing them")
   } else {
     if oldMd5 != newMd5 {
@@ -76,7 +81,7 @@ func CmdUpgrade(c *cli.Context) error {
 //  * temporary directory that should be deleted after the upgrade finishes
 //  * filePath location of temporary location
 func mvLc(src string) (string, string, error) {
-  tmpDir, err := ioutil.TempDir("", "lcupgrade")
+  tmpDir, err := ioutil.TempDir("", tmpDirPrefix)
   if err != nil {
     logrus.Debugf("failed creating temp dir ", err)
     return "", "", err
@@ -90,6 +95,7 @@ func mvLc(src string) (string, string, error) {
   return tmpDir, tmpLocation, nil
 }
 
+// swap will rename the src file to the dst file
 func swap(src string, dst string) error {
   if err := os.Rename(src, dst); err != nil {
     logrus.Debugf("failed swapping '%s' to '%s'", src, dst, err)
@@ -126,6 +132,22 @@ func getLcLocation() (string, error){
   return lcPath, nil
 }
 
+// Will download the new binary from the given url to a temp location
+// returns (dir holding binary, full path of binary)
+func downloadNew(url string) (string, string, error) {
+  tmpDir, err := ioutil.TempDir("", tmpDirPrefix)
+  if err != nil {
+    logrus.Debugf("failed creating temp dir ", err)
+    return "", "", err
+  }
+  tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.new")
+  logrus.Debugf("downloading new binary to '%s'", tmpLocation)
+  if err := installNew(url, tmpLocation); err != nil {
+    logrus.Debugf("failed downloading binary, err: %q", err)
+    return "", "", err
+  }
+  return tmpDir, tmpLocation, nil
+}
 
 func installNew(url string, target string) error {
   tr := &http.Transport{
