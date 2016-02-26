@@ -22,8 +22,8 @@ func main() {
   }
 
   app := cli.NewApp()
-  app.Name = name
-  app.Version = getVersion()
+  app.Name = helpers.Name
+  app.Version = helpers.BuildVersionString()
   app.Author = "lancope"
   app.Email = ""
   app.Usage = ""
