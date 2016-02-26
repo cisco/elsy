@@ -37,12 +37,6 @@ func CmdUpgrade(c *cli.Context) error {
     return err
   }
 
-  // hash current binary for comparison with new binary
-  oldMd5, err := computeMd5(lcPath)
-  if err != nil {
-    logrus.Debugf("could not compute md5 for old lc binary")
-  }
-
   //create staging area to place tmp files
   tmpDir, err := ioutil.TempDir("", "lcupgrade")
   if err != nil {
@@ -56,28 +50,50 @@ func CmdUpgrade(c *cli.Context) error {
     return err
   }
 
-  // rename current binary in preparation for replacing
-  oldLcTmp, err := mvLc(tmpDir, lcPath)
-  if err != nil {
-    return err
-  }
+  // figure out if we need the new lc
+  var doSwap = detectDifferences(lcPath, newLcTmp)
+  if doSwap {
+    // rename current binary in preparation for replacing
+    oldLcTmp, err := mvLc(tmpDir, lcPath)
+    if err != nil {
+      return err
+    }
 
-  //swap in new lc
-  if err := swap(newLcTmp, lcPath); err != nil {
-    logrus.Debugf("failed swaping new lc from %q to %q, err: %q", newLcTmp, lcPath, err)
-    return fmt.Errorf("failed replacing your lc, your old binary is located at %q", oldLcTmp)
-  }
-
-  if newMd5, err := computeMd5(lcPath); err != nil {
-    logrus.Debugf("could not compute md5 for new lc binary, not comparing them")
+    // swap in new lc
+    if err := swap(newLcTmp, lcPath); err != nil {
+      logrus.Debugf("failed swaping new lc from %q to %q, err: %q", newLcTmp, lcPath, err)
+      return fmt.Errorf("failed replacing your lc, your old binary is located at %q", oldLcTmp)
+    }
+    logrus.Infof("lc install finished, new lc binary installed")
   } else {
-    if oldMd5 != newMd5 {
-      logrus.Infof("lc install finished, new lc binary installed")
-    } else {
-      logrus.Infof("lc install finished, lc binary was already the latest")
+    logrus.Infof("lc install finished, lc binary was already the latest")
+  }
+
+  return nil
+}
+
+// detectDifferences will return true if the files have different md5 hashes
+func detectDifferences(files ...string) bool {
+  if len(files) < 2 {
+    return false
+  }
+
+  md5sums := make([]string, 0, len(files))
+  for _, file := range files {
+    md5, err := computeMd5(file)
+    if err != nil {
+      logrus.Warnf("could not compute md5 for file %q", file)
+      return true
+    }
+    md5sums = append(md5sums, md5)
+  }
+
+  for i := 1; i < len(md5sums); i++ {
+    if md5sums[i] != md5sums[i-1]{
+      return true
     }
   }
-  return nil
+  return false
 }
 
 // swap will rename the src file to the dst file
