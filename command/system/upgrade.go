@@ -28,7 +28,6 @@ func CmdUpgrade(c *cli.Context) error {
   platform := runtime.GOOS
   arch := runtime.GOARCH
   url := fmt.Sprintf(binaryURL, platform, arch, version)
-  logrus.Debugf("using url: %s", url)
 
   // find location of lc currently running
   lcPath, err := getLcLocation()
@@ -53,6 +52,7 @@ func CmdUpgrade(c *cli.Context) error {
   // figure out if we need the new lc
   var doSwap = detectDifferences(lcPath, newLcTmp)
   if doSwap {
+    logrus.Debugf("replacing current binary with new one")
     // rename current binary in preparation for replacing
     oldLcTmp, err := mvLc(tmpDir, lcPath)
     if err != nil {
@@ -139,7 +139,6 @@ func mvLc(tmpDir string, src string) (string, error) {
   tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.old")
   logrus.Debugf("moving binary '%s' to '%s'", src, tmpLocation)
   if err := swap(src, tmpLocation); err != nil {
-      logrus.Debugf("failed moving binary ", err)
       return "", err
   }
   return tmpLocation, nil
@@ -149,9 +148,8 @@ func mvLc(tmpDir string, src string) (string, error) {
 // returns full path of binary
 func downloadNew(tmpDir string, url string) (string, error) {
   tmpLocation := fmt.Sprintf("%s/%s", tmpDir, "lc.new")
-  logrus.Debugf("downloading new binary to '%s'", tmpLocation)
+  logrus.Debugf("Downloading new binary using url: %q", url)
   if err := installNew(url, tmpLocation); err != nil {
-    logrus.Debugf("failed downloading binary, err: %q", err)
     return "", err
   }
   return tmpLocation, nil
