@@ -19,7 +19,9 @@ fi
 
 for platform in "${platforms[@]}"; do
   GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
-    --ldflags "-X main.version=$version -X main.build=$build" ./main
+    --ldflags "-X stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers.version=$version \
+    -X stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers.build=$build" \
+    ./main
 done
 
 ## create a binary for smoketests to use
