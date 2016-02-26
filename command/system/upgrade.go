@@ -14,6 +14,7 @@ import (
   "github.com/codegangsta/cli"
   "github.com/Sirupsen/logrus"
   "github.com/kardianos/osext"
+  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 const binaryURL = "https://artifactory1.eng.lancope.local/generic-dev-infrastructure/lc/lc-%s-%s-%s"
@@ -23,6 +24,13 @@ func CmdUpgrade(c *cli.Context) error {
   version := c.String("version")
   if len(version) == 0 {
     return errors.New("upgrade command requires a version argument, none found")
+  }
+
+  logrus.Infof("starting upgrade to version %q", version)
+
+  if version == helpers.Version() {
+    logrus.Infof("Current binary already at version %q, skipping upgrade", version)
+    return nil
   }
 
   platform := runtime.GOOS
