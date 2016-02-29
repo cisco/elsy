@@ -1,3 +1,7 @@
+## v0.4.1
+
+- Correctly parses docker-compose version strings that include build info.
+
 ## v0.4.0
 
 - `lc system upgrade` now requires a `--version` flag to tell `lc` the target
