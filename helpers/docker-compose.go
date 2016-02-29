@@ -60,7 +60,8 @@ func GetDockerComposeVersion(c *cli.Context) (string, []int, error){
 func parseDockerComposeVersion(versionString string) (string, []int, error){
   // assuming version is last word in string
   firstLine := strings.Split(versionString, "\n")[0]
-  words := strings.Split(firstLine, " ")
+  versionComponent := strings.Split(firstLine, ",")[0]
+  words := strings.Split(versionComponent, " ")
   version := strings.TrimSpace(words[len(words)-1])
   versionArray := strings.Split(version, ".")
 
