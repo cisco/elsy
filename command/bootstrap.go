@@ -1,7 +1,8 @@
 package command
 
 import (
-  "os/exec"
+  "fmt"
+  "regexp"
 
   "github.com/codegangsta/cli"
   "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
@@ -13,12 +14,12 @@ func CmdBootstrap(c *cli.Context) error {
     return err
   }
   CmdTeardown(c)
-  commands := []*exec.Cmd{
-    helpers.DockerComposeCommand("build", "--pull"),
-    helpers.DockerComposeCommand("pull", "--ignore-pull-failures"),
-  }
-  if err := helpers.ChainCommands(commands); err != nil {
+
+  if err := helpers.RunCommand(helpers.DockerComposeCommand("build", "--pull")); err != nil {
     return err
   }
+  pullCmd := helpers.DockerComposeCommand("pull", "--ignore-pull-failures")
+  benignError := regexp.MustCompile(fmt.Sprintf(`Error: image library/%s:latest not found`, c.String("docker-image-name")))
+  helpers.RunCommandWithFilter(pullCmd, benignError.MatchString)
   return CmdInstallDependencies(c)
 }
