@@ -89,25 +89,71 @@ Feature: publish task
     When I run `lc publish --git-tag=v0.2.3`
     Then it should succeed with "foo"
 
-  Scenario: with a Docker project, calling publish on a new release tag
+  Scenario: with a publish service, calling publish on a non-release tag
     Given a file named "docker-compose.yml" with:
     """yaml
-    package:
+    publish:
       image: busybox
-      command: /bin/true
+      command: echo foo
     """
-    And a file named "Dockerfile" with:
-    """
-    FROM alpine
-    """
-    And a file named "lc.yml" with:
+    When I run `lc publish --git-tag=foo-test`
+    Then it should succeed with "foo"
+
+  Scenario: with a publish service, calling publish on a bogus tag
+    Given a file named "docker-compose.yml" with:
     """yaml
-    docker_image_name: projectlifecyclesmoketests_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    publish:
+      image: busybox
+      command: echo foo
     """
-    When I run `lc package`
-    And I run `lc publish --git-tag=v0.2.2 --git-branch=origin/master`
-    Then it should succeed
+    When I run `lc publish --git-tag=x/[z`
+    Then it should fail
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecyclesmoketests_docker_artifact |
-      | v0.2.2                                                                                                  |
+      | snapshot.x.[z |
+      | not valid |
+
+    Scenario: with a Docker project, calling publish on a new release tag
+      Given a file named "docker-compose.yml" with:
+      """yaml
+      package:
+        image: busybox
+        command: /bin/true
+      """
+      And a file named "Dockerfile" with:
+      """
+      FROM alpine
+      """
+      And a file named "lc.yml" with:
+      """yaml
+      docker_image_name: projectlifecyclesmoketests_docker_artifact
+      docker_registry: terrapin-registry0.eng.lancope.local:5000
+      """
+      When I run `lc package`
+      And I run `lc publish --git-tag=v0.2.2 --git-branch=origin/master`
+      Then it should succeed
+      And the output should contain all of these:
+        | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecyclesmoketests_docker_artifact |
+        | v0.2.2                                                                                                  |
+
+    Scenario: with a Docker project, calling publish on a non-release tag
+      Given a file named "docker-compose.yml" with:
+      """yaml
+      package:
+        image: busybox
+        command: /bin/true
+      """
+      And a file named "Dockerfile" with:
+      """
+      FROM alpine
+      """
+      And a file named "lc.yml" with:
+      """yaml
+      docker_image_name: projectlifecyclesmoketests_docker_artifact
+      docker_registry: terrapin-registry0.eng.lancope.local:5000
+      """
+      When I run `lc package`
+      And I run `lc publish --git-tag=foo-test --git-branch=origin/master`
+      Then it should succeed
+      And the output should contain all of these:
+        | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecyclesmoketests_docker_artifact |
+        | snapshot.foo-test                                                                                       |
