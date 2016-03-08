@@ -3,10 +3,11 @@ package command
 import (
   "fmt"
   "regexp"
+	"os/exec"
 
-  "github.com/codegangsta/cli"
-  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
-  "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
+	"github.com/codegangsta/cli"
+	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
+	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 func CmdBootstrap(c *cli.Context) error {

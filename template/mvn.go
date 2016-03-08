@@ -3,8 +3,8 @@ package template
 import "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 
 var mvnTemplate = template{
-  name: "mvn",
-  composeYmlTmpl: `
+	name: "mvn",
+	composeYmlTmpl: `
 {{if .ScratchVolumes}}
 mvnscratch:
   image: busybox
@@ -33,7 +33,7 @@ publish:
   <<: *mvn
   entrypoint: /bin/true
 `,
-  scratchVolumes: `
+	scratchVolumes: `
   - /opt/project/target/classes
   - /opt/project/target/journal
   - /opt/project/target/maven-archiver
@@ -42,15 +42,15 @@ publish:
   - /opt/project/target/test-classes
   - /opt/project/target/war/work
   - /opt/project/target/webappDirectory
-`,}
+`}
 
 func init() {
-  AddSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
-    Image: "busybox:latest",
-    Name: "lc_shared_mvndata",
-    Volumes: []string{"/root/.m2/repository"},
-    Resilient: true,
-  })
+	AddSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
+		Image:     "busybox:latest",
+		Name:      "lc_shared_mvndata",
+		Volumes:   []string{"/root/.m2/repository"},
+		Resilient: true,
+	})
 
-  Add(mvnTemplate)
+	Add(mvnTemplate)
 }
