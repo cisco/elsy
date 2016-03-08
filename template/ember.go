@@ -1,8 +1,8 @@
 package template
 
 var emberTemplate = template{
-  name: "ember",
-  composeYmlTmpl: `
+	name: "ember",
+	composeYmlTmpl: `
   emberdata:
     image: arch-docker.eng.lancope.local:5000/ember
     volumes:
@@ -42,5 +42,5 @@ var emberTemplate = template{
 }
 
 func init() {
-  Add(emberTemplate)
+	Add(emberTemplate)
 }
