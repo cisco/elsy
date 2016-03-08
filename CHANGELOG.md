@@ -1,3 +1,8 @@
+## 0.4.2
+
+- Source formatted with `gofmt`.
+- Now treats non-release tags the same as non-release branches, and should no longer blow up.
+
 ## v0.4.1
 
 - Correctly parses docker-compose version strings that include build info.
