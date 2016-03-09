@@ -2,9 +2,9 @@ require 'turnip/rspec'
 require 'tmpdir'
 
 RSpec.configure do |config|
-  Dir.glob("smoketest/steps/**/*_steps.rb") { |f| load f, true }
+  Dir.glob("blackbox-test/steps/**/*_steps.rb") { |f| load f, true }
   config.before do
-    @dir = Dir.mktmpdir("project-lifecycle-smoketest")
+    @dir = Dir.mktmpdir("project-lifecycle-blackbox")
   end
   config.after do
     FileUtils.rm_rf(@dir)
@@ -18,4 +18,4 @@ end
 
 # add `lc` to our path
 require 'fileutils'
-FileUtils.ln_s("/opt/project/target/lc-smoke", "/usr/local/bin/lc")
+FileUtils.ln_s("/opt/project/target/lc-blackbox", "/usr/local/bin/lc")

@@ -3,7 +3,7 @@ FROM library/ruby:latest
 RUN gem install \
     turnip
 
-## setup git so smoke tests can make git calls
+## setup git so blackbox tests can make git calls
 RUN git config --global user.email "test@lancopetest.com"
 RUN git config --global user.name "Project Lifecycle"
 

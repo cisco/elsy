@@ -31,7 +31,7 @@ Feature: package task
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
+    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
     When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact --skip-docker`
     Then it should succeed
@@ -40,13 +40,13 @@ Feature: package task
   Scenario: with a docker artifact based on a local image
     Given a file named "Dockerfile" with:
     """
-    FROM projectlifecyclesmoketests_docker_artifact
+    FROM projectlifecycleblackbox_docker_artifact
     """
     And a file named "lc.yml" with:
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact2`
+    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact2`
     Then it should succeed with "Successfully built "
 
   Scenario: with a failing package service
@@ -96,7 +96,7 @@ Feature: package task
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact`
+    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
 
   Scenario: with a docker artifact and configured image name via lc.yml
@@ -112,7 +112,7 @@ Feature: package task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecyclesmoketests_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact
     """
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"

@@ -66,5 +66,6 @@ Feature: smoketest task
     When I run `lc smoketest`
     Then it should succeed
     And the output should contain all of these:
-      | Running package before executing smoketests     |
+      | Running package before executing |
       | Successfully built                              |
+      | smoketest has been deprecated and will be removed in a future version. use blackbox-test instead. |
