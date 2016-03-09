@@ -87,7 +87,7 @@ This repo exposes all of the core `lc` tasks for ongoing development:
 $ lc bootstrap
 
 ## test your code
-$ lc test && lc smoketest
+$ lc test && lc blackbox-test
 
 ## package a new binary, will show up in ./target/
 $ lc package
@@ -120,7 +120,7 @@ and specify an env variable of `LC_REPO_NETRC`.
 **TODO: Figure out if we can share the full $GOPATH from the container**
 
 Follow these instructions to enable IDE integration during development. IDE integration is purely for speeding
-local work, developers should still run `lc test && lc smoketest` to validate code before pushing.
+local work, developers should still run `lc test && lc blackbox-test` to validate code before pushing.
 
 [Atom](https://atom.io/) is the recommended editor for `golang` projects and it is also recommended that you use the
 [go-plus](https://atom.io/packages/go-plus) package for live `golinting` and `govetting`

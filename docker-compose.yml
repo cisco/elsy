@@ -34,15 +34,19 @@ lint:
   entrypoint: ["/go/bin/golint"]
   command: "./..."
 
-smoketest:
-  build: smoketest
+blackbox-test: &BLACKBOXTEST
+  build: blackbox-test
   volumes:
     - .:/opt/project/
     - /var/run/docker.sock:/var/run/docker.sock
-    - /tmp/lc_smoketest:/tmp/lc_smoketest
+    - /tmp/lc_blackbox-test:/tmp/lc_blackbox-test
   environment:
-    - COMPOSE_PROJECT_NAME=projectlifecyclesmoketests
-    - TMPDIR=/tmp/lc_smoketest
+    - COMPOSE_PROJECT_NAME=projectlifecycleblackbox
+    - TMPDIR=/tmp/lc_blackbox-test
   working_dir: /opt/project
-  entrypoint: ["rspec", "--require", "./smoketest/spec_helper.rb", "--format", "documentation"]
-  command: ["--pattern", "smoketest/**/*.feature"]
+  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "blackbox-test/**/*.feature"]
+
+# Once a new version of lc is available, this section can be removed.
+smoketest:
+  <<: *BLACKBOXTEST

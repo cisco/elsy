@@ -31,8 +31,8 @@ Feature: ci task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecyclesmoketests_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact
     docker_registry: terrapin-registry0.eng.lancope.local:5000
     """
     And I run `lc ci --git-branch=origin/master`
-    Then it should succeed with "Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecyclesmoketests_docker_artifact"
+    Then it should succeed with "Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact"
