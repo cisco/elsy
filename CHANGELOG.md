@@ -1,3 +1,8 @@
+## 0.5.1
+
+- Added --skip-docker option to `package`
+- Hid benign error when docker-compose service uses the primary docker image artifact
+
 ## 0.5.0
 
 - Renamed `smoketest` to `blackbox-test`. Tests should now go in `./blackbox-test`. Existing smoketests are still supported, but the `smoketest` command will be removed at some point.
