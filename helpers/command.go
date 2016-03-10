@@ -1,7 +1,7 @@
 package helpers
 
 import (
-  "bufio"
+	"bufio"
 	"os"
 	"os/exec"
 
@@ -33,32 +33,32 @@ func RunCommandWithOutput(command *exec.Cmd) (string, error) {
 }
 
 type dropFilterFunc func(string) bool
+
 func RunCommandWithFilter(command *exec.Cmd, filter dropFilterFunc) error {
-  if pipe, err := command.StdoutPipe(); err != nil {
-    return err
-  } else {
-    go filterPipe(bufio.NewScanner(pipe), filter, os.Stdout)
-  }
-  if pipe, err := command.StderrPipe(); err != nil {
-    return err
-  } else {
-    go filterPipe(bufio.NewScanner(pipe), filter, os.Stderr)
-  }
-  logrus.Debugf("running command %s with args %v", command.Path, command.Args)
-  if err := command.Run(); err != nil {
-    return err
-  }
-  return nil
+	if pipe, err := command.StdoutPipe(); err != nil {
+		return err
+	} else {
+		go filterPipe(bufio.NewScanner(pipe), filter, os.Stdout)
+	}
+	if pipe, err := command.StderrPipe(); err != nil {
+		return err
+	} else {
+		go filterPipe(bufio.NewScanner(pipe), filter, os.Stderr)
+	}
+	logrus.Debugf("running command %s with args %v", command.Path, command.Args)
+	if err := command.Run(); err != nil {
+		return err
+	}
+	return nil
 }
 func filterPipe(scanner *bufio.Scanner, filter dropFilterFunc, dst *os.File) {
-  for scanner.Scan() {
-    if !filter(scanner.Text()) {
-      dst.Write(scanner.Bytes())
-      dst.WriteString("\n")
-    }
-  }
+	for scanner.Scan() {
+		if !filter(scanner.Text()) {
+			dst.Write(scanner.Bytes())
+			dst.WriteString("\n")
+		}
+	}
 }
-
 
 func ChainCommands(commands []*exec.Cmd) error {
 	for _, command := range commands {

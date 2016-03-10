@@ -49,13 +49,13 @@ func Commands() []cli.Command {
 			Name:   "bootstrap",
 			Usage:  "",
 			Action: panicOnError(command.CmdBootstrap),
-            Flags:  []cli.Flag{
-              cli.StringFlag{
-                Name:  "docker-image-name",
-                Value: GetConfigFileString("docker_image_name"),
-                Usage: "local docker image name to publish",
-              },
-            },
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "docker-image-name",
+					Value: GetConfigFileString("docker_image_name"),
+					Usage: "local docker image name to publish",
+				},
+			},
 		},
 		{
 			Name:   "install",
@@ -130,10 +130,10 @@ func Commands() []cli.Command {
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "docker image name to create",
 				},
-                cli.BoolFlag{
-                  Name:  "skip-docker",
-                  Usage: "skip building of Dockerfile",
-                },
+				cli.BoolFlag{
+					Name:  "skip-docker",
+					Usage: "skip building of Dockerfile",
+				},
 			},
 		},
 		{

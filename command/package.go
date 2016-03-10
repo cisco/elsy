@@ -22,17 +22,17 @@ func CmdPackage(c *cli.Context) error {
 		logrus.Debug("no package service found, skipping")
 	}
 
-  // docker build
-  if helpers.HasDockerfile() && !c.Bool("skip-docker") {
-    logrus.Debug("detected Dockerfile for packaging")
-    if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
-      commands = append(commands, exec.Command("docker", "pull", image.String()))
-    }
-    dockerImageName := c.String("docker-image-name")
-    if len(dockerImageName) == 0 {
-      logrus.Panic("you must use `--docker-image-name` to package a docker image")
-    }
-    commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
-  }
-  return helpers.ChainCommands(commands)
+	// docker build
+	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
+		logrus.Debug("detected Dockerfile for packaging")
+		if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
+			commands = append(commands, exec.Command("docker", "pull", image.String()))
+		}
+		dockerImageName := c.String("docker-image-name")
+		if len(dockerImageName) == 0 {
+			logrus.Panic("you must use `--docker-image-name` to package a docker image")
+		}
+		commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
+	}
+	return helpers.ChainCommands(commands)
 }
