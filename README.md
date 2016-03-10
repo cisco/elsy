@@ -29,20 +29,8 @@ The core `lc` tasks are:
 * bower: calls the `bower` service, forwarding arguments
 * ember: calls the `ember` service, forwarding arguments
 
-Sometimes you just need to run `docker-compose` commands using the composite `docker-compose.yml` files that `lc
-creates`. `lc` supports this using `lc dc --`, where everything after the
-[double dash](http://unix.stackexchange.com/a/11382) are the arguments passed to `docker-compose`. Some examples:
-
-```
-# get command help for 'docker-compose ps'
-$ lc dc -- ps --help
-
-# get docker-compose version
-$ lc dc -- --version
-
-# get an ssh shell into one of your services
-$ lc dc -- run --entrypoint=bash package -c bash
-```
+See See the [LC Best Practices](docs/bestpractices.md) for guidance on how to use `lc`
+for typical development workflows.
 
 ## Project Templates
 
