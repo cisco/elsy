@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Renamed `smoketest` to `blackbox-test`. Tests should now go in `./blackbox-test`. Existing smoketests are still supported, but the `smoketest` command will be removed at some point.
+
 ## 0.4.2
 
 - Source formatted with `gofmt`.
