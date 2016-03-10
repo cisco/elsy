@@ -1,4 +1,4 @@
-## 0.5.1
+## 0.6.0
 
 - Added --skip-docker option to `package`
 - Hid benign error when docker-compose service uses the primary docker image artifact
