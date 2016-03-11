@@ -1,3 +1,8 @@
+## 0.6.1
+
+- Added usage information to every command.
+- Added best practices documentation.
+
 ## 0.6.0
 
 - Added --skip-docker option to `package`
