@@ -4,9 +4,6 @@ import (
 	"fmt"
 )
 
-// Name is the binary name
-const Name string = "lc"
-
 var version string
 var build string
 

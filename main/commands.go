@@ -16,19 +16,19 @@ func GlobalFlags() []cli.Flag {
 		cli.StringFlag{
 			Name:   "project-name",
 			Value:  GetConfigFileString("project_name"),
-			Usage:  "docker-compose project name. defaults to name of `root` option",
+			Usage:  "the docker-compose project name. defaults to name of `root` option",
 			EnvVar: "COMPOSE_PROJECT_NAME",
 		},
 		cli.StringFlag{
 			Name:   "docker-compose",
 			Value:  GetConfigFileStringWithDefault("docker_compose", "docker-compose"),
-			Usage:  "command to use for docker-compose",
+			Usage:  "the command to use for docker-compose",
 			EnvVar: "LC_DOCKER_COMPOSE",
 		},
 		cli.StringFlag{
 			Name:  "template",
 			Value: GetConfigFileString("template"),
-			Usage: "project template to include",
+			Usage: "the project template to include",
 		},
 		cli.BoolFlag{
 			Name:   "enable-scratch-volumes",
@@ -37,7 +37,7 @@ func GlobalFlags() []cli.Flag {
 		},
 		cli.BoolFlag{
 			Name:   "debug",
-			Usage:  "turn on debug level logging",
+			Usage:  "turns on debug level logging",
 			EnvVar: "LC_DEBUG",
 		},
 	}
@@ -47,7 +47,7 @@ func Commands() []cli.Command {
 	return []cli.Command{
 		{
 			Name:   "bootstrap",
-			Usage:  "",
+			Usage:  "Builds all local images and pulls remote images found in docker-compose.yml",
 			Action: panicOnError(command.CmdBootstrap),
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -58,14 +58,14 @@ func Commands() []cli.Command {
 			},
 		},
 		{
-			Name:   "install",
-			Usage:  "",
+			Name:   "install-dependencies",
+			Usage:  "Installs any dependencies the project has. relies on an `installdependencies` service in docker-compose.yml",
 			Action: panicOnError(command.CmdInstallDependencies),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "ci",
-			Usage:  "",
+			Usage:  "Builds, and possibly publishes, the project's artifact. used by the Jenkins job",
 			Action: panicOnError(command.CmdCi),
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -92,37 +92,37 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "dc",
-			Usage:  "",
+			Usage:  "Executes a specific docker-compose command",
 			Action: panicOnError(command.CmdDockerCompose),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "mvn",
-			Usage:  "",
+			Usage:  "Executes a specific Maven command. Depends on a `mvn` service in docker-compose.yml",
 			Action: panicOnError(command.CmdMvn),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "sbt",
-			Usage:  "",
+			Usage:  "Executes a specific Sbt command. Depends on a `sbt` service in docker-compose.yml",
 			Action: panicOnError(command.CmdSbt),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "bower",
-			Usage:  "",
+			Usage:  "Executes a specific Bower command. Depends on a `bower` service in docker-compose.yml",
 			Action: panicOnError(command.CmdBower),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "npm",
-			Usage:  "",
+			Usage:  "Executes a specific npm command. Depends on an `npm` service in docker-compose.yml",
 			Action: panicOnError(command.CmdNpm),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:   "package",
-			Usage:  "",
+			Usage:  "Packages the artifact using the `package` service in docker-compose.yml; if not present, will use Dockerfile",
 			Action: panicOnError(command.CmdPackage),
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -138,7 +138,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "publish",
-			Usage:  "",
+			Usage:  "Publishes the artifact to Artifactory, a Docker registry, etc., using the `publish` service in docker-compose.yml",
 			Action: panicOnError(command.CmdPublish),
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -165,7 +165,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "release",
-			Usage:  "Create a release tag for the current repo",
+			Usage:  "Creates a release tag for the current repo",
 			Action: panicOnError(command.CmdRelease),
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -180,16 +180,16 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:  "server",
-			Usage: "manage the project's server (default is devserver)",
+			Usage: "Manages the project's server (default is devserver)",
 			Subcommands: []cli.Command{
 				{
 					Name:   "status",
-					Usage:  "get status of server. exits 0 if up, non-zero if down. prints out status as well as dynamic ports",
+					Usage:  "Gets status of server. exits 0 if up, non-zero if down. prints out status as well as dynamic ports",
 					Action: panicOnError(server.CmdStatus),
 				},
 				{
 					Name:   "start",
-					Usage:  "start the devserver or prodserver",
+					Usage:  "Starts the devserver or prodserver",
 					Action: panicOnError(server.CmdStart),
 					Flags: []cli.Flag{
 						cli.BoolFlag{
@@ -200,24 +200,24 @@ func Commands() []cli.Command {
 				},
 				{
 					Name:   "stop",
-					Usage:  "stops any running devserver or prodserver",
+					Usage:  "Stops any running devserver or prodserver",
 					Action: panicOnError(server.CmdStop),
 				},
 				{
 					Name:   "restart",
-					Usage:  "calls stop then start",
+					Usage:  "Calls stop then start",
 					Action: panicOnError(server.CmdRestart),
 				},
 				{
 					Name:   "log",
-					Usage:  "follows the log of the running server",
+					Usage:  "Follows the log of the running server",
 					Action: panicOnError(server.CmdLog),
 				},
 			},
 		},
 		{
 			Name:   "blackbox-test",
-			Usage:  "run blackbox-test service. forwards arguments",
+			Usage:  "Runs blackbox-test service. forwards arguments",
 			Action: panicOnError(command.CmdBlackbox),
 			Flags: []cli.Flag{
 				cli.BoolFlag{
@@ -233,7 +233,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "smoketest",
-			Usage:  "run smoketest service. forwards arguments (deprecated; use blackbox-test)",
+			Usage:  "Runs smoketest service. forwards arguments (deprecated; use blackbox-test)",
 			Action: panicOnError(command.CmdBlackbox),
 			Flags: []cli.Flag{
 				cli.BoolFlag{
@@ -249,28 +249,28 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "teardown",
-			Usage:  "kill all running containers and remove containers that do not have gc protection",
+			Usage:  "Kills all running services and removes services that do not have gc protection",
 			Action: panicOnError(command.CmdTeardown),
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "force, f",
-					Usage: "will remove all containers, even those with gc protection",
+					Usage: "will remove all services, even those with gc protection",
 				},
 			},
 		},
 		{
 			Name:   "test",
-			Usage:  "",
+			Usage:  "Executes project's `test` service. this should run the unit tests",
 			Action: panicOnError(command.CmdTest),
 			Flags:  []cli.Flag{},
 		},
 		{
 			Name:  "system",
-			Usage: "commands for managing lc",
+			Usage: "Manages lc itself",
 			Subcommands: []cli.Command{
 				{
 					Name:   "upgrade",
-					Usage:  "upgrade this lc binary",
+					Usage:  "Upgrades this lc binary",
 					Action: panicOnError(system.CmdUpgrade),
 					Flags: []cli.Flag{
 						cli.StringFlag{
@@ -281,13 +281,13 @@ func Commands() []cli.Command {
 				},
 				{
 					Name:   "view-template",
-					Usage:  "view the YAML of a template",
+					Usage:  "Displays the YAML of a template",
 					Action: panicOnError(system.CmdViewTemplate),
 					Flags:  []cli.Flag{},
 				},
 				{
 					Name:   "verify-lds",
-					Usage:  "runs a series of checks to verify the lds is running correctly. This must be run inside a repo.",
+					Usage:  "Runs a series of checks to verify the lds is running correctly. This must be run inside a repo",
 					Action: panicOnError(system.CmdVerifyLds),
 					Flags:  []cli.Flag{},
 				},
