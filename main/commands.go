@@ -58,6 +58,29 @@ func Commands() []cli.Command {
 			},
 		},
 		{
+			Name:   "init",
+			Usage:  "Initializes an lc repo. If a directory is not provided as the first (and only) argument, then the current directory will be used.",
+			Action: panicOnError(command.CmdInit),
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "docker-image-name",
+					Usage: "Will setup the lc repo using this name to tag the docker-image, only use this flag if the repo produces a Docker image.",
+				},
+				cli.StringFlag{
+					Name:  "docker-registry",
+					Usage: "Will setup the lc repo to publish to this docker-registry, only use this flag if the repo produces a Docker image.",
+				},
+				cli.StringFlag{
+					Name:  "project-name",
+					Usage: "The value to use for the 'project_name' in the lc.yml file. If not found, the init command will generate this dynamically based on the directory (recommended).",
+				},
+				cli.StringFlag{
+					Name:  "template",
+					Usage: "The lc template to use for the repo (not required). Valid values are 'mvn', 'sbt', 'ember'",
+				},
+			},
+		},
+		{
 			Name:   "install-dependencies",
 			Usage:  "Installs any dependencies the project has. relies on an `installdependencies` service in docker-compose.yml",
 			Action: panicOnError(command.CmdInstallDependencies),
