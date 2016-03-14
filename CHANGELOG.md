@@ -1,3 +1,7 @@
+## 0.7.0
+
+- Added `lc init` command for initializing repos to use lc [#95](https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/project-lifecycle/pull-requests/95/overview).
+
 ## 0.6.1
 
 - Added usage information to every command.
