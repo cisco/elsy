@@ -62,3 +62,33 @@ func TestSetupDirNewDirectory(t *testing.T) {
 		t.Errorf("expected %q to exist, but it did not", dir)
 	}
 }
+
+func TestCreateProjectName(t *testing.T) {
+	var testData = []struct {
+		dirName   string
+		expected  string
+		shouldErr bool
+	}{
+		{"sampledir", "sampledir", false},
+		{"sample-dir", "sampledir", false},
+		{"-----t------", "t", false},
+		{"t533657^$     %$#$#    ^^&&55&$##est", "t53365755est", false},
+		{"-----------", "", true},
+		{"", "", true},
+	}
+
+	for _, data := range testData {
+		result, err := createProjectName(data.dirName)
+
+		if data.shouldErr && err == nil {
+			t.Errorf("expected call to 'createProjectName' with arg %q to fail, but it passed", data.dirName)
+		}
+		if !data.shouldErr && err != nil {
+			t.Fatal(err)
+		}
+
+		if data.expected != result {
+			t.Errorf("expected result to be: %q but got %q instead", data.expected, result)
+		}
+	}
+}
