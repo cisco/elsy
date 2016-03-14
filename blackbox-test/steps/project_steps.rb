@@ -25,3 +25,31 @@ step "the following folders should be empty:" do |table|
     expect(Dir["#{absPath}/*"].empty?).to be(true), "expected #{relativePath} to be empty, but it had content"
   end
 end
+
+step "the file :name should contain the following:" do |relativePath, table|
+  absPath = File.join(@dir, relativePath)
+  expect(File.file?(absPath)).to be(true), "Could not find file '#{relativePath}'"
+
+  content = ""
+  for line in IO.readlines(absPath)
+    content += line
+  end
+
+  table.raw.flatten.each do |expected|
+    expect(content.include? expected).to be(true), "expected '#{relativePath}' to contain '#{expected}', but it did not. found: \n#{content}"
+  end
+end
+
+step "the file :name should not contain the following:" do |relativePath, table|
+  absPath = File.join(@dir, relativePath)
+  expect(File.file?(absPath)).to be(true), "Could not find file '#{relativePath}'"
+
+  content = ""
+  for line in IO.readlines(absPath)
+    content += line
+  end
+
+  table.raw.flatten.each do |expected|
+    expect(content.include? expected).to be(false), "expected '#{relativePath}' to not contain '#{expected}', but it did. found: \n#{content}"
+  end
+end
