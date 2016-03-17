@@ -1,4 +1,21 @@
 Feature: ci task
+  Scenario: with a package service and a test service, should not run tests
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: /bin/false
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc ci`
+    Then it should fail
+    And the output should not contain "Running tests before packaging"
 
   Scenario: with a failing test
     Given a file named "docker-compose.yml" with:

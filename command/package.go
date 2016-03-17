@@ -9,11 +9,27 @@ import (
 	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
-// CmdPackage runs package service if present and then attempts to build Dockerfile
+// CmdPackage runs package service if present and then attempts to build Dockerfile.
+// Unless --skip-tests is passed, it *will* run the tests, and any failures will abort
+// the packaging process.
 func CmdPackage(c *cli.Context) error {
 	if err := system.CmdVerifyLds(c); err != nil {
 		return err
 	}
+
+	if !c.Bool("skip-tests") && helpers.DockerComposeHasService("test") {
+		logrus.Info("Running tests before packaging")
+		if err := CmdTest(c); err != nil {
+			return err
+		}
+	}
+
+	return RunPackage(c)
+}
+
+// RunPackage runs package service if present and then attempts to build Dockerfile
+// This command does *not* attempt to run any tests, nor does it pay attention to the -skip-test flag
+func RunPackage(c *cli.Context) error {
 	commands := []*exec.Cmd{}
 
 	if helpers.DockerComposeHasService("package") {

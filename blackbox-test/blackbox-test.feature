@@ -68,3 +68,24 @@ Feature: blackbox-test task
     And the output should contain all of these:
       | Running package before executing blackbox tests |
       | Successfully built                              |
+
+  Scenario: with a package service and a test service, should not run tests
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    blackbox-test:
+      image: projectlifecycleblackbox_docker_artifact_blackbox
+      command: /bin/true
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: /bin/false
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc blackbox-test`
+    Then it should succeed with "Running package before executing blackbox tests"
+    And the output should not contain "Running tests before packaging"

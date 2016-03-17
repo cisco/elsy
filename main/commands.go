@@ -157,6 +157,10 @@ func Commands() []cli.Command {
 					Name:  "skip-docker",
 					Usage: "skip building of Dockerfile",
 				},
+				cli.BoolFlag{
+					Name:  "skip-tests",
+					Usage: "skip running of tests before packaging",
+				},
 			},
 		},
 		{

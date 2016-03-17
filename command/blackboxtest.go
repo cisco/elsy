@@ -10,7 +10,7 @@ import (
 func CmdBlackbox(c *cli.Context) error {
 	if !c.Bool("skip-package") {
 		logrus.Info("Running package before executing blackbox tests")
-		if err := CmdPackage(c); err != nil {
+		if err := RunPackage(c); err != nil {
 			return err
 		}
 	}

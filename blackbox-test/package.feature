@@ -14,6 +14,81 @@ Feature: package task
     When I run `lc package`
     Then it should succeed with "foo"
 
+  Scenario: with a package service and a test service
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: echo running tests
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc package`
+    Then it should succeed
+    And the output should contain all of these:
+      | Running tests before packaging |
+      | running tests  |
+      | foo |
+
+  Scenario: with a package service and a test service, skipping tests
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: echo running tests
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc package -skip-tests`
+    Then it should succeed with "foo"
+    And the output should not contain any of these:
+      | Running tests before packaging |
+      | running tests |
+
+  Scenario: with a package service and no test service
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc package`
+    Then it should succeed with "foo"
+    And the output should not contain any of these:
+      | Running tests before packaging |
+      | running tests  |
+
+  Scenario: with a package service and no test service, skipping tests
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    When I run `lc package -skip-tests`
+    Then it should succeed with "foo"
+    And the output should not contain any of these:
+      | Running tests before packaging |
+      | running tests |
+
   Scenario: without a package service
     Given a file named "lc.yml" with:
     """yaml
@@ -33,7 +108,7 @@ Feature: package task
     """
     When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
-    When I run `lc package --docker-image-name=projectlifecyclesmoketests_docker_artifact --skip-docker`
+    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact --skip-docker`
     Then it should succeed
     And the output should not contain "Successfully built "
 
@@ -46,7 +121,7 @@ Feature: package task
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact2`
+    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
     Then it should succeed with "Successfully built "
 
   Scenario: with a failing package service

@@ -33,6 +33,12 @@ step "the output should contain all of these:" do |table|
   end
 end
 
+step "the output should not contain any of these:" do |table|
+  table.raw.flatten.each do |string|
+    expect(@output).not_to include(string)
+  end
+end
+
 step "it should succeed with :expected" do |expected|
   send "it should succeed"
   send "the output should contain :expected", expected

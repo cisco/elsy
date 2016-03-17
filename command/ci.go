@@ -23,7 +23,7 @@ func CmdCi(c *cli.Context) error {
 	}
 
 	logrus.Info("Running package")
-	if err := CmdPackage(c); err != nil {
+	if err := RunPackage(c); err != nil {
 		return err
 	}
 
