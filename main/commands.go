@@ -318,6 +318,12 @@ func Commands() []cli.Command {
 					Action: panicOnError(system.CmdVerifyLds),
 					Flags:  []cli.Flag{},
 				},
+				{
+					Name:   "list-templates",
+					Usage:  "Displays the name of all available templates",
+					Action: panicOnError(system.CmdListTemplates),
+					Flags:  []cli.Flag{},
+				},
 			},
 		},
 	}

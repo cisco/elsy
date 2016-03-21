@@ -3,9 +3,9 @@ package template
 import (
 	"bytes"
 	"fmt"
-	tmpl "text/template"
-
+	"sort"
 	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	tmpl "text/template"
 )
 
 var sharedExternalDataContainers = make(map[string][]helpers.DockerDataContainer)
@@ -75,4 +75,16 @@ func Get(name string, enableScratchVolume bool) (string, error) {
 		return "", err
 	}
 	return yml, nil
+}
+
+func List() []string {
+	keys := make([]string, 0, len(templates))
+
+	for k := range templates {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
+	return keys
 }
