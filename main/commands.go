@@ -120,6 +120,12 @@ func Commands() []cli.Command {
 			Flags:  []cli.Flag{},
 		},
 		{
+			Name:   "make",
+			Usage:  "Executes a specific make command. Depends on a `make` service in docker-compose.yml",
+			Action: panicOnError(command.CmdMake),
+			Flags:  []cli.Flag{},
+		},
+		{
 			Name:   "mvn",
 			Usage:  "Executes a specific Maven command. Depends on a `mvn` service in docker-compose.yml",
 			Action: panicOnError(command.CmdMvn),

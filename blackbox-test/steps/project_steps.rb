@@ -53,3 +53,10 @@ step "the file :name should not contain the following:" do |relativePath, table|
     expect(content.include? expected).to be(false), "expected '#{relativePath}' to not contain '#{expected}', but it did. found: \n#{content}"
   end
 end
+
+step "the file :name should be executable" do |relativePath|
+  absPath = File.join(@dir, relativePath)
+  expect(File.file?(absPath)).to be(true), "Could not find file '#{relativePath}'"
+
+  expect(File.stat(absPath).executable?)
+end
