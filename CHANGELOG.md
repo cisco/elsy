@@ -1,7 +1,13 @@
+## 0.9.0
+
+- Added a `make` command, which is intended for building C/C++ projects, which have a Makefile. 
+- Added `list-templates` to the `system` command, to list all the built-in templates.
+
 ## 0.8.0
 
 - `lc package` will now run the `test` service, if present, before packaging. If you do not want those tests to be run,
     run `lc package --skip-tests`.
+
 ## 0.7.0
 
 - Added `lc init` command for initializing repos to use lc [#95](https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/project-lifecycle/pull-requests/95/overview).
