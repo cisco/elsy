@@ -126,6 +126,12 @@ func Commands() []cli.Command {
 			Flags:  []cli.Flag{},
 		},
 		{
+			Name:   "lein",
+			Usage:  "Executes a specific Leiningen command. Depends on a `lein` service in docker-compose.yml",
+			Action: panicOnError(command.CmdLein),
+			Flags:  []cli.Flag{},
+		},
+		{
 			Name:   "mvn",
 			Usage:  "Executes a specific Maven command. Depends on a `mvn` service in docker-compose.yml",
 			Action: panicOnError(command.CmdMvn),

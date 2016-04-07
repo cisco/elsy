@@ -1,3 +1,7 @@
+## _Unreleased_
+
+- Added a `lein` command, which facilitates building Clojure projects.
+
 ## 0.9.0
 
 - Added a `make` command, which is intended for building C/C++ projects, which have a Makefile. 
