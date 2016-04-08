@@ -23,7 +23,7 @@ list of currently supported templates.
 * `mvn`
 * `sbt`
 
-See [Templates](docs/templates.md) for an overview of the templating system, and how to change or modify the templates. 
+See [Templates](docs/templates.md) for an overview of the templating system, and how to change or modify the templates.
 
 
 
@@ -37,6 +37,8 @@ options:
 * `template`: [compose template](docs/templates.md) to include.
 * `docker_image_name`: name of docker image to build.
 * `docker_registry`: address of docker registry to publish to.
+* `docker_registries`: takes a yaml sequence containing multiple registries to publish to. Use either
+`docker_registry` or `docker_registries`, not both.
 
 Some configuration *per command* may also be specified as command line arguments.  If a command line argument is
 present, it will take precedence and override any value in the configuration file.
@@ -61,5 +63,3 @@ Example:
 ```
 
 The output will contain a help screen for the command listed ("`system`" in the above example).
-
-

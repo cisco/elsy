@@ -82,16 +82,25 @@ func publishImage(tagName string, c *cli.Context) error {
 	if len(dockerImageName) == 0 {
 		return errors.New("you must use `--docker-image-name` to publish a docker image")
 	}
-	dockerRegistry := c.String("docker-registry")
-	if len(dockerRegistry) == 0 {
-		return errors.New("you must use `--docker-registry` to publish a docker image")
-	}
 
-	remoteSpec := fmt.Sprintf("%s/%s:%s", dockerRegistry, dockerImageName, tagName)
-	return helpers.ChainCommands([]*exec.Cmd{
-		exec.Command("docker", "tag", "-f", dockerImageName, remoteSpec),
-		exec.Command("docker", "push", remoteSpec),
-	})
+	registries := c.StringSlice("docker-registry")
+
+	// fail fast if a single publish fails
+	for _, dockerRegistry := range registries {
+		if len(dockerRegistry) == 0 {
+			return errors.New("cannot publish to empty docker_registry, is `--docker-registry` specified?")
+		}
+
+		remoteSpec := fmt.Sprintf("%s/%s:%s", dockerRegistry, dockerImageName, tagName)
+		err := helpers.ChainCommands([]*exec.Cmd{
+			exec.Command("docker", "tag", "-f", dockerImageName, remoteSpec),
+			exec.Command("docker", "push", remoteSpec),
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 var releaseTagRegexp = regexp.MustCompile(`^v\d+\.\d+\.\d(?:([-]).{0,120}|$)`)

@@ -96,9 +96,9 @@ func Commands() []cli.Command {
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "local docker image name to publish",
 				},
-				cli.StringFlag{
+				cli.StringSliceFlag{
 					Name:  "docker-registry",
-					Value: GetConfigFileString("docker_registry"),
+					Value: resolveDockerRegistryFromConfig(),
 					Usage: "address of docker registry to publish to",
 				},
 				cli.StringFlag{
@@ -185,9 +185,9 @@ func Commands() []cli.Command {
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "local docker image name to publish",
 				},
-				cli.StringFlag{
+				cli.StringSliceFlag{
 					Name:  "docker-registry",
-					Value: GetConfigFileString("docker_registry"),
+					Value: resolveDockerRegistryFromConfig(),
 					Usage: "address of docker registry to publish to",
 				},
 				cli.StringFlag{

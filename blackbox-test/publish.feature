@@ -4,6 +4,23 @@ Feature: publish task
     When I run `lc publish`
     Then it should fail with "The publish task requires that either a git branch or git tag be set"
 
+  Scenario: with both docker_registry and docker_registries defined
+    Given a file named "lc.yml" with:
+    """yaml
+    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registries:
+      - arch-docker.eng.lancope.local:5000
+    """
+    When I run `lc bootstrap`
+    Then it should fail with "multiple docker registry configs found, pick either"
+    When I run `lc test`
+    Then it should fail with "multiple docker registry configs found, pick either"
+    When I run `lc package`
+    Then it should fail with "multiple docker registry configs found, pick either"
+    When I run `lc publish`
+    Then it should fail with "multiple docker registry configs found, pick either"
+
+
   Scenario: with a publish service, calling publish on the master branch
     Given a file named "docker-compose.yml" with:
     """yaml
@@ -55,6 +72,31 @@ Feature: publish task
     And the output should contain all of these:
       | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
       | latest                                                                                                  |
+
+  Scenario: with a Docker project, calling publish on the master branch with multiple registries
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "Dockerfile" with:
+    """
+    FROM alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_registries:
+      - terrapin-registry0.eng.lancope.local:5000
+      - arch-docker.eng.lancope.local:5000
+    """
+    When I run `lc package`
+    And I run `lc publish --git-branch=origin/master`
+    And the output should contain all of these:
+      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
+      | Pushing repository arch-docker.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact        |
+      | latest                                                                                                |
 
   Scenario: with a Docker project, calling publish on a feature branch
     Given a file named "docker-compose.yml" with:
