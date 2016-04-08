@@ -1,10 +1,13 @@
 ## _Unreleased_
 
+## 0.10.0
+
+- Added support for publishing to multiple docker registries [#102](https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/project-lifecycle/pull-requests/102/overview).
 - Added a `lein` command, which facilitates building Clojure projects.
 
 ## 0.9.0
 
-- Added a `make` command, which is intended for building C/C++ projects, which have a Makefile. 
+- Added a `make` command, which is intended for building C/C++ projects, which have a Makefile.
 - Added `list-templates` to the `system` command, to list all the built-in templates.
 
 ## 0.8.0
