@@ -364,3 +364,37 @@ func CommandNotFound(c *cli.Context, command string) {
 	cli.ShowAppHelp(c)
 	os.Exit(2)
 }
+
+// resolveDockerRegistryFromConfig handles resolving the docker registry (or set of registries)
+// in a backwards compatible way.
+//
+// Spcificially (because of backwards compatibility reasons) we support two config fields:
+// 	- 'docker_registry' -> will hold a single string
+// 	- 'docker_registries' -> will hold a yml sequece
+//
+// 	This function will panic if both fields are defined.
+func resolveDockerRegistryFromConfig() *cli.StringSlice {
+	singleK := "docker_registry"
+	seqK := "docker_registries"
+
+	if IsKeyInConfig(singleK) && IsKeyInConfig(seqK) {
+		panic(fmt.Errorf("Error parsing 'lc.yml': multiple docker registry configs found, pick either %q or %q", singleK, seqK))
+	}
+
+	if IsKeyInConfig(singleK) {
+		return &cli.StringSlice{GetConfigFileString(singleK)}
+	}
+
+	if IsKeyInConfig(seqK) {
+		v := cli.StringSlice(GetConfigFileSlice(seqK))
+		if len(v) == 0 {
+			// this will happen if the yaml containing the sequence is not perfectly formatted (e.g., if '-value' instead of '- value')
+			// eventually we need to make our parsing logic more forgiving, but until then just make it crystal clear when we can't parse something.
+			panic(fmt.Errorf("Error parsing 'lc.yml': found %q key, but did not find any registries, verify that yaml is correct", seqK))
+		}
+
+		return &v
+	}
+
+	return &cli.StringSlice{}
+}

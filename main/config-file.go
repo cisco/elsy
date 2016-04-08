@@ -10,6 +10,8 @@ import (
 var configFileOptions map[string]interface{}
 
 func LoadConfigFile(file string) error {
+	// ensure we always start with a fresh map
+	configFileOptions = nil
 	if _, err := os.Stat(file); err != nil {
 		return nil
 	}
@@ -27,6 +29,11 @@ func getConfigFileValue(key string) interface{} {
 	} else {
 		return nil
 	}
+}
+
+func IsKeyInConfig(key string) bool {
+	_, ok := configFileOptions[key]
+	return ok
 }
 
 func getConfigFileValueWithDefault(key string, defaultValue interface{}) interface{} {
