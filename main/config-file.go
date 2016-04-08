@@ -37,6 +37,22 @@ func getConfigFileValueWithDefault(key string, defaultValue interface{}) interfa
 	}
 }
 
+// GetConfigFileSlice will attempt to convert the value found at the given key
+// into a slice, if it fails, or if the key is not found it will return an empty slice.
+func GetConfigFileSlice(key string) []string {
+	if v, ok := configFileOptions[key].([]interface{}); ok {
+		retVal := []string{}
+		for _, e := range v {
+			if strV, ok := e.(string); ok {
+				retVal = append(retVal, strV)
+			}
+		}
+		return retVal
+	} else {
+		return []string{}
+	}
+}
+
 func GetConfigFileString(key string) string {
 	v, _ := getConfigFileValue(key).(string)
 	return v
