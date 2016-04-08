@@ -39,7 +39,7 @@ func CmdInit(c *cli.Context) error {
 
 	logrus.Infof("Initializing lc project at %s using project-name: %s", dir, projectName)
 
-	if err := initLcFile(dir, projectName, c.String("template"), c.String("docker-image-name"), c.String("docker-registry")); err != nil {
+	if err := initLcFile(dir, projectName, c.String("template"), c.String("docker-image-name"), c.StringSlice("docker-registry")); err != nil {
 		return fmt.Errorf("failure writing lc.yml: %q", err)
 	}
 
@@ -57,7 +57,7 @@ func CmdInit(c *cli.Context) error {
 }
 
 // initLcFile creates the lc file
-func initLcFile(dir, projectName, template, dockerImageName string, dockerRegistry string) error {
+func initLcFile(dir, projectName, template, dockerImageName string, dockerRegistries []string) error {
 	lc := filepath.Join(dir, "lc.yml")
 	mode := os.FileMode(int(0755))
 
@@ -72,8 +72,18 @@ func initLcFile(dir, projectName, template, dockerImageName string, dockerRegist
 		contents = contents + fmt.Sprintf("\ndocker_image_name: %s", dockerImageName)
 	}
 
-	if len(dockerRegistry) > 0 {
-		contents = contents + fmt.Sprintf("\ndocker_registry: %s", dockerRegistry)
+	if len(dockerRegistries) > 0 {
+		if len(dockerRegistries) == 1 && len(dockerRegistries[0]) > 0 {
+			contents = contents + fmt.Sprintf("\ndocker_registry: %s", dockerRegistries[0])
+		} else {
+			regString := "["
+			for _, registry := range dockerRegistries {
+				regString = regString + fmt.Sprintf("%q,", registry)
+			}
+			regString = regString + "]"
+			contents = contents + fmt.Sprintf("\ndocker_registries: %s", regString)
+		}
+
 	}
 
 	logrus.Debugf("Creating lc.yml")

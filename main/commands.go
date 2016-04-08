@@ -66,7 +66,7 @@ func Commands() []cli.Command {
 					Name:  "docker-image-name",
 					Usage: "Will setup the lc repo using this name to tag the docker-image, only use this flag if the repo produces a Docker image.",
 				},
-				cli.StringFlag{
+				cli.StringSliceFlag{
 					Name:  "docker-registry",
 					Usage: "Will setup the lc repo to publish to this docker-registry, only use this flag if the repo produces a Docker image.",
 				},

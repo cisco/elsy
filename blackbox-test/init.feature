@@ -1,10 +1,5 @@
 Feature: init command
 
-- test new directory
-- test existing directory
-- test three logical branches: https://lancope.slack.com/archives/dev-infrastructure/p1457726449000640
-
-
   Scenario: initializing the current directory
     When I run `mkdir inittest && cd inittest && lc init`
     Then it should succeed
@@ -47,6 +42,24 @@ Feature: init command
       | project_name: mvnservice                            |
       | template: mvn                                       |
       | docker_image_name: mvnserviceimage                  |
+      | docker_registry: arch-docker.eng.lancope.local:5000 |
+    And the file "fullinit/docker-compose.yml" should contain the following:
+      | noop            |
+      | image: alpine   |
+    And the file "fullinit/Dockerfile" should contain the following:
+      | FROM scratch    |
+
+  Scenario: initializing a repo with all options and multiple registries
+    When I run `lc init --template=mvn --project-name=mvnservice --docker-image-name=mvnserviceimage --docker-registry=arch-docker.eng.lancope.local:5000 --docker-registry=terrapin-registry0.eng.lancope.local:5000 fullinit`
+    Then it should succeed
+    And the output should contain all of these:
+      | Initializing lc project         |
+      | using project-name: mvnservice  |
+    And the file "fullinit/lc.yml" should contain the following:
+      | project_name: mvnservice                            |
+      | template: mvn                                       |
+      | docker_image_name: mvnserviceimage                  |
+      | docker_registries: ["arch-docker.eng.lancope.local:5000","terrapin-registry0.eng.lancope.local:5000",] |
     And the file "fullinit/docker-compose.yml" should contain the following:
       | noop            |
       | image: alpine   |
