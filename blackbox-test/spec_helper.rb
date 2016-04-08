@@ -4,7 +4,8 @@ require 'tmpdir'
 RSpec.configure do |config|
     # fail when steps are unimplemented
   config.raise_error_for_unimplemented_steps = true
-
+  config.color = true
+  
   Dir.glob("blackbox-test/steps/**/*_steps.rb") { |f| load f, true }
   config.before do
     @dir = Dir.mktmpdir("project-lifecycle-blackbox")
