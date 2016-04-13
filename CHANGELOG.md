@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## 0.11.0
+
+- Added a `clean` command, which will remove old build artifacts.
+
 ## 0.10.0
 
 - Added support for publishing to multiple docker registries [#102](https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/project-lifecycle/pull-requests/102/overview).

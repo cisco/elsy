@@ -32,6 +32,9 @@ package:
 publish:
   <<: *mvn
   entrypoint: /bin/true
+clean:
+  <<: *mvn
+  entrypoint: [mvn, clean]
 `,
 	scratchVolumes: `
   - /opt/project/target/classes

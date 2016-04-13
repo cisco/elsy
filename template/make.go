@@ -12,6 +12,9 @@ make: &make
 test:
   <<: *make
   entrypoint: [make, test]
+clean:
+  <<: *make
+  entrypoint: [make, clean]
 `}
 
 func init() {

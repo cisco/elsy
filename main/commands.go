@@ -114,6 +114,12 @@ func Commands() []cli.Command {
 			},
 		},
 		{
+			Name:   "clean",
+			Usage:  "Executes a project-specific `clean` command. Depends on a `clean` service in docker-compose.yml",
+			Action: panicOnError(command.CmdClean),
+			Flags:  []cli.Flag{},
+		},
+		{
 			Name:   "dc",
 			Usage:  "Executes a specific docker-compose command",
 			Action: panicOnError(command.CmdDockerCompose),

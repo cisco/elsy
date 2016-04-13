@@ -32,6 +32,9 @@ package:
 publish:
   <<: *lein
   entrypoint: /bin/true
+clean:
+  <<: *lein
+  entrypoint: [lein, clean]
 `,
 	scratchVolumes: `
   - /opt/project/target/classes

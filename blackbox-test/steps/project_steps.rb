@@ -60,3 +60,24 @@ step "the file :name should be executable" do |relativePath|
 
   expect(File.stat(absPath).executable?)
 end
+
+step "the file :name should exist" do |name|
+  absPath = File.join(@dir, name)
+  expect(File.file?(absPath)).to be(true), "#{name} should exist, but it did not"
+end
+
+step "the file :name should not exist" do |name|
+  absPath = File.join(@dir, name)
+  expect(File.file?(absPath)).to be(false), "#{name} should not exist, but it did"
+end
+
+step "the folder :folder should not exist" do |relativePath|
+  absPath = File.join(@dir, relativePath)
+  expect(Dir.exists?(absPath)).to be(false), "expected #{relativePath} not to exist, but it did"
+end
+
+step "the following folders should not exist" do |table|
+  table.raw.flatten.each do |relativePath|
+    send "the folder :folder should not exist", relativePath
+  end
+end
