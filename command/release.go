@@ -19,7 +19,7 @@ func CmdRelease(c *cli.Context) error {
 	if len(commit) == 0 {
 		return fmt.Errorf("--git-commit flag required")
 	}
-	if err := checkTag(version); err != nil {
+	if err := helpers.CheckTag(version); err != nil {
 		return err
 	}
 
@@ -31,11 +31,4 @@ func CmdRelease(c *cli.Context) error {
 		exec.Command("git", "tag", "-a", version, commit, "-m", fmt.Sprintf("add release tag for %s", version)),
 		exec.Command("git", "push", "origin", version),
 	})
-}
-
-func checkTag(v string) error {
-	if match := releaseTagRegexp.MatchString(v); !match {
-		return fmt.Errorf("release value syntax was not valid, it must adhere to: %q", releaseTagRegexp)
-	}
-	return nil
 }

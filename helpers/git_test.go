@@ -1,4 +1,4 @@
-package command
+package helpers
 
 import "testing"
 
@@ -21,7 +21,7 @@ func TestExtractTagFromBranch(t *testing.T) {
 		{"release", "", true},
 		{"foo", "", true},
 	}
-	doTest(t, &data, extractTagFromBranch)
+	doTest(t, &data, ExtractTagFromBranch)
 }
 
 func TestExtractTagFromTag(t *testing.T) {
@@ -38,7 +38,7 @@ func TestExtractTagFromTag(t *testing.T) {
 		{"x/[z", "", true},
 		{"", "", true},
 	}
-	doTest(t, &data, extractTagFromTag)
+	doTest(t, &data, ExtractTagFromTag)
 }
 
 func doTest(t *testing.T, data *[]publishTestData, f extractor) {
