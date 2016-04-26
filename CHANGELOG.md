@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## 0.13.0
+
+- allow custom package service to generate the Dockerfile
+
 ## 0.12.0
 
 - support passing computed docker tag name to the custom publish service
