@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## 0.12.0
+
+- support passing computed docker tag name to the custom publish service
+
 ## 0.11.0
 
 - Added a `clean` command, which will remove old build artifacts.
