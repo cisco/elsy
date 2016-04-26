@@ -191,3 +191,19 @@ Feature: package task
     """
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"
+
+  Scenario: custom package script generating the Dockerfile
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      volumes:
+        - .:/opt/project
+      command: ["sh", "-c", "echo 'FROM library/alpine' > /opt/project/Dockerfile"]
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: projectlifecycleblackbox_docker_artifact
+    """
+    When I run `lc package`
+    Then it should succeed with "Image is up to date for alpine:latest"

@@ -30,15 +30,17 @@ func CmdPackage(c *cli.Context) error {
 // RunPackage runs package service if present and then attempts to build Dockerfile
 // This command does *not* attempt to run any tests, nor does it pay attention to the -skip-test flag
 func RunPackage(c *cli.Context) error {
-	commands := []*exec.Cmd{}
-
 	if helpers.DockerComposeHasService("package") {
-		commands = append(commands, helpers.DockerComposeCommand("run", "--rm", "package"))
+		err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "package"))
+    if (err != nil) {
+      return err
+    }
 	} else {
 		logrus.Debug("no package service found, skipping")
 	}
 
 	// docker build
+  commands := []*exec.Cmd{}
 	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
 		logrus.Debug("detected Dockerfile for packaging")
 		if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
