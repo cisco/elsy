@@ -3,6 +3,7 @@ package command
 import (
 	"errors"
 	"fmt"
+  "os"
 	"os/exec"
 
 	"github.com/Sirupsen/logrus"
@@ -33,7 +34,7 @@ func publishTag(tag string, c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	if err := customPublish(); err != nil {
+	if err := customPublish(tagName); err != nil {
 		return err
 	}
 	return publishImage(tagName, c)
@@ -52,7 +53,7 @@ func publishBranch(branch string, c *cli.Context) error {
 	if !helpers.IsStableBranch(branch) {
 		logrus.Infof("skipping custom publish task because %q is not a stable branch", branch)
 	} else {
-		if err := customPublish(); err != nil {
+		if err := customPublish(tagName); err != nil {
 			return err
 		}
 	}
@@ -61,9 +62,14 @@ func publishBranch(branch string, c *cli.Context) error {
 }
 
 // customPublish runs publish service found in template, if found
-func customPublish() error {
+// pass along tagName in ENV var LC_PUBLISH_DOCKER_TAG
+func customPublish(tagName string) error {
 	if helpers.DockerComposeHasService("publish") {
-		return helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "publish"))
+    cmd := helpers.DockerComposeCommand("run", "--rm", "publish")
+    env := os.Environ()
+	  env = append(env, fmt.Sprintf("LC_PUBLISH_DOCKER_TAG=%s", tagName))
+	  cmd.Env = env
+		return helpers.RunCommand(cmd)
 	}
 	logrus.Debug("no publish service found, skipping")
 	return nil
