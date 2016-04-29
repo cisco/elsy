@@ -81,3 +81,21 @@ Feature: bootstrap task
     When I run `lc bootstrap`
     Then it should fail pulling "fdsafdsa"
     And it should not fail pulling "baz"
+
+  Scenario: running in offline mode
+    If we run with --offline, we should not try to pull any images.
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    foo:
+      image: fdsafdsa
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    docker_image_name: baz
+    """
+    When I run `lc bootstrap`
+    Then it should fail pulling "fdsafdsa"
+    When I run `lc --offline bootstrap`
+    Then it should succeed
+    And the output should not contain "Pulling repository docker.io/library/baz"

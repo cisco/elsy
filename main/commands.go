@@ -11,6 +11,7 @@ import (
 	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 )
 
+// GlobalFlags sets up flags on the lc command proper
 func GlobalFlags() []cli.Flag {
 	return []cli.Flag{
 		cli.StringFlag{
@@ -40,9 +41,15 @@ func GlobalFlags() []cli.Flag {
 			Usage:  "turns on debug level logging",
 			EnvVar: "LC_DEBUG",
 		},
+		cli.BoolFlag{
+			Name:   "offline",
+			Usage:  "will not attempt to pull any Docker images",
+			EnvVar: "LC_OFFLINE",
+		},
 	}
 }
 
+// Commands sets up the main commands for the system
 func Commands() []cli.Command {
 	return []cli.Command{
 		{
@@ -365,6 +372,7 @@ func panicOnError(f cmdWithError) func(c *cli.Context) {
 	}
 }
 
+// CommandNotFound knows what to do when a command isn't found
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "ERROR: %s: %q is not a valid command.\n\n", c.App.Name, command)
 	cli.ShowAppHelp(c)

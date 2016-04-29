@@ -32,25 +32,32 @@ func CmdPackage(c *cli.Context) error {
 func RunPackage(c *cli.Context) error {
 	if helpers.DockerComposeHasService("package") {
 		err := helpers.RunCommand(helpers.DockerComposeCommand("run", "--rm", "package"))
-    if (err != nil) {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 	} else {
 		logrus.Debug("no package service found, skipping")
 	}
 
 	// docker build
-  commands := []*exec.Cmd{}
+	commands := []*exec.Cmd{}
 	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
 		logrus.Debug("detected Dockerfile for packaging")
-		if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
-			commands = append(commands, exec.Command("docker", "pull", image.String()))
+
+		if !c.GlobalBool("offline") {
+			if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
+				commands = append(commands, exec.Command("docker", "pull", image.String()))
+			}
 		}
+
 		dockerImageName := c.String("docker-image-name")
+
 		if len(dockerImageName) == 0 {
 			logrus.Panic("you must use `--docker-image-name` to package a docker image")
 		}
+
 		commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
 	}
+
 	return helpers.ChainCommands(commands)
 }

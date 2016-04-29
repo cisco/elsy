@@ -110,18 +110,23 @@ func (ddc *DockerDataContainer) Create() error {
 	return err
 }
 
-func (ddc *DockerDataContainer) Ensure() error {
+func (ddc *DockerDataContainer) Ensure(offline bool) error {
 	imageComponents := strings.Split(ddc.Image, ":")
 	image, tag := imageComponents[0], ""
 	if len(imageComponents) > 1 {
 		tag = imageComponents[1]
 	}
-	if err := ensureImageExists(image, tag); err != nil {
-		logrus.Debugf("error ensuring image exits, attempting to create anyway, err: %q", err)
+
+	if !offline {
+		if err := ensureImageExists(image, tag); err != nil {
+			logrus.Debugf("error ensuring image exits, attempting to create anyway, err: %q", err)
+		}
 	}
+
 	if !DockerContainerExists(ddc.Name) {
 		return ddc.Create()
 	}
+
 	return nil
 }
 
@@ -131,6 +136,7 @@ func ensureImageExists(image string, tag string) error {
 		logrus.Debugf("image ''%s:%s' does not exist locally, pulling", image, tag)
 		return PullDockerImage(image, tag)
 	}
+
 	return nil
 }
 

@@ -148,7 +148,7 @@ func setComposeTemplate(c *cli.Context) {
 
 	dataContainers := template.GetSharedExternalDataContainers(templateName)
 	for _, dataContainer := range dataContainers {
-		if err := dataContainer.Ensure(); err != nil {
+		if err := dataContainer.Ensure(c.GlobalBool("offline")); err != nil {
 			logrus.Panic("unable to create data container")
 		}
 	}

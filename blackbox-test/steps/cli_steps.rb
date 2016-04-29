@@ -48,3 +48,8 @@ step "it should fail with :expected" do |expected|
   send "it should fail"
   send "the output should contain :expected", expected
 end
+
+step "it should succeed with no output" do
+  send "it should succeed"
+  expect(@output.length == 0)
+end
