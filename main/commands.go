@@ -322,7 +322,7 @@ func Commands() []cli.Command {
 			Subcommands: []cli.Command{
 				{
 					Name:   "upgrade",
-					Usage:  "Upgrades this lc binary",
+					Usage:  "Upgrades this lc binary (deprecated; use `lds upgrade`)",
 					Action: panicOnError(system.CmdUpgrade),
 					Flags: []cli.Flag{
 						cli.StringFlag{

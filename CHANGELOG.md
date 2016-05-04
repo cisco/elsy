@@ -1,5 +1,8 @@
 ## _Unreleased_
 
+- Deprecated `system upgrade`, since users should upgrade `lc` when they upgrade `lds`
+by running `lds upgrade`.
+
 ## 0.14.0
 
 - After #DumpsterFireApril2016, we felt an offline mode would be useful. So, if the VM 
