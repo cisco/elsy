@@ -1,5 +1,14 @@
 ## _Unreleased_
 
+## 0.14.0
+
+- After #DumpsterFireApril2016, we felt an offline mode would be useful. So, if the VM 
+infrastructure ever erupts in flames again, _and_ you have already pulled down the images 
+that you need for building, then adding `--offline` will make the build work. If you had 
+not already pulled the requisite images, you could build them yourself from their sources, 
+and tag them so that they would be available in your local Docker image cache, and then 
+use the `--offline` switch.
+
 ## 0.13.0
 
 - allow custom package service to generate the Dockerfile
