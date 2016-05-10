@@ -169,3 +169,5 @@ Feature: maven template
     And the following folders should be empty:
     | target/classes           |
     | target/test-classes      |
+    When I run `lc --enable-scratch-volumes clean`
+    Then it should succeed

@@ -32,9 +32,15 @@ package:
 publish:
   <<: *mvn
   entrypoint: /bin/true
+{{if .ScratchVolumes}}
+clean:
+  <<: *mvn
+  entrypoint: [mvn, clean, "-Dmaven.clean.failOnError=false"]  
+{{else}}
 clean:
   <<: *mvn
   entrypoint: [mvn, clean]
+{{end}}
 `,
 	scratchVolumes: `
   - /opt/project/target/classes
