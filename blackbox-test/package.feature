@@ -207,3 +207,35 @@ Feature: package task
     """
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"
+
+  Scenario: with previous containers created from the docker artifact
+    Given a file named "Dockerfile" with:
+    """
+    FROM library/alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    docker_image_name: projectlifecycleblackbox_docker_artifact
+    """
+    When I run `lc --debug package`
+    Then it should succeed with "Successfully built "
+    And the output should contain all of these:
+      | removing all containers created from image projectlifecycleblackbox_docker_artifact |
+    And the output should not contain any of these:
+      | removing container |
+      | could not remove containers |
+    When I run `docker run projectlifecycleblackbox_docker_artifact /bin/echo test_package_container`
+    Then it should succeed with "test_package_container"
+    When I run `docker ps -a`
+    Then it should succeed with "projectlifecycleblackbox_docker_artifact"
+    When I run `lc --debug package`
+    Then it should succeed with "Successfully built "
+    And the output should contain all of these:
+      | removing all containers created from image projectlifecycleblackbox_docker_artifact |
+      | removing container |
+    And the output should not contain any of these:
+      | could not remove containers |
+    When I run `docker ps -a`
+    Then it should succeed
+    And the output should not contain "projectlifecycleblackbox_docker_artifact"

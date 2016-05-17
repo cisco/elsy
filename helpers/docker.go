@@ -70,6 +70,26 @@ func DockerImageExists(image string, tag string) (bool, error) {
 	return false, nil
 }
 
+// RemoveContainersOfImage will remove all containers created from the provided image
+func RemoveContainersOfImage(image string) error {
+	logrus.Debugf("removing all containers created from image %s", image)
+	client := GetDockerClient()
+	if containers, err := client.ListContainers(docker.ListContainersOptions{All: true}); err != nil {
+		return err
+	} else {
+		for _, container := range containers {
+			if container.Image == image {
+				logrus.Debugf("removing container: %s", container.ID)
+				options := docker.RemoveContainerOptions{ID: container.ID, RemoveVolumes: true, Force: true}
+				if err := client.RemoveContainer(options); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	}
+}
+
 // PullDockerImage blindly pulls the image:tag
 func PullDockerImage(image string, tag string) error {
 	// TODO: support more advanced PullImageOptions

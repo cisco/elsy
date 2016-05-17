@@ -6,13 +6,16 @@ so that running `lc clean` when scratch volumes are enabled won't cause the buil
 - Deprecated `system upgrade`, since users should upgrade `lc` when they upgrade `lds`
 by running `lds upgrade`.
 
+- Updated `lc package` to cleanup any containers created from previous versions of the
+docker image.
+
 ## 0.14.0
 
-- After #DumpsterFireApril2016, we felt an offline mode would be useful. So, if the VM 
-infrastructure ever erupts in flames again, _and_ you have already pulled down the images 
-that you need for building, then adding `--offline` will make the build work. If you had 
-not already pulled the requisite images, you could build them yourself from their sources, 
-and tag them so that they would be available in your local Docker image cache, and then 
+- After #DumpsterFireApril2016, we felt an offline mode would be useful. So, if the VM
+infrastructure ever erupts in flames again, _and_ you have already pulled down the images
+that you need for building, then adding `--offline` will make the build work. If you had
+not already pulled the requisite images, you could build them yourself from their sources,
+and tag them so that they would be available in your local Docker image cache, and then
 use the `--offline` switch.
 
 ## 0.13.0

@@ -41,6 +41,7 @@ func RunPackage(c *cli.Context) error {
 
 	// docker build
 	commands := []*exec.Cmd{}
+	dockerImageName := c.String("docker-image-name")
 	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
 		logrus.Debug("detected Dockerfile for packaging")
 
@@ -50,8 +51,6 @@ func RunPackage(c *cli.Context) error {
 			}
 		}
 
-		dockerImageName := c.String("docker-image-name")
-
 		if len(dockerImageName) == 0 {
 			logrus.Panic("you must use `--docker-image-name` to package a docker image")
 		}
@@ -59,5 +58,16 @@ func RunPackage(c *cli.Context) error {
 		commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
 	}
 
-	return helpers.ChainCommands(commands)
+	if err := helpers.ChainCommands(commands); err != nil {
+		return err
+	}
+
+	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
+		// remove any containers that were created from the previous version of the image
+		if err := helpers.RemoveContainersOfImage(dockerImageName); err != nil {
+			logrus.Warnf("could not remove containers created from previous version of %q, err: %q", dockerImageName, err)
+		}
+	}
+
+	return nil
 }
