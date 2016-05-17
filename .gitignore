@@ -2,3 +2,5 @@
 /.idea
 .tags
 .tags1
+vendor/*/
+

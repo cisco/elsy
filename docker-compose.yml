@@ -6,7 +6,13 @@ go: &go
   environment:
     - GOOS
     - GOARCH
-  entrypoint: /usr/local/go/bin/go
+  entrypoint: /bin/bash
+    # /usr/local/go/bin/go
+
+installdependencies:
+  <<: *go
+  entrypoint: govendor
+  command: sync
 
 package:
   <<: *go

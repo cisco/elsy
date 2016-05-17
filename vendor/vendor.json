@@ -1,0 +1,153 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "QCAKzv0affIi7mlcGqPR8S3w6s0=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "219c8cb75c258c552e999735be6df753ffc7afdc",
+			"revisionTime": "2016-02-24T21:10:30Z"
+		},
+		{
+			"checksumSHA1": "BLBx9HSRPH8EPHHFEnBErhC8QfU=",
+			"path": "github.com/codegangsta/cli",
+			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
+			"revisionTime": "2016-03-07T04:12:29Z"
+		},
+		{
+			"checksumSHA1": "gkRIq2AsG0e/ngNfqW+IF/zr9o8=",
+			"path": "github.com/fatih/color",
+			"revision": "4f7bcef27eec7925456d0c30c5e7b0408b3339be",
+			"revisionTime": "2016-02-24T22:11:55Z"
+		},
+		{
+			"checksumSHA1": "rz0bI3Drq3xFCbrcG8mWwle7Qeg=",
+			"path": "github.com/fsouza/go-dockerclient",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "7CvOHJK9x8GlFZmYe0nXMTz9teg=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/Sirupsen/logrus",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "608Y3rj23jTnrZJjGaFRK+s5IcU=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/opts",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "OECIN3MgL6Q/bup7ZbPYjAbPLZs=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/archive",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "dEFpUEhnmCDWorKpavPHVTkijYk=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/fileutils",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "gqNisQFLlzSB6GxBq4PkDbnNayg=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/homedir",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "B5n9LVGXOsgyLjgpG49/z33DQr8=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/idtools",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "Wufcejxg4ay719EwD4EJAh0HCdk=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/ioutils",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "9XQOQ2MyLt5gfTENYwo0Iuxaeoo=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/longpath",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "xRNl3MgjAJmN84KE4MzmVyGoe9M=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/pools",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "l63UQekgrt3jXEuq0rqsaLx5onI=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/promise",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "E4MW4qF8yysAY8Hi9UqoLY9+7ew=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/stdcopy",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "Tso+waTvFPwizhiPoW+JwQ7AmPw=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/system",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "8KgdGTS+WOEtfwqxp2A0udV+lJU=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/go-units",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "FRtY4g9kxucTQMy1cSkBQfCVd1U=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/hashicorp/go-cleanhttp",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "VvGdEczw0JVJjvfY1AVWV/8xx00=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/opencontainers/runc/libcontainer/user",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "v9n1SOhjaR6eJd122dUWOfBDmN4=",
+			"path": "github.com/fsouza/go-dockerclient/external/golang.org/x/net/context",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "hugdbffSP0G67FyJUhGvu9O0WmM=",
+			"path": "github.com/fsouza/go-dockerclient/external/golang.org/x/sys/unix",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
+			"checksumSHA1": "rCffFCN6TpDAN3Jylyo8RFzhQ9E=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-colorable",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "4f7bcef27eec7925456d0c30c5e7b0408b3339be",
+			"revisionTime": "2016-02-24T22:11:55Z"
+		},
+		{
+			"checksumSHA1": "NkbetqlpWBi3gP08JDneC+axTKw=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-isatty",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "4f7bcef27eec7925456d0c30c5e7b0408b3339be",
+			"revisionTime": "2016-02-24T22:11:55Z"
+		},
+		{
+			"checksumSHA1": "+OgOXBoiQ+X+C2dsAeiOHwBIEH0=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "a83829b6f1293c91addabc89d0571c246397bbf4",
+			"revisionTime": "2016-03-01T20:40:22Z"
+		}
+	],
+	"rootPath": "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle"
+}

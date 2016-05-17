@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-echo "running 'go test -v $@'"
-go test -v "$@"
-echo -e "\nrunning 'go vet -v $@''"
-go vet -v "$@"
+echo go test ./command ./helpers ./main ./template
+go test ./command ./helpers ./main ./template
+
+echo go vet ./command ./helpers ./main ./template
+go vet ./command ./helpers ./main ./template

@@ -1,8 +1,6 @@
 FROM library/golang:latest
 RUN GOOS=darwin GOARCH=amd64 go install -v std
 
-COPY dependencies go-gets go-installs /opt/build/
-RUN /opt/build/go-gets
-RUN /opt/build/go-installs
+RUN go get -u github.com/kardianos/govendor
 
 COPY test publish package /opt/lifecycle/
