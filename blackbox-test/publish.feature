@@ -95,13 +95,13 @@ Feature: publish task
     docker_image_name: projectlifecycleblackbox_docker_artifact
     docker_registries:
       - terrapin-registry0.eng.lancope.local:5000
-      - arch-docker.eng.lancope.local:5000
+      - stealthwatch-docker.eng.lancope.local:5000
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
       | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | Pushing repository arch-docker.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact        |
+      | Pushing repository stealthwatch-docker.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact        |
       | latest                                                                                                |
 
   Scenario: with a Docker project, calling publish on a feature branch
