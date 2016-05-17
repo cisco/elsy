@@ -1,11 +1,12 @@
 ## _Unreleased_
 
+## v0.15.0
+
 - Added `-Dmaven.clean.failOnError=false` to the `mvn` template's default `clean` service
 so that running `lc clean` when scratch volumes are enabled won't cause the build to fail.
-
 - Deprecated `system upgrade`, since users should upgrade `lc` when they upgrade `lds`
 by running `lds upgrade`.
-
+- Update build to use `govendor` to lock in dependencies
 - Updated `lc package` to cleanup any containers created from previous versions of the
 docker image.
 
