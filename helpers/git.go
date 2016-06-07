@@ -2,11 +2,11 @@ package helpers
 
 import (
 	"fmt"
-  "regexp"
-  "strings"
+	"regexp"
+	"strings"
 )
 
-var releaseTagRegexp = regexp.MustCompile(`^v\d+\.\d+\.\d(?:([-]).{0,120}|$)`)
+var releaseTagRegexp = regexp.MustCompile(`^v\d+\.\d+\.\d+(-.{0,120})?$`)
 var releaseRegexp = regexp.MustCompile("^origin/release/(.+)$")
 var snapshotRegexp = regexp.MustCompile("^origin/(.+)$")
 
