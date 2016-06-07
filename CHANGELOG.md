@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## v0.15.1
+
+- Fixed bug in `lc release` where it would not allow multi-digit patch numbers.
+
 ## v0.15.0
 
 - Added `-Dmaven.clean.failOnError=false` to the `mvn` template's default `clean` service
