@@ -1,7 +1,12 @@
 ## _Unreleased_
 
+## v0.16.1
+
+- no-op release to fix issue around v0.16.0 release.
+
 ## v0.16.0
 
+(NEVER RELEASED)
 - Stop 'lds-verify' from `bootstrap`, `package` and `test`
 
 ## v0.15.1
