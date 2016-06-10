@@ -5,16 +5,11 @@ import (
 	"regexp"
 
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
 // CmdBootstrap pulls and builds the services in the docker-compose file
 func CmdBootstrap(c *cli.Context) error {
-	if err := system.CmdVerifyLds(c); err != nil {
-		return err
-	}
-
 	CmdTeardown(c)
 
 	if !c.GlobalBool("offline") {

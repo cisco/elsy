@@ -5,7 +5,6 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
 	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
 )
 
@@ -13,10 +12,6 @@ import (
 // Unless --skip-tests is passed, it *will* run the tests, and any failures will abort
 // the packaging process.
 func CmdPackage(c *cli.Context) error {
-	if err := system.CmdVerifyLds(c); err != nil {
-		return err
-	}
-
 	if !c.Bool("skip-tests") && helpers.DockerComposeHasService("test") {
 		logrus.Info("Running tests before packaging")
 		if err := CmdTest(c); err != nil {
