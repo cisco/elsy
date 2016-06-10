@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## v0.16.0
+
+- Stop 'lds-verify' from `bootstrap`, `package` and `test`
+
 ## v0.15.1
 
 - Fixed bug in `lc release` where it would not allow multi-digit patch numbers.
