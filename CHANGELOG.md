@@ -1,5 +1,10 @@
 ## _Unreleased_
 
+## v0.16.2
+
+- Fix bug where `lc package` was not always removing all previous containers
+created from previous versions of the docker image.
+
 ## v0.16.1
 
 - no-op release to fix issue around v0.16.0 release.
