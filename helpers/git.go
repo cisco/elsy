@@ -69,7 +69,7 @@ func IsStableBranch(gitBranch string) bool {
 
 func CheckTag(v string) error {
 	if match := releaseTagRegexp.MatchString(v); !match {
-		return fmt.Errorf("release value syntax was not valid, it must adhere to: %q", releaseTagRegexp)
+		return fmt.Errorf("release value syntax was not valid, it must adhere to: %s", releaseTagRegexp)
 	}
 	return nil
 }

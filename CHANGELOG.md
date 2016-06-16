@@ -1,5 +1,7 @@
 ## _Unreleased_
 
+- Fix lc release error message to stop escaping regex.
+
 ## v0.16.2
 
 - Fix bug where `lc package` was not always removing all previous containers
