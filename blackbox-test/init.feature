@@ -33,16 +33,16 @@ Feature: init command
     Then it should fail with "repo already initialized"
 
   Scenario: initializing a repo with all options
-    When I run `lc init --template=mvn --project-name=mvnservice --docker-image-name=mvnserviceimage --docker-registry=arch-docker.eng.lancope.local:5000 fullinit`
+    When I run `lc init --template=mvn --project-name=mvnservice --docker-image-name=mvnserviceimage --docker-registry=internal-registry.something.com:5000 fullinit`
     Then it should succeed
     And the output should contain all of these:
       | Initializing lc project         |
       | using project-name: mvnservice  |
     And the file "fullinit/lc.yml" should contain the following:
-      | project_name: mvnservice                            |
-      | template: mvn                                       |
-      | docker_image_name: mvnserviceimage                  |
-      | docker_registry: arch-docker.eng.lancope.local:5000 |
+      | project_name: mvnservice                              |
+      | template: mvn                                         |
+      | docker_image_name: mvnserviceimage                    |
+      | docker_registry: internal-registry.something.com:5000 |
     And the file "fullinit/docker-compose.yml" should contain the following:
       | noop            |
       | image: alpine   |
@@ -50,7 +50,7 @@ Feature: init command
       | FROM scratch    |
 
   Scenario: initializing a repo with all options and multiple registries
-    When I run `lc init --template=mvn --project-name=mvnservice --docker-image-name=mvnserviceimage --docker-registry=arch-docker.eng.lancope.local:5000 --docker-registry=terrapin-registry0.eng.lancope.local:5000 fullinit`
+    When I run `lc init --template=mvn --project-name=mvnservice --docker-image-name=mvnserviceimage --docker-registry=internal-registry.something.com:5000 --docker-registry=internal-registry2.somethingelse.com fullinit`
     Then it should succeed
     And the output should contain all of these:
       | Initializing lc project         |
@@ -59,7 +59,7 @@ Feature: init command
       | project_name: mvnservice                            |
       | template: mvn                                       |
       | docker_image_name: mvnserviceimage                  |
-      | docker_registries: ["arch-docker.eng.lancope.local:5000","terrapin-registry0.eng.lancope.local:5000",] |
+      | docker_registries: ["internal-registry.something.com:5000","internal-registry2.somethingelse.com",] |
     And the file "fullinit/docker-compose.yml" should contain the following:
       | noop            |
       | image: alpine   |
