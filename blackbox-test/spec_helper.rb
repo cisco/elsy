@@ -5,7 +5,11 @@ RSpec.configure do |config|
     # fail when steps are unimplemented
   config.raise_error_for_unimplemented_steps = true
   config.color = true
-  
+
+  # load base helpers
+  Dir.glob("blackbox-test/helpers/**/*_helper.rb") { |f| load f }
+  config.include EventuallyHelper, :type => :feature
+
   Dir.glob("blackbox-test/steps/**/*_steps.rb") { |f| load f, true }
   config.before do
     @dir = Dir.mktmpdir("project-lifecycle-blackbox")

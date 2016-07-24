@@ -1,5 +1,19 @@
 Feature: publish task
 
+  ## To run this test in a way that does not require an engineer or build-server to
+  ## edit their 'docker daemon' '--insecure-registry' flag, we are relying on the
+  ## fact that 'localhost' is automatically trusted. To that end we are making the
+  ## following assumptions in this test:
+  ##
+  ## - The docker-compose.yml maps 'registry1:5000' maps to 'docker-daemon-host:5000'
+  ## - The docker-compose.yml maps 'registry2:5000' maps to 'docker-daemon-host:5001'
+  ## - From the perspecitive of the docker-daemon host:
+  ##    - registry1 is available at http://localhost:5000
+  ##    - registry1 is available at http://localhost:5001
+  Background:
+    Given registry1 is listening on port 5000
+    And registry2 is listening on port 5000
+
   Scenario: with an empty project, calling publish without the git branch
     When I run `lc publish`
     Then it should fail with "The publish task requires that either a git branch or git tag be set"
@@ -7,9 +21,9 @@ Feature: publish task
   Scenario: with both docker_registry and docker_registries defined
     Given a file named "lc.yml" with:
     """yaml
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registry: localhost:5000
     docker_registries:
-      - arch-docker.eng.lancope.local:5000
+      - localhost:5000
     """
     When I run `lc bootstrap`
     Then it should fail with "multiple docker registry configs found, pick either"
@@ -71,13 +85,13 @@ Feature: publish task
     And a file named "lc.yml" with:
     """yaml
     docker_image_name: projectlifecycleblackbox_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | latest                                                                                                  |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact]    |
+      | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on the master branch with multiple registries
     Given a file named "docker-compose.yml" with:
@@ -94,15 +108,15 @@ Feature: publish task
     """yaml
     docker_image_name: projectlifecycleblackbox_docker_artifact
     docker_registries:
-      - terrapin-registry0.eng.lancope.local:5000
-      - stealthwatch-docker.eng.lancope.local:5000
+      - localhost:5000
+      - localhost:5001
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | Pushing repository stealthwatch-docker.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact        |
-      | latest                                                                                                |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact]    |
+      | The push refers to a repository [localhost:5001/projectlifecycleblackbox_docker_artifact]    |
+      | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on a feature branch
     Given a file named "docker-compose.yml" with:
@@ -118,14 +132,14 @@ Feature: publish task
     And a file named "lc.yml" with:
     """yaml
     docker_image_name: projectlifecycleblackbox_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/feature/thing`
     Then it should succeed
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | feature.thing                                                                                           |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact] |
+      | snapshot.feature.thing: digest: sha256                                                    |
 
   Scenario: with a publish service, calling publish on a release tag
     Given a file named "docker-compose.yml" with:
@@ -178,14 +192,14 @@ Feature: publish task
     And a file named "lc.yml" with:
     """yaml
     docker_image_name: projectlifecycleblackbox_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-tag=v0.2.2 --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | v0.2.2                                                                                                |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact] |
+      | v0.2.2: digest: sha256                                                                    |
 
   Scenario: with a Docker project, calling publish on a non-release tag
     Given a file named "docker-compose.yml" with:
@@ -201,11 +215,11 @@ Feature: publish task
     And a file named "lc.yml" with:
     """yaml
     docker_image_name: projectlifecycleblackbox_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-tag=foo-test --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact |
-      | snapshot.foo-test                                                                                     |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact |
+      | snapshot.foo-test: digest: sha256                                                        |

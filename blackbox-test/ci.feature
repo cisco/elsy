@@ -1,4 +1,10 @@
 Feature: ci task
+
+  ## See ./blackbox-test/publish.feature for a description of how the registry
+  ## is setup for this test.
+  Background:
+    Given registry1 is listening on port 5000
+
   Scenario: with a package service and a test service, should not run tests
     Given a file named "docker-compose.yml" with:
     """yaml
@@ -48,8 +54,11 @@ Feature: ci task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
-    docker_registry: terrapin-registry0.eng.lancope.local:5000
+    docker_image_name: projectlifecycleblackbox_docker_artifact_ci
+    docker_registry: localhost:5000
     """
     And I run `lc ci --git-branch=origin/master`
-    Then it should succeed with "Pushing repository terrapin-registry0.eng.lancope.local:5000/projectlifecycleblackbox_docker_artifact"
+    Then it should succeed
+    And the output should contain all of these:
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact_ci]|
+      | latest: digest: sha256                                                                      |

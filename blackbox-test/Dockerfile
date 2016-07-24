@@ -1,5 +1,7 @@
 FROM library/ruby:latest
 
+RUN apt-get update && apt-get install -y netcat
+
 RUN gem install \
     turnip
 

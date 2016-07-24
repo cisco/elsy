@@ -40,6 +40,21 @@ lint:
   entrypoint: ["/go/bin/golint"]
   command: "./..."
 
+##############################################
+############ Blackbox-Test Env ###############
+###############################################
+
+## setup two docker registries for running blackbox-tests for publish command
+## See: ./blackbox-test/publish.feature
+registry1:
+  image: registry:2
+  ports:
+    - 5000:5000
+registry2:
+  image: registry:2
+  ports:
+    - 5001:5000
+
 blackbox-test: &BLACKBOXTEST
   build: blackbox-test
   volumes:
@@ -49,6 +64,9 @@ blackbox-test: &BLACKBOXTEST
   environment:
     - COMPOSE_PROJECT_NAME=projectlifecycleblackbox
     - TMPDIR=/tmp/lc_blackbox-test
+  links:
+    - registry1
+    - registry2
   working_dir: /opt/project
   entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
   command: ["--pattern", "blackbox-test/**/*.feature"]
