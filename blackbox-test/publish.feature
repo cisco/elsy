@@ -84,13 +84,13 @@ Feature: publish task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact1
     docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact]    |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact1]   |
       | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on the master branch with multiple registries
@@ -106,7 +106,7 @@ Feature: publish task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact2
     docker_registries:
       - localhost:5000
       - localhost:5001
@@ -114,8 +114,8 @@ Feature: publish task
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact]    |
-      | The push refers to a repository [localhost:5001/projectlifecycleblackbox_docker_artifact]    |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact2]   |
+      | The push refers to a repository [localhost:5001/projectlifecycleblackbox_docker_artifact2]   |
       | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on a feature branch
@@ -131,14 +131,14 @@ Feature: publish task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact3
     docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-branch=origin/feature/thing`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact] |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact3]|
       | snapshot.feature.thing: digest: sha256                                                    |
 
   Scenario: with a publish service, calling publish on a release tag
@@ -191,14 +191,14 @@ Feature: publish task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact4
     docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-tag=v0.2.2 --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact] |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact4]|
       | v0.2.2: digest: sha256                                                                    |
 
   Scenario: with a Docker project, calling publish on a non-release tag
@@ -214,12 +214,12 @@ Feature: publish task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: projectlifecycleblackbox_docker_artifact5
     docker_registry: localhost:5000
     """
     When I run `lc package`
     And I run `lc publish --git-tag=foo-test --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact |
+      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact5|
       | snapshot.foo-test: digest: sha256                                                        |
