@@ -52,7 +52,3 @@ blackbox-test: &BLACKBOXTEST
   working_dir: /opt/project
   entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
   command: ["--pattern", "blackbox-test/**/*.feature"]
-
-# Once a new version of lc is available, this section can be removed.
-smoketest:
-  <<: *BLACKBOXTEST

@@ -20,15 +20,7 @@ func CmdBlackbox(c *cli.Context) error {
 
 // RunBlackboxTest will execute the blackbox service and then return
 func RunBlackboxTest(c *cli.Context) error {
-	var service string
-
-	if helpers.DockerComposeHasService("blackbox-test") {
-		service = "blackbox-test"
-	} else if helpers.DockerComposeHasService("smoketest") {
-		logrus.Warn("smoketest has been deprecated and will be removed in a future version. use blackbox-test instead.")
-		service = "smoketest"
-	}
-
+	service := "blackbox-test"
 	args := append([]string{"run", "--rm", service}, c.Args()...)
 	return helpers.RunCommand(helpers.DockerComposeCommand(args...))
 }

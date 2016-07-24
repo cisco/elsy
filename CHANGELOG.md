@@ -1,6 +1,7 @@
 ## _Unreleased_
 
 - Fix lc release error message to stop escaping regex.
+- Remove `lc smoketest`
 
 ## v0.16.2
 

@@ -27,17 +27,8 @@ func CmdCi(c *cli.Context) error {
 		return err
 	}
 
-	var service string
-
 	if helpers.DockerComposeHasService("blackbox-test") {
-		service = "blackbox-test"
-	} else if helpers.DockerComposeHasService("smoketest") {
-		service = "smoketest"
-	}
-
-	if service != "" {
-		logrus.Infof("Running %s", service)
-
+		logrus.Infof("Running blackbox-test")
 		if err := RunBlackboxTest(c); err != nil {
 			return err
 		}
