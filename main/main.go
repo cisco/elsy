@@ -110,7 +110,7 @@ func preReqCheck(c *cli.Context) {
 
 	if err := helpers.EnsureDockerConnectivity(); err != nil {
 		ip, _ := helpers.DockerIp()
-		logrus.Fatalf("could not connect to docker daemon at %q, err: %q.\n%s", ip, err, helpers.DockerDebugMsg)
+		logrus.Fatalf("could not connect to docker daemon at %q, err: %q.", ip, err)
 
 	}
 }
