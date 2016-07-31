@@ -1,0 +1,53 @@
+## Use lc mvn template with custom mvn install
+mvn:
+  image: library/maven:3.3.9
+test:
+  image: library/maven:3.3.9
+package:
+  image: library/maven:3.3.9
+publish:
+  image: library/maven:3.3.9
+clean:
+  image: library/maven:3.3.9
+
+
+mysql:
+  image: mysql:5.7
+  ports:
+    - "3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=rootpw
+    - MYSQL_DATABASE=noteservice
+    - MYSQL_USER=mysqluser
+    - MYSQL_PASSWORD=notsecurepw
+
+db-init:
+  image: java-note-service
+  environment:
+    - DB_HOST=mysql
+  links:
+    - mysql
+  entrypoint: ["/opt/init.d/db-entrypoint.sh"]
+  command: ["db", "migrate", "config.yml"]
+
+prodserver:
+  image: java-note-service
+  environment:
+    - DB_HOST=mysql
+  links:
+    - mysql
+    - db-init
+  ports:
+    - "8080"
+
+blackbox-test:
+  build: blackbox-test
+  volumes:
+    - .:/opt/project/
+  links:
+    - prodserver:noteservice
+    - mysql
+    - db-init
+  working_dir: /opt/project
+  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "blackbox-test/**/*.feature"]

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+: ${DB_PORT:=3306}
+
+wait_for_services(){
+  if [ -z "$DB_HOST" ]; then
+    echo "DB_HOST required" >&2
+    exit 1
+  fi
+  wait_for_endpoint "$DB_HOST" "$DB_PORT"
+}
+
+wait_for_endpoint() {
+  printf "Waiting for: $1\n"
+  until $(nc -z -w1 $1 $2); do
+    printf '.'
+    sleep 1
+  done
+  printf "\n"
+}
+
+verify_db(){
+  java -jar java-note-service.jar db status config.yml 2>/dev/null | grep 'up to date' > /dev/null 2>&1
+}
+
+## will wait until the db is ready for work
+wait_for_db_migration(){
+  printf "Waiting for db migrations to be applied\n"
+  until $(verify_db); do
+    printf '.'
+    sleep 1
+  done
+  printf "\n"
+}

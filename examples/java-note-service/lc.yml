@@ -1,0 +1,4 @@
+project_name: javanoteservice
+docker_image_name: java-note-service
+docker_registry: internal-registry.companyfoo.com
+template: mvn

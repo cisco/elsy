@@ -1,0 +1,16 @@
+server:
+  type: simple
+  applicationContextPath: /v1
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+    
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: ${DB_USER:-mysqluser}
+  password: ${DB_PASSWORD:-notsecurepw}
+  url: jdbc:mysql://${DB_HOST}:${DB_PORT:-3306}/${DB_NAME:-noteservice}
+  initialSize: 2
+  minSize: 2
+  maxSize: 10
