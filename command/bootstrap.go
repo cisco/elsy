@@ -17,7 +17,7 @@ func CmdBootstrap(c *cli.Context) error {
 			return err
 		}
 		pullCmd := helpers.DockerComposeCommand("pull", "--ignore-pull-failures")
-		benignError := regexp.MustCompile(fmt.Sprintf(`Error: image library/%s:latest not found`, c.String("docker-image-name")))
+		benignError := regexp.MustCompile(fmt.Sprintf(`Error: image library/%s(:latest|) not found`, c.String("docker-image-name")))
 		helpers.RunCommandWithFilter(pullCmd, benignError.MatchString)
 	}
 
