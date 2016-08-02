@@ -1,7 +1,11 @@
 ## _Unreleased_
 
+## v1.0.0
+
 - Fix lc release error message to stop escaping regex.
-- Remove `lc smoketest`
+- (breaking) Remove `lc smoketest`
+- Hide benign error when docker-compose service uses the primary docker image
+artifact (now works with docker 1.10)
 
 ## v0.16.2
 
