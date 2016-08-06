@@ -1,0 +1,3 @@
+project_name: emberjsui
+docker_image_name: emberjs-ui
+docker_registry: internal-registry.companyfoo.com

@@ -1,0 +1,22 @@
+# compiled output
+/dist
+/dist-production
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/tests/results
+/test-env/results
+
+#IDE specific
+*.iml
+.tags*

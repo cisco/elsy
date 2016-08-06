@@ -1,0 +1,60 @@
+## data container to hold build artifacts and prevent I/O thrashing if running on mac
+emberdata:
+  build: ./dev-env
+  volumes:
+   - /opt/project/bower_components
+   - /opt/project/dist
+   - /opt/project/node_modules
+   - /opt/project/vendor
+   - /opt/project/tmp
+  labels:
+    com.lancope.docker-gc.keep: "True"
+  entrypoint: "/bin/true"
+ember: &ember
+  build: ./dev-env
+  volumes_from:
+   - emberdata
+  volumes:
+   - .:/opt/project
+  working_dir: /opt/project
+  entrypoint: ["/usr/local/bin/ember"]
+npm:
+  <<: *ember
+  entrypoint: ["/usr/local/bin/npm"]
+bower:
+  <<: *ember
+  entrypoint: ["/usr/local/bin/bower", "--allow-root"]
+
+
+# enables 'lc server start'
+devserver:
+  <<: *ember
+  command: server
+  ports:
+   - "4200"
+# enables 'lc server start -prod'
+prodserver:
+  image: emberjs-ui
+  ports:
+    - "80"
+
+## lc lifecycle
+installdependencies:
+  <<: *ember
+  entrypoint: ["./dev-env/install-dependencies.sh"]
+test:
+  <<: *ember
+  command: ["test"]
+## run custom package service before lc builds docker image
+package:
+  <<: *ember
+  entrypoint: ["./dev-env/package.sh"]
+blackbox-test:
+  build: ./blackbox-test
+  volumes:
+    - .:/opt/project/
+  links:
+    - prodserver
+  working_dir: /opt/project
+  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "blackbox-test/**/*.feature"]

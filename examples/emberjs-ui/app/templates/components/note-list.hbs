@@ -1,0 +1,16 @@
+<h3>{{title}}</h3>
+<ul>
+  {{#each notes as |note|}}
+    <li>{{note}}</li>
+  {{/each}}
+</ul>
+<br/>
+<div class="addNote">
+  <form id="addNote" {{action "saveNote" on="submit"}}>
+    <label for="note">Add Note</label>
+    <input id="note" type="text" value=""/>
+
+    <input id="submit" type="submit" value="Submit"/>
+    <input id="cancel" type="reset" value="Cancel"/>
+  </form>
+</div>
