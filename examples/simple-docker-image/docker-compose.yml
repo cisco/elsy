@@ -1,0 +1,14 @@
+prodserver:
+  image: simple-docker-image
+  ports:
+    - 80
+
+blackbox-test:
+  build: ./blackbox-test
+  volumes:
+    - .:/opt/project/
+  links:
+    - prodserver
+  working_dir: /opt/project
+  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "blackbox-test/**/*.feature"]
