@@ -1,0 +1,14 @@
+## lc lifecycle hooks
+base: &base
+  image: gcc:6.1
+  volumes:
+    - .:/opt/project/
+  working_dir: /opt/project
+  entrypoint: ["make"]
+
+package:
+  <<: *base
+  command: ["foo"]
+blackbox-test:
+  <<: *base
+  command: ["blackbox-test"]
