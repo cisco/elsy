@@ -1,98 +1,157 @@
 # `lc` Templates
 
-## Overview
+The lc lifecycle manifests itself in subtly different ways depending on the
+underlying build tool. lc ships with a small set of pre-baked templates (e.g.,
+mvn, sbt) that define a sensible default lifecycle for the build tool
+encapsulated by the template.
 
-`lc` contains docker-compose templates for the most commonly used build tools used in Lancope. A project template
-provides a base set of docker-compose services which you may override in a project's `docker-compose.yml` file.
+A template provides a base set of docker-compose services that implement the lc
+lifecycle for the specific build tool. When you run any `lc` command, lc will
+extend the template using the repo's `docker-compose.yml` before executing the
+command.
 
-## Viewing Templates
-
-To view a template, use the `lc` system command `view-template <template_name>`
-
-Example: (some output omitted for brevity)
+For example, you can see how lc is extending the template with the repo compose
+file by running lc in debug mode:
 
 ```
-> lc system view-template mvn
+## this command was run from a repo using the mvn template
+## redacted everything but a single docker-compose call
+## lc_docker_compose_template849512109 is the lc template dumped to a tmp file for use in the command
+$  lc --debug bootstrap
+DEBU[0000] running command /usr/local/bin/docker-compose with args [/usr/local/bin/docker-compose -f /Users/<user>/dev/code/java-service/lc_docker_compose_template849512109 -f docker-compose.yml kill]
+```
 
-mvnscratch:
-  image: busybox
-  volumes:
-    - /opt/project/target/classes
-    - /opt/project/target/journal
-    ...
-  entrypoint: /bin/true
+It is possible to override template-provided services by following the
+[docker-compose extends](https://docs.docker.com/compose/extends/) semantics.
 
-mvn: &mvn
-  image: maven:3.2-jdk-8
-  volumes:
-    - ./:/opt/project
-  working_dir: /opt/project
-  ...
+To see the "effective compose" file that lc ends up using you can run `lc dc config`.
 
+## Configuring a Template
+
+To configure a repo to use a specific template, simply update the
+[lc.yml](./configuringlcrepo.md) file to use the `template: <template-name>`
+config.
+
+## Viewing a Template
+
+To view the a raw template you can run `lc system view-template <template-name>`
+
+## Supported Templates
+
+The following subsections list the templates that lc provides. The `mvn` and
+`sbt` templates are the most widely used, all other templates have limited known
+use (at this time), so may require some improvement.
+
+### lein
+
+To use the lein template, ensure your `lc.yml` has the line:
+
+```
+template: lein
+```
+
+This template enables the `lc lein` subcommand, you can run any lein command in
+your repo by running `lc lein -- <leincmd>`. This template also adds a data
+container called `lc_shared_mvndata`. This data container holds the `~/.m2`
+cache for the host, meaning that all lc lein and lc mvn repos running on a
+single host will share the same `~/.m2` cache.
+
+To override the lein image that comes pre-baked into the template, you must
+have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
+
+```
+lein:
+  image: <custom-image>
 test:
-  <<: *mvn
-  entrypoint: [mvn, test]
-  
-...
-  
+  image: <custom-image>
+package:
+  image: <custom-image>
+publish:
+  image: <custom-image>
+clean:
+  image: <custom-image>
 ```
 
-Note that the `mvn` section uses a yaml '[anchor](http://www.yaml.org/spec/1.2/spec.html#id2785586)' (`&`), which is
-then used in later sections using the yaml "include" ("`<<: *`") syntax. What this does is copy/include the section
-marked by the anchor, into the section marked by the include.
+### make
 
-This is essentially a text import/include, so the `test:` (et. al.)  sections get an *entire copy* of
-the `mvn:` items, plus any extra things listed.  In the case above, `test:` will also get the `entrypoint:` entry. 
+To use the make template, ensure your `lc.yml` has the line:
 
-
-## Overriding Templates
-
-The built-in templates are meant to be a general starting point and in many cases suffice on their own, but it is more
-likely that a project will need to modify, add, fold, spindle, or mutilate some parts.
-
-`lc` makes use of the `docker-compose` facility of _overlaying_ of services using multiple yaml files and passing
-multiple `-f` arguments to docker-compose. Each subsequent yaml file may extend services defined in previous yaml files.
-
-
-### Adding Sections
-
-A project's `docker-compose.yml` may add entire sections; like things at the `publish:` and `test:` level; or sub-items;
-like things at a sublevel.
-
-In this example, the entire `devbuild:` section will be added, even though no such section exists in the template.
 ```
-devbuild:
-    command: [mvn, special_dev_build_parameter, reasons]
-``` 
-
-In this example, we are adding a `links:` subsection to an existing main section (`test:`).  What happens here is that
-the `links:` section will be added to the existing `test:` section.
+template: make
 ```
+
+This template enables the `lc make` subcommand, you can run any make command in
+your repo by running `lc make -- <makecmd>`.
+
+To override the make image that comes pre-baked into the template, you must
+have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
+
+```
+make:
+  image: <custom-image>
 test:
-    links:
-        - link1
-        - link2
-        ...
-```
-
-
-### Modifying Sections
-To change anything in the template, put in your `docker-compose.yml` file the change you require.  If this section
-exists in the template, it will be replaced with yours.  If it does not, it will be added.
-
-For example, the `sbt` template provides a `test` service which calls `sbt test`. If you wanted the test task to also
-include code coverage, you would add this to your repo's `docker-compose.yml` file: 
-
-> Note that in `test:` section of the sbt template, there is a 'test' command.  Since it is completely replaced by this
-> override, 'test' must be explicitly called as well as the additional `coverage` and `coverageReport` entries.
+  image: <custom-image>
+clean:
+  image: <custom-image>
 
 ```
+
+### mvn
+
+To use the mvn template, ensure your `lc.yml` has the line:
+
+```
+template: mvn
+```
+
+This template enables the `lc mvn` subcommand, you can run any mvn command in
+your repo by running `lc mvn -- <mvncmd>`. This template also adds a data
+container called `lc_shared_mvndata`. This data container holds the `~/.m2`
+cache for the host, meaning that all lc mvn and lc lein repos running on a
+single host will share the same `~/.m2` cache.
+
+To override the mvn image that comes pre-baked into the template, you must
+have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
+
+```
+mvn:
+  image: <custom-image>
 test:
-  command: [sbt, coverage, test, coverageReport]
+  image: <custom-image>
+package:
+  image: <custom-image>
+publish:
+  image: <custom-image>
+clean:
+  image: <custom-image>
 ```
 
-Then run the lifecycle test task like so:
+### sbt
+
+To use the mvn template, ensure your `lc.yml` has the line:
 
 ```
-lc test
+template: sbt
+```
+
+This template enables the `lc sbt` subcommand, you can run any sbt command in
+your repo by running `lc sbt -- <sbtcmd>`. This template also adds a data
+container called `lc_shared_sbtdata`. This data container holds the `~/.ivy2`
+cache for the host, meaning that all lc sbt repos running on a single host will
+share the same `~/.ivy2` cache.
+
+To override the sbt image that comes pre-baked into the template, you must
+have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
+
+```
+sbt:
+  image: <custom-image>
+test:
+  image: <custom-image>
+package:
+  image: <custom-image>
+publish:
+  image: <custom-image>
+clean:
+  image: <custom-image>
 ```
