@@ -1,5 +1,7 @@
 ## _Unreleased_
 
+- rename `verify-lds` to `verify-install`
+
 ## v1.0.0
 
 - Fix lc release error message to stop escaping regex.

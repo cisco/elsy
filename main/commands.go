@@ -322,9 +322,9 @@ func Commands() []cli.Command {
 					Flags:  []cli.Flag{},
 				},
 				{
-					Name:   "verify-lds",
-					Usage:  "Runs a series of checks to verify the lds is running correctly. This must be run inside a repo",
-					Action: panicOnError(system.CmdVerifyLds),
+					Name:   "verify-install",
+					Usage:  "Runs a series of checks to verify that docker is running correctly. This must be run inside a repo",
+					Action: panicOnError(system.CmdVerifyInstall),
 					Flags:  []cli.Flag{},
 				},
 				{
