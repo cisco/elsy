@@ -305,17 +305,6 @@ func Commands() []cli.Command {
 			Usage: "Manages lc itself",
 			Subcommands: []cli.Command{
 				{
-					Name:   "upgrade",
-					Usage:  "Upgrades this lc binary (deprecated; use `lds upgrade`)",
-					Action: panicOnError(system.CmdUpgrade),
-					Flags: []cli.Flag{
-						cli.StringFlag{
-							Name:  "version",
-							Usage: "lc version to use as upgrade target",
-						},
-					},
-				},
-				{
 					Name:   "view-template",
 					Usage:  "Displays the YAML of a template",
 					Action: panicOnError(system.CmdViewTemplate),

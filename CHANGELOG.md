@@ -1,6 +1,7 @@
 ## _Unreleased_
 
 - rename `verify-lds` to `verify-install`
+- remove `lc system upgrade` command. This hasn't done anything since 6333e0d.
 
 ## v1.0.0
 
