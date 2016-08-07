@@ -1,0 +1,15 @@
+## Use lc mvn template with custom mvn install and custom publish service
+mvn:
+  image: library/maven:3.3.9
+test:
+  image: library/maven:3.3.9
+package:
+  image: library/maven:3.3.9
+
+## relies on pom using the mvn deploy plugin and configuring the target mvn repo
+publish:
+  image: library/maven:3.3.9
+  entrypoint: mvn
+  command: ["deploy", "-DskipTests=true", "-Dmaven.main.skip=true", "-Dmaven.test.skip=true", "-Dmaven.install.skip=true"]
+clean:
+  image: library/maven:3.3.9
