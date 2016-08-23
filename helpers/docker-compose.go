@@ -25,11 +25,22 @@ func DockerComposeCommand(args ...string) *exec.Cmd {
 	return exec.Command(os.Getenv("DOCKER_COMPOSE_BINARY"), args...)
 }
 
-type DockerComposeMap map[string]DockerComposeService
-
 type DockerComposeService struct {
 	Build string
 	Image string
+}
+
+type DockerComposeNetwork struct {
+	Driver string
+}
+
+type DockerComposeMap map[string]DockerComposeService
+type DockerComposeNetworkMap map[string]DockerComposeNetwork
+
+type DockerComposeV2 struct {
+	Version  string
+	Services DockerComposeMap
+	Networks DockerComposeNetworkMap
 }
 
 func DockerComposeServices() (services []string) {
@@ -86,7 +97,13 @@ func getDockerComposeMap(file string) (m DockerComposeMap) {
 	if s, err := ioutil.ReadFile(file); err != nil {
 		panic(err)
 	} else if err := yaml.Unmarshal(s, &m); err != nil {
-		panic(err)
+		var v2 DockerComposeV2
+		err2 := yaml.Unmarshal(s, &v2)
+		if err2 != nil {
+			panic(err)
+		}
+		logrus.Warn("found v2 docker-compose format, this is not compatible with lc templates")
+		m = v2.Services
 	}
 	return
 }

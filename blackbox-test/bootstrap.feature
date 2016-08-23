@@ -99,3 +99,25 @@ Feature: bootstrap task
     When I run `lc --offline bootstrap`
     Then it should succeed
     And the output should not contain "Pulling repository docker.io/library/baz"
+
+  Scenario: running with docker-compose.yml v2 file
+    At a minimum, lc should not fail to parse a docker-compose.yml v2 file format
+    if there is no lc-template being used.
+    Given a file named "dev-env/Dockerfile" with:
+    """
+    FROM busybox
+    """
+    And a file named "docker-compose.yml" with:
+    """yaml
+    version: '2'
+
+    services:
+      prodserver:
+        build: dev-env
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    """
+    When I run `lc bootstrap`
+    Then it should succeed with "Building prodserver"
