@@ -1,7 +1,11 @@
 ## _Unreleased_
 
+## v1.1.0
+
 - rename `verify-lds` to `verify-install`
 - remove `lc system upgrade` command. This hasn't done anything since 6333e0d.
+- initial support for compose v2 file formats (lc won't fail if you use a v2
+file format without a built-in lc template).
 
 ## v1.0.0
 
