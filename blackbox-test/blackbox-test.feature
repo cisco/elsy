@@ -62,7 +62,7 @@ Feature: blackbox-test task
     docker_image_name: projectlifecycleblackbox_docker_artifact_blackbox
     """
     When I run `lc blackbox-test --skip-package`
-    Then it should fail with 'image library/projectlifecycleblackbox_docker_artifact_blackbox:latest not found'
+    Then it should fail with 'image library/projectlifecycleblackbox_docker_artifact_blackbox not found'
     When I run `lc blackbox-test`
     Then it should succeed
     And the output should contain all of these:

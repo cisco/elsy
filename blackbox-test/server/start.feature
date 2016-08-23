@@ -44,7 +44,7 @@ Feature: server start task
        - "80"
     """
     When I run `lc server start`
-    Then it should fail with 'image library/somefakeimagethatdoesntexist:latest not found'
+    Then it should fail with 'image library/somefakeimagethatdoesntexist not found'
 
   @teardown
   Scenario: starting prod server with no prodserver service defined
