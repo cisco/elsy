@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## v1.1.1
+
+- reduce logging noise introduced by d6b9310
+
 ## v1.1.0
 
 - rename `verify-lds` to `verify-install`
