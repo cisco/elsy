@@ -102,7 +102,7 @@ func getDockerComposeMap(file string) (m DockerComposeMap) {
 		if err2 != nil {
 			panic(err)
 		}
-		logrus.Warn("found v2 docker-compose format, this is not compatible with lc templates")
+		logrus.Debug("found v2 docker-compose format, this is not compatible with lc templates")
 		m = v2.Services
 	}
 	return
