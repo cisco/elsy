@@ -53,3 +53,27 @@ Feature: teardown task
     Then it should succeed
     And I run `lc dc ps`
     Then the output should not contain 'teardowntestcontainer'
+
+  Scenario: with v2 volumes
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    version: '2'
+
+    volumes:
+      teardown_test_build_cache:
+
+    services:
+      test:
+        image: busybox
+        volumes:
+          - teardown_test_build_cache:/opt/cache
+        command: "touch /opt/cache/foo"
+    """
+    When I run `lc test`
+    Then it should succeed
+    When I run `docker volume ls -q`
+    Then the output should contain 'teardown_test_build_cache'
+    When I run `lc teardown -f`
+    Then it should succeed
+    And I run `docker volume ls -q`
+    Then the output should not contain 'teardown_test_build_cache'
