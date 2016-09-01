@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+## v1.2.0
+
+- remove docker-compose v2 volumes on teardown
+
 ## v1.1.1
 
 - reduce logging noise introduced by d6b9310
