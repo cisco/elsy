@@ -67,6 +67,3 @@ blackbox-test: &BLACKBOXTEST
   links:
     - registry1
     - registry2
-  working_dir: /opt/project
-  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
-  command: ["--pattern", "blackbox-test/**/*.feature"]
