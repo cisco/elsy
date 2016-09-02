@@ -1,6 +1,10 @@
 ## _Unreleased_
 
-## v1.2.0
+## v1.2.1
+
+- fixing release issue with 1.2.0 (`./VERSION`) did not get updated.
+
+## v1.2.0 (NEVER RELEASED)
 
 - remove docker-compose v2 volumes on teardown
 
