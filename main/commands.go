@@ -83,7 +83,7 @@ func Commands() []cli.Command {
 				},
 				cli.StringFlag{
 					Name:  "template",
-					Usage: "The lc template to use for the repo (not required). Valid values are 'mvn', 'sbt', 'ember'",
+					Usage: "The lc template to use for the repo (not required). Valid values are 'mvn', 'sbt'",
 				},
 			},
 		},
