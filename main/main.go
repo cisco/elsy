@@ -24,9 +24,8 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "lc"
 	app.Version = helpers.BuildVersionString()
-	app.Author = "Lancope"
-	app.Email = "#arch channel on Slack"
-	app.Usage = "Manages and builds Lancope projects"
+	app.Author = "Cisco"
+	app.Usage = "an opinionated, multi-language, build-tool based on Docker and Docker Compose"
 
 	app.Flags = GlobalFlags()
 	app.Commands = Commands()
