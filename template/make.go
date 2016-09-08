@@ -4,7 +4,7 @@ var makeTemplate = template{
 	name: "make",
 	composeYmlTmpl: `
 make: &make
-  image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+  image: gcc:6.1
   volumes:
     - ./:/opt/project
   working_dir: /opt/project

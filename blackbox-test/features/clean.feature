@@ -343,7 +343,7 @@ Feature: cleaning house
     Given a file named "docker-compose.yml" with:
     """yaml
     make:
-      image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+      image: gcc:6.1
       volumes:
         - ./:/project
       working_dir: /project
@@ -377,13 +377,13 @@ Feature: cleaning house
     And a file named "docker-compose.yml" with:
     """yaml
     make:
-      image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+      image: gcc:6.1
       volumes:
         - ./:/project
       working_dir: /project
       command: "make"
     clean:
-      image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+      image: gcc:6.1
       entrypoint: [make, clean]
     """
     And a file named "foo.c" with:

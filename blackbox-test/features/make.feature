@@ -4,7 +4,7 @@ Feature: make command
         Given a file named "docker-compose.yml" with:
         """yaml
         make:
-          image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+          image: gcc:6.1
           volumes:
             - ./:/project
           working_dir: /project
@@ -33,7 +33,7 @@ Feature: make command
         Given a file named "docker-compose.yml" with:
         """yaml
         make:
-          image: arch-docker.eng.lancope.local:5000/c-dev-env:v1.0.0
+          image: gcc:6.1
           volumes:
             - ./:/project
           working_dir: /project
@@ -52,7 +52,7 @@ Feature: make command
         .RECIPEPREFIX = >
 
         foo: foo.c
-        > gcc -o foo foo.c
+        > gcc -fno-diagnostics-color -o foo foo.c
         """
         When I run `lc make`
         Then it should fail with "error: 'XXX' undeclared"
