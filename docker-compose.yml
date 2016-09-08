@@ -20,16 +20,6 @@ package:
     - GIT_TAG_NAME
   entrypoint: /opt/lifecycle/package
 
-publish:
-  <<: *go
-  volumes:
-    - $LC_REPO_NETRC:/opt/netrc
-    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
-  environment:
-    - ARTIFACTORY_SERVER
-    - ARTIFACTORY_PATH
-  entrypoint: /opt/lifecycle/publish
-
 test:
   <<: *go
   entrypoint: /opt/lifecycle/test
