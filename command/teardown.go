@@ -7,7 +7,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/fsouza/go-dockerclient"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 func CmdTeardown(c *cli.Context) error {

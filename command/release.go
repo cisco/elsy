@@ -6,7 +6,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 // CmdRelease will create, and push a release tag

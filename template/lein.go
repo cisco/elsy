@@ -1,6 +1,6 @@
 package template
 
-import "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+import "github.com/elsy/helpers"
 
 var leinTemplate = template{
 	name: "lein",

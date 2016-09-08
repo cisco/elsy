@@ -2,7 +2,7 @@ package command
 
 import (
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 func CmdTest(c *cli.Context) error {

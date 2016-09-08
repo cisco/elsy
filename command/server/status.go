@@ -6,7 +6,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 func CmdStatus(c *cli.Context) error {

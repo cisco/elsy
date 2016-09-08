@@ -9,7 +9,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 // file that we will use to verify volume mounts are working, assumption is that every lc repo should include this

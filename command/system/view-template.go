@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/template"
+	"github.com/elsy/template"
 )
 
 func CmdViewTemplate(c *cli.Context) error {

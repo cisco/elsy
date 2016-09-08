@@ -19,8 +19,8 @@ fi
 
 for platform in "${platforms[@]}"; do
   GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
-    --ldflags "-X stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers.version=$version \
-    -X stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers.build=$build" \
+    --ldflags "-X github.com/elsy/helpers.version=$version \
+    -X github.com/elsy/helpers.build=$build" \
     ./main
 done
 

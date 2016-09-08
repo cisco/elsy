@@ -3,7 +3,7 @@ package system
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/template"
+	"github.com/elsy/template"
 )
 
 // CmdListTemplates displays an alphabetical list of all available templates

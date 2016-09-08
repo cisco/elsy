@@ -6,9 +6,9 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/server"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/command/system"
+	"github.com/elsy/command"
+	"github.com/elsy/command/server"
+	"github.com/elsy/command/system"
 )
 
 // GlobalFlags sets up flags on the lc command proper

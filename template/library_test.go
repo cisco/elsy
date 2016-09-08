@@ -3,7 +3,7 @@ package template
 import (
 	"testing"
 
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 func TestSharedExternalDataContainer(t *testing.T) {

@@ -1,6 +1,6 @@
 package template
 
-import "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+import "github.com/elsy/helpers"
 
 var mvnTemplate = template{
 	name: "mvn",
@@ -35,7 +35,7 @@ publish:
 {{if .ScratchVolumes}}
 clean:
   <<: *mvn
-  entrypoint: [mvn, clean, "-Dmaven.clean.failOnError=false"]  
+  entrypoint: [mvn, clean, "-Dmaven.clean.failOnError=false"]
 {{else}}
 clean:
   <<: *mvn

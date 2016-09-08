@@ -5,7 +5,7 @@ import (
 	"regexp"
 
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 // CmdBootstrap pulls and builds the services in the docker-compose file

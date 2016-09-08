@@ -3,12 +3,12 @@ package command
 import (
 	"errors"
 	"fmt"
-  "os"
+	"os"
 	"os/exec"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 // CmdPublish will publish all artifacts associated with the current repo
@@ -65,10 +65,10 @@ func publishBranch(branch string, c *cli.Context) error {
 // pass along tagName in ENV var LC_PUBLISH_DOCKER_TAG
 func customPublish(tagName string) error {
 	if helpers.DockerComposeHasService("publish") {
-    cmd := helpers.DockerComposeCommand("run", "--rm", "publish")
-    env := os.Environ()
-	  env = append(env, fmt.Sprintf("LC_PUBLISH_DOCKER_TAG=%s", tagName))
-	  cmd.Env = env
+		cmd := helpers.DockerComposeCommand("run", "--rm", "publish")
+		env := os.Environ()
+		env = append(env, fmt.Sprintf("LC_PUBLISH_DOCKER_TAG=%s", tagName))
+		cmd.Env = env
 		return helpers.RunCommand(cmd)
 	}
 	logrus.Debug("no publish service found, skipping")

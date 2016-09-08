@@ -51,7 +51,7 @@ is also recommended that you use the [go-plus](https://atom.io/packages/go-plus)
 package for live `golinting` and `govetting`
 
 ```
-$ git clone ssh://git@stash0.eng.lancope.local/dev-infrastructure/project-lifecycle.git
+$ git clone git@github.com:cisco/elsy.git
 $ cd project-lifecycle
 $ lc bootstrap
 ```

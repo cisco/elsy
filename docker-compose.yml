@@ -1,8 +1,8 @@
 go: &go
   build: dev-env
   volumes:
-    - .:/go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
-  working_dir: /go/src/stash0.eng.lancope.local/dev-infrastructure/project-lifecycle
+    - .:/go/src/github.com/elsy
+  working_dir: /go/src/github.com/elsy
   environment:
     - GOOS
     - GOARCH

@@ -12,8 +12,8 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/template"
+	"github.com/elsy/helpers"
+	"github.com/elsy/template"
 )
 
 func main() {

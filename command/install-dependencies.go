@@ -3,7 +3,7 @@ package command
 import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"stash0.eng.lancope.local/dev-infrastructure/project-lifecycle/helpers"
+	"github.com/elsy/helpers"
 )
 
 func CmdInstallDependencies(c *cli.Context) error {
