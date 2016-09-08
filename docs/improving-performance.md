@@ -22,10 +22,10 @@ To see how this effects your favorite template try the following:
 ```
 # print the template without scratch volumes enabled:
 $ unset LC_ENABLE_SCRATCH_VOLUMES
-$ lc system view-template sbt
+$ lc system view-template mvn
 
 # print the template with scratch volumes
-$ lc --enable-scratch-volumes system view-template sbt
+$ lc --enable-scratch-volumes system view-template mvn
 ```
 
 Note in the last line in the above example, using the `--enable-scratch-volumes`
@@ -84,55 +84,60 @@ lc --enable-scratch-volumes dc -- run --entrypoint=sh mvn
 then `cd` to `/root/.m2/repository` and peruse at your liesure.
 
 
-
 ## Technical Details
 
 This section explains the technical mechanisms underpinning
 `LC_ENABLE_SCRATCH_VOLUMES`. Feel free to ignore this.
 
-Lets use the `sbt` template, with `--enable-scratch-volumes` to explain how
+Lets use the `mvn` template, with `--enable-scratch-volumes` to explain how
 things are working:
 
 ```
-$ lc --enable-scratch-volumes system view-template sbt
-sbtscratch:
+$ lc --enable-scratch-volumes system view-template mvn
+mvnscratch:
   image: busybox
-  command: /bin/true
   volumes:
-    - /opt/project/target/resolution-cache
-    - /opt/project/target/scala-2.10/classes
-    - /opt/project/target/scala-2.10/test-classes
-    - /opt/project/target/scala-2.11/classes
-    - /opt/project/target/scala-2.11/test-classes
-    - /opt/project/target/streams
-    - /opt/project/project/project
-    - /opt/project/project/target
-sbt: &sbt
-  image: arch-docker.eng.lancope.local:5000/sbt
+  - /opt/project/target/classes
+  - /opt/project/target/journal
+  - /opt/project/target/maven-archiver
+  - /opt/project/target/maven-status
+  - /opt/project/target/snapshots
+  - /opt/project/target/test-classes
+  - /opt/project/target/war/work
+  - /opt/project/target/webappDirectory
+  entrypoint: /bin/true
+mvn: &mvn
+  image: maven:3.2-jdk-8
   volumes:
     - ./:/opt/project
   working_dir: /opt/project
-  entrypoint: sbt
+  entrypoint: mvn
   volumes_from:
-    - lc_shared_sbtdata
-    - sbtscratch
+    - lc_shared_mvndata
+    - mvnscratch
 test:
-  <<: *sbt
-  entrypoint: [sbt, test]
+  <<: *mvn
+  entrypoint: [mvn, test]
 package:
-  <<: *sbt
-  command: [assembly]
+  <<: *mvn
+  command: [package, "-DskipTests=true"]
+publish:
+  <<: *mvn
+  entrypoint: /bin/true
+clean:
+  <<: *mvn
+  entrypoint: [mvn, clean, "-Dmaven.clean.failOnError=false"]
 ```
 
-The important parts in the above template are the `sbtscratch` and `sbt`
-services. The `sbt` service is the primary service that is building the code.
-The `sbtscratch` service is the data container that declares, as volumes, all
+The important parts in the above template are the `mvnscratch` and `mvn`
+services. The `mvn` service is the primary service that is building the code.
+The `mvnscratch` service is the data container that declares, as volumes, all
 repo paths that hold transient build resources (i.e., files that are re-built
 every time the build runs).
 
-Notice that `sbt` uses the [docker-compose
+Notice that `mvn` uses the [docker-compose
 volumes_from](https://docs.docker.com/compose/compose-file/#volumes-from)
-directive to include the volumes defined in `sbtscratch`. It also uses the
+directive to include the volumes defined in `mvnscratch`. It also uses the
 [docker-compose
 volume](https://docs.docker.com/compose/compose-file/#volumes-volume-driver)
 directive to mount the root of the repo (on the `docker-daemon` VM) to `/opt/project`
@@ -141,12 +146,12 @@ up the volumes in the following way:
 
 1. Process `volume` directive first and mount repo's root (on the `docker-daemon` VM) to
 `/opt/project` inside the container.
-1. Now process `volumes_from` and overlay the volumes from `sbtscratch` onto
-`sbt`. This means that within the `sbt` container, for each directory listed in
-`sbtscratch` the data inside that directory will be stored inside the
-`sbtscratch` container, and NOT on the `docker-daemon` VM.
+1. Now process `volumes_from` and overlay the volumes from `mvnscratch` onto
+`mvn`. This means that within the `mvn` container, for each directory listed in
+`mvnscratch` the data inside that directory will be stored inside the
+`mvnscratch` container, and NOT on the `docker-daemon` VM.
 
 Remember that all files that end up on the `docker-daemon` VM, also get mirrored to the
 host OS, which is where the excessive I/O comes from. By bypassing the storage
-on the `docker-daemon` VM, via the data container (e.g., `sbtscratch`), the mirroring
+on the `docker-daemon` VM, via the data container (e.g., `mvnscratch`), the mirroring
 never occurs.
