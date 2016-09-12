@@ -5,8 +5,8 @@ notes in mysql.
 
 The key things this example illustrates are:
 
-- Using `lc` to build a mvn-based microservice.
-- Using the `lc` mvn template with a custom mvn version
+- Using elsy to build a mvn-based microservice.
+- Using the elsy mvn template with a custom mvn version
 - Ensuring specific order of operations when running blackbox-tests; this example
 is configured to ensure that the server and blackbox-tests will not start until
 the mysql database is ready.
@@ -27,7 +27,7 @@ $ lc bootstrap
 $ lc test && lc blackbox-test
 
 ## run specific mvn commands:
-$ lc mvn <mvncmd>
+$ lc -- mvn <mvncmd>
 
 ## package service into a Docker image
 $ lc package

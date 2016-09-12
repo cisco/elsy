@@ -1,13 +1,13 @@
-# Contributing to LC
+# Contributing to elsy
 
-This section describes how to build the `lc` code base. If you would like to
-submit a patch to lc, please submit a PR to the `master` branch.
+This section describes how to build the elsy code base. If you would like to
+submit a patch to elsy, please submit a PR to the `master` branch.
 
 ## Local Development
 
-Use `lc` to develop `lc`!
+Use elsy to develop elsy!
 
-This repo exposes all of the core `lc` tasks for ongoing development:
+This repo exposes all of the core elsy tasks for ongoing development:
 
 ```
 ## bootstrap repo
@@ -29,7 +29,7 @@ Follow these instructions to enable IDE integration during development. IDE
 integration is purely for speeding local work, developers should still run `lc
 test && lc blackbox-test` to validate code before pushing.
 
-[Atom](https://atom.io/) is the recommended editor for `golang` projects and it
+[Atom](https://atom.io/) is the recommended editor for this project and it
 is also recommended that you use the [go-plus](https://atom.io/packages/go-plus)
 package for live `golinting` and `govetting`
 
@@ -37,6 +37,7 @@ package for live `golinting` and `govetting`
 $ git clone git@github.com:cisco/elsy.git
 $ cd project-lifecycle
 $ lc bootstrap
+$ atom .
 ```
 
 Now, open atom by running `atom .`.

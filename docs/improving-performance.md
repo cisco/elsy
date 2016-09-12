@@ -1,9 +1,10 @@
-# Improving `lc` performance
+# Improving elsy performance
 
-NOTE: the improvements described in this section only work if you are running with
-and lc template that supports SCRATCH_VOLUMES.
+NOTE: the improvements described in this section only work if you are running
+with and elsy template that supports SCRATCH_VOLUMES (currently the mvn, sbt,
+and lein templates support scratch volumes).
 
-If you are using `lc` on a non-linux host, then there is a lot of I/O that
+If you are using elsy on a non-linux host, then there is a lot of I/O that
 happens between your repo folders on your host OS and the corresponding folder
 on the VM where your docker-daemon runs; this I/O may sometimes slow down local
 builds.
@@ -14,10 +15,10 @@ To reduce this I/O it is possible to set the following in your environment:
 export LC_ENABLE_SCRATCH_VOLUMES=true
 ```
 
-Exporting the above environment variable will tell `lc` to keep all temporary
+Exporting the above environment variable will tell elsy to keep all temporary
 build resources (i.e., the data most often found in `./target` subdirectories
 for jvm builds) inside the docker-daemon VM; this is done using data containers.
-To see how this effects your favorite template try the following:
+To see how this affects your favorite template try the following:
 
 ```
 # print the template without scratch volumes enabled:

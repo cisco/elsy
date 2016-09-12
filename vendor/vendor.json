@@ -9,7 +9,7 @@
 			"revisionTime": "2016-02-24T21:10:30Z"
 		},
 		{
-			"checksumSHA1": "BLBx9HSRPH8EPHHFEnBErhC8QfU=",
+			"checksumSHA1": "i27YHcyHY4stkXm12/ztso3wHUo=",
 			"path": "github.com/codegangsta/cli",
 			"revision": "71f57d300dd6a780ac1856c005c4b518cfd498ec",
 			"revisionTime": "2016-03-07T04:12:29Z"
@@ -149,5 +149,5 @@
 			"revisionTime": "2016-03-01T20:40:22Z"
 		}
 	],
-	"rootPath": "stash0.eng.lancope.local/dev-infrastructure/project-lifecycle"
+	"rootPath": "github.com/elsy"
 }

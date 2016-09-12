@@ -1,11 +1,11 @@
-# LC Best Practices and Workflows
+# elsy Best Practices and Workflows
 
 This document enumerates some typical development scenarios and describes how to
-use `lc` to enable those workflows.
+use elsy to enable those workflows.
 
 ## Cloning a new Repo
 
-After cloning a new repo to hack on some code you can use `lc` to quickly build, test,
+After cloning a new repo to hack on some code you can use elsy to quickly build, test,
 and run the code.
 
 Simply run the following to setup your local environment:
@@ -43,31 +43,31 @@ that originate from that branch.
 - When debugging a particularly strange issue and you want to make sure that stale
 state is not a factor.
 
-`lc` provides a simple mechanism to enable this, just call `lc teardown` and then
+elsy provides a simple mechanism to enable this, just call `lc teardown` and then
 revisit the "Cloning a new Repo" section.
 
 ## Viewing docker-compose Commands
 
-`lc` is just an opinionated wrapper around `docker-compose` and as such it sometimes
+elsy is just an opinionated wrapper around `docker-compose` and as such it sometimes
 hides how `docker-compose` is being used.
 
-It is always possible to view the exact `docker-compose` commands that `lc` is running by
+It is always possible to view the exact `docker-compose` commands that elsy is running by
 using the `--debug` flag when running your command (e.g., `lc --debug bootstrap`).
 
 ## Executing docker-compose Commands
 
 If you want to run plain old `docker-compose` commands in your repo, you should use
-`lc` to do it by running `lc dc -- COMMAND` (the `--` ensures that lc will not
+elsy to do it by running `lc dc -- COMMAND` (the `--` ensures that elsy will not
 attempt to process any arguments that follow it, it is not required in all cases.)
 
 For example, to run a specific service with a custom entrypoint:
 
     lc dc -- run --entrypoint=/bin/bash prodserver
 
-You may be asking yourself "Why do I need to use `lc` to run docker-compose commands?".
-The reason is that `lc` is doing some things under the hood (e.g., declaring a
+You may be asking yourself "Why do I need to use elsy to run docker-compose commands?".
+The reason is that elsy is doing some things under the hood (e.g., declaring a
 specific compose project-name, linking in a parent compose file) and to correctly
-interact with the compose-managed containers you need `lc` to setup this
+interact with the compose-managed containers you need elsy to setup this
 wiring for every call.
 
 ## Viewing Logs
@@ -92,8 +92,8 @@ For example, to shell into the `prodserver` container:
 
 ## Inspecting Build Cache Data
 
-If you are using `lc` to build an `sbt` or a `maven` repo, chances are you have
-found yourself wondering where your `.ivy` or `.m2` data is. The answer is that `lc`
+If you are using elsy to build an `sbt` or a `maven` repo, chances are you have
+found yourself wondering where your `.ivy` or `.m2` data is. The answer is that elsy
 leverages a shared data container (shared across all repos) to hold all of that data.
 
 To view the caches you can run the following:
@@ -129,7 +129,7 @@ The dream workflow for engineers is to:
 2. Visit the browser (or whatever tool you use to interact with the artifact)
 and immediately see the effects of your change
 
-`lc` helps enable this type of workflow using a `devserver` service in your
+elsy helps enable this type of workflow using a `devserver` service in your
 `docker-compose.yml`.
 
 If your repo has a `devserver` service, then you can run the following command to

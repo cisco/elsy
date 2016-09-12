@@ -4,12 +4,12 @@ A simple [Ember](http://emberjs.com/) UI that renders notes to the screen.
 
 The key things this example illustrates are:
 
-- Using `lc` to build a javascript project without installing any javascript tooling
+- Using elsy to build a javascript project without installing any javascript tooling
 - Using the `lc devserver` pattern to enable a hot-reloading dev workflow for
 javascript development
 - Using a custom `package` phase to build the ember code before packaging the
-docker image.
-- Running blackbox-tests to artifact the final product works as expected.
+docker image
+- Running blackbox-tests to artifact the final product works as expected
 
 Note:`lc publish` will always fail for this example since it is configured
 to publish to a non-existent docker registry.

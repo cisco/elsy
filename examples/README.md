@@ -1,6 +1,6 @@
-# LC Examples
+# elsy Examples
 
 Each sub-directory contains an example of building a different type of codebase
-using lc.
+using elsy.
 
-For an example `golang` build, see the lc build itself, since `lc` builds `lc`.
+For an example Go build, see the elsy build itself, since elsy builds elsy.
