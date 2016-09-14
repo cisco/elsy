@@ -1,5 +1,7 @@
 # elsy
 
+[![Build Status](https://travis-ci.org/cisco/elsy.svg?branch=master)](https://travis-ci.org/cisco/elsy)
+
 elsy (also known as lc, which is what the binary is called) is an opinionated,
 multi-language, build-tool based on
 [Docker](https://github.com/docker/docker) and [Docker

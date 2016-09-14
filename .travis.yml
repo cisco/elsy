@@ -1,0 +1,46 @@
+language: bash
+sudo: required
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.7.1
+  DOCKER_VERSION: 1.10.3
+  LC_VERSION: 1.2.1
+
+before_install:
+  # docker
+  - sudo apt-get update && sudo apt-get install apt-transport-https ca-certificates
+  - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+  - sudo bash -c "echo deb https://apt.dockerproject.org/repo ubuntu-precise main > /etc/apt/sources.list.d/docker.list"
+  - sudo apt-get update
+  - sudo apt-get purge lxc-docker
+  - sudo apt-get install docker-engine=${DOCKER_VERSION}-0~precise
+  # docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  # elsy
+  - curl -L https://github.com/cisco/elsy/releases/download/v${LC_VERSION}/lc-linux-amd64-${LC_VERSION} > lc
+  - chmod +x lc
+  - sudo mv lc /usr/local/bin
+
+script:
+  ## need to set GIT_BRANCH and GIT_TAG_NAME for lc, following pattern from: https://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
+  - export PR=https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST
+  - export GIT_BRANCH=origin/$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo `curl -s $PR | jq -r .head.ref`; fi)
+  - export GIT_TAG_NAME=${TRAVIS_TAG}
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, GIT_BRANCH=$GIT_BRANCH GIT_TAG_NAME=$GIT_TAG_NAME"
+  ## blackbox-tests need wide columns when inspecting logs
+  - stty cols 200
+  ## need to fix above docker-engine install to not require sudo
+  - sudo lc ci
+
+deploy:
+  provider: releases
+  api_key:
+    secure: x7jhmnBGG6T41Iry3KfDzljAu0GmI9bzEaFCZDN8vUqvdRkkc3q8/DerRM620Yoq8HBK5YIAeFtv+fEpD6jtINcgAaICbyPe63/OSeZxvYZv3yuv9TJLX8HpW9cyRODsTVB4EK2/Ske0QJySR3meuVNsZAx6lruIS8i5sD9c1d2E1LyT+qCSrWB2XM4BRLSOtLJYd1pAMN6AGE+luQaSnARsmPdInHGiTm7fR0y0w6tAXNU93SiQlhLwljJoQtQ1JLqCwsNXLVRZGpnCKL2K+uLy0DoQvvkcJVN1dJLB9FDJ82rWWvicDJ44eUkPSk0mycxnNpCPBoXgVt2nJTjVUSaDJIibHtd25mUOeX2B+SequSbMuF1ktnmhCvFCF8e6YfbHYHfTQtM3kocS4WL5OTgDgT1NQ7RJzx9eJgYFsia9F1/JQrDabcr8rxotF+bLXJS618Fz+FXYNdOrx6Eslcwj3ckmMQZKEb6qdrhDVK/o21e9yf8ol8Yen32p03J6u6J/EyFjOMmGXwdVz+NIBKryLftxOXXoH+6rt2wZ7niyVsTWuH/qu6jE2IkHwloTpQr0ItH8fokMsQ7tT/GeoCnbadb5TQjH9qBHqas8RLvajLUblfafVF2oBYybtaRl2UiqFlXKWHoZk6GzKHIrFxcFUaPkCQyR8V+ZWdzURjY=
+  skip_cleanup: true
+  file_glob: true
+  file: target/lc-*-${TRAVIS_TAG}
+  on:
+    repo: cisco/elsy
+    tags: true
