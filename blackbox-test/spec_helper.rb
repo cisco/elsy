@@ -2,6 +2,7 @@ require 'tmpdir'
 require 'turnip/rspec'
 require 'turnip_formatter'
 require 'rspec_junit_formatter'
+require 'rspec/instafail'
 
 RSpec.configure do |config|
   # configure formatters
@@ -9,6 +10,7 @@ RSpec.configure do |config|
   config.color = true
   config.add_formatter RSpecTurnipFormatter, "/opt/project/test-reports/servicetest-report.html"
   config.add_formatter RspecJunitFormatter, "/opt/project/test-reports/servicetest-rspec-junit.xml"
+  config.add_formatter RSpec::Instafail
 
   # fail when steps are unimplemented
   config.raise_error_for_unimplemented_steps = true

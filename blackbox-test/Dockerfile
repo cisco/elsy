@@ -9,7 +9,8 @@ RUN gem install \
     turnip \
     turnip_formatter \
     rspec_junit_formatter \
-    byebug
+    byebug \
+    rspec-instafail
 
 ENV DOCKER_VERSION 1.10.3
 RUN curl -so /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}
