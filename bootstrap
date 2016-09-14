@@ -19,5 +19,6 @@ command -v docker-compose >/dev/null 2>&1 || {
 }
 
 docker pull golang:latest
+docker-compose run --rm installdependencies
 docker-compose build
 docker-compose run --rm package
