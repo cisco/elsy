@@ -36,6 +36,19 @@ Feature: sbt template
     """yaml
     template: sbt
     """
+    And a file named "docker-compose.yml" with:
+    """yaml
+    sbt:
+      image: 1science/sbt
+    test:
+      image: 1science/sbt
+    package:
+      image: 1science/sbt
+    publish:
+      image: 1science/sbt
+    clean:
+      image: 1science/sbt
+    """
     When I run `lc bootstrap`
     Then it should succeed
     When I run `lc test`
@@ -67,6 +80,19 @@ Feature: sbt template
     And a file named "lc.yml" with:
     """yaml
     template: sbt
+    """
+    And a file named "docker-compose.yml" with:
+    """yaml
+    sbt:
+      image: 1science/sbt
+    test:
+      image: 1science/sbt
+    package:
+      image: 1science/sbt
+    publish:
+      image: 1science/sbt
+    clean:
+      image: 1science/sbt
     """
     When I run `lc --enable-scratch-volumes bootstrap`
     Then it should succeed
