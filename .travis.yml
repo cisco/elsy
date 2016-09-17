@@ -33,7 +33,9 @@ script:
   - stty cols 200
   ## need to fix above docker-engine install to not require sudo
   - sudo lc ci
-
+  
+before_deploy:
+  - sudo chown -R travis:travis target
 deploy:
   provider: releases
   api_key:
