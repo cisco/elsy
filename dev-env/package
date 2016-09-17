@@ -6,15 +6,15 @@ rm -f ./target/lc*
 
 arch=amd64
 platforms=(darwin linux)
-version=`cat ./VERSION`
 build=`git rev-parse HEAD`
+version="snaphshot-$build"
 
-## the authoritative regex for release tags is in ./command/publish.go
+## the authoritative regex for release tags is in ./helpers/git.go
 if [ -n "$GIT_TAG_NAME" ] && [[ "$GIT_TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.+)?$ ]]; then
+  version="$GIT_TAG_NAME"
   echo "packaging release binary using version '$version'"
 else
-  version="$version-dev"
-  echo "packaging non-release binary using version '$version'"
+  echo "packaging snapshot binary using version '$version'"
 fi
 
 for platform in "${platforms[@]}"; do
