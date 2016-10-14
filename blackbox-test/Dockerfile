@@ -21,7 +21,7 @@ RUN curl -Lo /usr/local/bin/docker-compose https://github.com/docker/compose/rel
 RUN chmod a+x /usr/local/bin/docker-compose
 
 ## setup git so blackbox tests can make git calls
-RUN git config --global user.email "test@lancopetest.com"
+RUN git config --global user.email "test@ciscotest.com"
 RUN git config --global user.name "Project Lifecycle"
 
 WORKDIR /opt/project

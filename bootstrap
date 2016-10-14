@@ -8,13 +8,13 @@ set -e
 
 command -v docker >/dev/null 2>&1 || {
   echo "did not find docker" >&2
-  echo "install local-docker-stack https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/local-docker-stack/browse" >&2
+  echo "docker required for proper operation" >&2
   exit 1
 }
 
 command -v docker-compose >/dev/null 2>&1 || {
   echo "did not find docker-compose" >&2
-  echo "install local-docker-stack https://stash0.eng.lancope.local/projects/DEV-INFRASTRUCTURE/repos/local-docker-stack/browse" >&2
+  echo "docker-compose required for proper operation" >&2
   exit 1
 }
 
