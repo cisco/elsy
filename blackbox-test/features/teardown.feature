@@ -54,6 +54,30 @@ Feature: teardown task
     And I run `lc dc ps`
     Then the output should not contain 'teardowntestcontainer'
 
+  Scenario: with v2 networks and -f flag
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    version: '2'
+
+    services:
+      test:
+        image: busybox
+        command: "/bin/true"
+        networks:
+          - elsy_teardown_lc_bbt_network_test
+
+    networks:
+      elsy_teardown_lc_bbt_network_test:
+    """
+    When I run `lc test`
+    Then it should succeed
+    When I run `docker network ls`
+    Then the output should contain 'elsy_teardown_lc_bbt_network_test'
+    When I run `lc teardown -f`
+    Then it should succeed
+    When I run `docker network ls`
+    Then the output should not contain 'elsy_teardown_lc_bbt_network_test'
+
   Scenario: with v2 volumes
     Given a file named "docker-compose.yml" with:
     """yaml
