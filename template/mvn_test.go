@@ -7,7 +7,7 @@ func TestMvnTemplate(t *testing.T) {
 		t.Error("expected mvn template to register one shared external data container")
 	}
 
-	if _, err := Get("mvn", false); err != nil {
+	if _, err := GetV1("mvn", false); err != nil {
 		t.Error("expected mvn template to be registered")
 	}
 }

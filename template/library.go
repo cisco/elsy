@@ -4,17 +4,19 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
-	"github.com/elsy/helpers"
 	tmpl "text/template"
+
+	"github.com/elsy/helpers"
 )
 
 var sharedExternalDataContainers = make(map[string][]helpers.DockerDataContainer)
 
-func AddSharedExternalDataContainer(templateName string, ddc helpers.DockerDataContainer) {
+func addSharedExternalDataContainer(templateName string, ddc helpers.DockerDataContainer) {
 	dataContainers := GetSharedExternalDataContainers(templateName)
 	sharedExternalDataContainers[templateName] = append(dataContainers, ddc)
 }
 
+// GetSharedExternalDataContainers will return a slice of data containers used by the given template
 func GetSharedExternalDataContainers(templateName string) []helpers.DockerDataContainer {
 	return sharedExternalDataContainers[templateName]
 }
@@ -51,36 +53,37 @@ func (t *template) toYml(enableScratchVolume bool) (string, error) {
 	return finalYml.String(), nil
 }
 
-var templates = make(map[string]template)
+var templatesV1 = make(map[string]template)
 
-// Add will add the given template to a registry for use by external packages
-func Add(template template) error {
-	if _, ok := templates[template.name]; ok {
+// addV1 will add the given compose v1 template to a registry for use by external packages
+func addV1(template template) error {
+	if _, ok := templatesV1[template.name]; ok {
 		return fmt.Errorf("template %q already exists", template.name)
 	}
-	templates[template.name] = template
+	templatesV1[template.name] = template
 	return nil
 }
 
-// Get will return the template if it exists
+// GetV1 will return the compose V1 template if it exists
 // If 'enableScratchVolume' is true and the target template supports
 // scratch-space optimization then Get will enable it.
-func Get(name string, enableScratchVolume bool) (string, error) {
-	template, present := templates[name]
+func GetV1(name string, enableScratchVolume bool) (string, error) {
+	tmpl, present := templatesV1[name]
 	if !present {
 		return "", fmt.Errorf("template %q is not registered", name)
 	}
-	yml, err := template.toYml(enableScratchVolume)
+	yml, err := tmpl.toYml(enableScratchVolume)
 	if err != nil {
 		return "", err
 	}
 	return yml, nil
 }
 
+// List will return a slice of all known templates
 func List() []string {
-	keys := make([]string, 0, len(templates))
+	keys := make([]string, 0, len(templatesV1))
 
-	for k := range templates {
+	for k := range templatesV1 {
 		keys = append(keys, k)
 	}
 

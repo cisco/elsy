@@ -2,7 +2,7 @@ package template
 
 import "github.com/elsy/helpers"
 
-var leinTemplate = template{
+var leinTemplateV1 = template{
 	name: "lein",
 	composeYmlTmpl: `
 {{if .ScratchVolumes}}
@@ -48,12 +48,12 @@ clean:
 `}
 
 func init() {
-	AddSharedExternalDataContainer("lein", helpers.DockerDataContainer{
+	addSharedExternalDataContainer("lein", helpers.DockerDataContainer{
 		Image:     "busybox:latest",
 		Name:      "lc_shared_mvndata",
 		Volumes:   []string{"/root/.m2/repository"},
 		Resilient: true,
 	})
 
-	Add(leinTemplate)
+	addV1(leinTemplateV1)
 }

@@ -2,7 +2,7 @@ package template
 
 import "github.com/elsy/helpers"
 
-var mvnTemplate = template{
+var mvnTemplateV1 = template{
 	name: "mvn",
 	composeYmlTmpl: `
 {{if .ScratchVolumes}}
@@ -54,12 +54,12 @@ clean:
 `}
 
 func init() {
-	AddSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
+	addSharedExternalDataContainer("mvn", helpers.DockerDataContainer{
 		Image:     "busybox:latest",
 		Name:      "lc_shared_mvndata",
 		Volumes:   []string{"/root/.m2/repository"},
 		Resilient: true,
 	})
 
-	Add(mvnTemplate)
+	addV1(mvnTemplateV1)
 }
