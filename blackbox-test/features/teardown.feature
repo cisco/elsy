@@ -73,12 +73,16 @@ Feature: teardown task
     Then it should succeed
     When I run `docker network ls`
     Then the output should contain 'elsy_teardown_lc_bbt_network_test'
+    When I run `lc teardown`
+    Then it should succeed
+    When I run `docker network ls`
+    Then the output should contain 'elsy_teardown_lc_bbt_network_test'
     When I run `lc teardown -f`
     Then it should succeed
     When I run `docker network ls`
     Then the output should not contain 'elsy_teardown_lc_bbt_network_test'
 
-  Scenario: with v2 volumes
+  Scenario: with v2 volumes and -f flag
     Given a file named "docker-compose.yml" with:
     """yaml
     version: '2'
@@ -96,6 +100,10 @@ Feature: teardown task
     When I run `lc test`
     Then it should succeed
     When I run `docker volume ls -q`
+    Then the output should contain 'teardown_test_build_cache'
+    When I run `lc teardown`
+    Then it should succeed
+    And I run `docker volume ls -q`
     Then the output should contain 'teardown_test_build_cache'
     When I run `lc teardown -f`
     Then it should succeed
