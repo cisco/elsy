@@ -2,7 +2,7 @@ package template
 
 import "github.com/elsy/helpers"
 
-var sbtTemplate = template{
+var sbtTemplateV1 = template{
 	name: "sbt",
 	composeYmlTmpl: `
 {{if .ScratchVolumes}}
@@ -46,12 +46,12 @@ clean:
 `}
 
 func init() {
-	AddSharedExternalDataContainer("sbt", helpers.DockerDataContainer{
+	addSharedExternalDataContainer("sbt", helpers.DockerDataContainer{
 		Image:     "busybox:latest",
 		Name:      "lc_shared_sbtdata",
 		Volumes:   []string{"/root/.ivy2"},
 		Resilient: true,
 	})
 
-	Add(sbtTemplate)
+	addV1(sbtTemplateV1)
 }

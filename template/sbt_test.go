@@ -7,7 +7,7 @@ func TestSbtTemplate(t *testing.T) {
 		t.Error("expected sbt template to register one shared external data container")
 	}
 
-	if _, err := Get("sbt", false); err != nil {
+	if _, err := GetV1("sbt", false); err != nil {
 		t.Error("expected sbt template to be registered")
 	}
 }

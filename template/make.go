@@ -1,6 +1,6 @@
 package template
 
-var makeTemplate = template{
+var makeTemplateV1 = template{
 	name: "make",
 	composeYmlTmpl: `
 make: &make
@@ -18,5 +18,5 @@ clean:
 `}
 
 func init() {
-	Add(makeTemplate)
+	addV1(makeTemplateV1)
 }

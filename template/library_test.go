@@ -24,29 +24,29 @@ func TestSharedExternalDataContainer(t *testing.T) {
 		t.Error("expected shared external data containers to start empty")
 	}
 
-	AddSharedExternalDataContainer("foo", ddcTmp)
-	AddSharedExternalDataContainer("foo", ddcVar)
+	addSharedExternalDataContainer("foo", ddcTmp)
+	addSharedExternalDataContainer("foo", ddcVar)
 	if dataContainers := GetSharedExternalDataContainers("foo"); len(dataContainers) != 2 {
 		t.Error("expected shared external data containers to contain added containers")
 	}
 
-	AddSharedExternalDataContainer("bar", ddcVar)
+	addSharedExternalDataContainer("bar", ddcVar)
 	if dataContainers := GetSharedExternalDataContainers("bar"); len(dataContainers) != 1 {
 		t.Error("expected shared external data containers to contain added containers")
 	}
 }
 
-func TestTemplateRegistration(t *testing.T) {
-	if _, err := Get("foo", false); err == nil {
+func TestTemplateV1Registration(t *testing.T) {
+	if _, err := GetV1("foo", false); err == nil {
 		t.Error("expected Get to return an error for a non-existant template")
 	}
-	if err := Add(template{name: "foo", composeYmlTmpl: "someyaml"}); err != nil {
+	if err := addV1(template{name: "foo", composeYmlTmpl: "someyaml"}); err != nil {
 		t.Error("expected Add to register a template")
 	}
-	if _, err := Get("foo", false); err != nil {
+	if _, err := GetV1("foo", false); err != nil {
 		t.Error("expected Get to return yaml after registering a template")
 	}
-	if err := Add(template{name: "foo", composeYmlTmpl: "someyaml"}); err == nil {
+	if err := addV1(template{name: "foo", composeYmlTmpl: "someyaml"}); err == nil {
 		t.Error("expected Add to return an error when registering an existing template")
 	}
 }

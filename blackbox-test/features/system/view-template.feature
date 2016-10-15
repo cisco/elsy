@@ -6,7 +6,7 @@ Feature: system view-template task
 
   Scenario: calling with an invalid template
     When I run `lc system view-template foo`
-    Then it should fail with 'template \"foo\" is not registered'
+    Then it should fail with 'template \"foo\" is not a registered'
 
   Scenario: calling with a valid template
     When I run `lc system view-template mvn`
