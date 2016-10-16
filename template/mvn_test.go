@@ -10,4 +10,8 @@ func TestMvnTemplate(t *testing.T) {
 	if _, err := GetV1("mvn", false); err != nil {
 		t.Error("expected mvn template to be registered")
 	}
+
+	if _, err := GetV2("mvn", false); err != nil {
+		t.Error("expected mvn template to be registered")
+	}
 }
