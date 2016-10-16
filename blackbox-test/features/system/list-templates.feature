@@ -5,5 +5,7 @@ Feature: system list-templates task
     Then it should succeed
     And the output should contain all of these:
       | Run `lc system view-template <template-name>` to see the template contents. |
+      | Compose v1 Templates: |
       | mvn |
       | sbt |
+      | Compose v2 Templates: |
