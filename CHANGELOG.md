@@ -1,5 +1,7 @@
 ## _Unreleased_
 
+- Add initial support for Compose v2 syntax when using templates [\#11](https://github.com/cisco/elsy/pull/11)
+
 ## v1.2.1
 
 - fixing release issue with 1.2.0 (`./VERSION`) did not get updated.
