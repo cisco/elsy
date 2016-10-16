@@ -12,6 +12,8 @@ Feature: system view-template task
     When I run `lc system view-template mvn`
     Then it should succeed
     And the output should contain all of these:
-      | mvn:     |
-      | test:    |
-      | package: |
+      | Compose V1 Version: |
+      | mvn:                |
+      | test:               |
+      | package:            |
+      | Compose V2 Version: |
