@@ -2,6 +2,7 @@ package template
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"sort"
 	tmpl "text/template"
@@ -54,6 +55,7 @@ func (t *template) toYml(enableScratchVolume bool) (string, error) {
 }
 
 var templatesV1 = make(map[string]template)
+var templatesV2 = make(map[string]template)
 
 // addV1 will add the given compose v1 template to a registry for use by external packages
 func addV1(template template) error {
@@ -64,13 +66,53 @@ func addV1(template template) error {
 	return nil
 }
 
+// addV2 will add the given compose v2 template to a registry for use by external packages
+func addV2(template template) error {
+	if _, ok := templatesV2[template.name]; ok {
+		return fmt.Errorf("template %q already exists", template.name)
+	}
+	templatesV2[template.name] = template
+	return nil
+}
+
+// GetTemplate returns the template if found
+// will inspect the compose file at "docker-comopse.yml" to determine the correct
+// file version to use when retrieving the template
+//
+// currently defaults to V1 if no version found
+func GetTemplate(templateName string, enableScratchVolume bool) (string, error) {
+	version := helpers.GetComposeFileVersion("docker-compose.yml", helpers.V1)
+	switch version {
+	case helpers.V1:
+		return GetV1(templateName, enableScratchVolume)
+	case helpers.V2:
+		return GetV2(templateName, enableScratchVolume)
+	}
+	return "", errors.New("could not determine docker-compose.yml file version")
+}
+
 // GetV1 will return the compose V1 template if it exists
 // If 'enableScratchVolume' is true and the target template supports
 // scratch-space optimization then Get will enable it.
 func GetV1(name string, enableScratchVolume bool) (string, error) {
 	tmpl, present := templatesV1[name]
 	if !present {
-		return "", fmt.Errorf("template %q is not registered", name)
+		return "", fmt.Errorf("template %q is not a registered v1 template", name)
+	}
+	yml, err := tmpl.toYml(enableScratchVolume)
+	if err != nil {
+		return "", err
+	}
+	return yml, nil
+}
+
+// GetV2 will return the compose V2 template if it exists
+// If 'enableScratchVolume' is true and the target template supports
+// scratch-space optimization then Get will enable it.
+func GetV2(name string, enableScratchVolume bool) (string, error) {
+	tmpl, present := templatesV2[name]
+	if !present {
+		return "", fmt.Errorf("template %q is not a registered v2 template", name)
 	}
 	yml, err := tmpl.toYml(enableScratchVolume)
 	if err != nil {

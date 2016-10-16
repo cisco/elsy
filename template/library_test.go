@@ -50,3 +50,18 @@ func TestTemplateV1Registration(t *testing.T) {
 		t.Error("expected Add to return an error when registering an existing template")
 	}
 }
+
+func TestTemplateV2Registration(t *testing.T) {
+	if _, err := GetV2("foo", false); err == nil {
+		t.Error("expected Get to return an error for a non-existant template")
+	}
+	if err := addV2(template{name: "foo", composeYmlTmpl: "someyaml"}); err != nil {
+		t.Error("expected Add to register a template")
+	}
+	if _, err := GetV2("foo", false); err != nil {
+		t.Error("expected Get to return yaml after registering a template")
+	}
+	if err := addV2(template{name: "foo", composeYmlTmpl: "someyaml"}); err == nil {
+		t.Error("expected Add to return an error when registering an existing template")
+	}
+}
