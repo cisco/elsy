@@ -10,4 +10,8 @@ func TestSbtTemplate(t *testing.T) {
 	if _, err := GetV1("sbt", false); err != nil {
 		t.Error("expected sbt template to be registered")
 	}
+
+	if _, err := GetV2("sbt", false); err != nil {
+		t.Error("expected sbt template to be registered")
+	}
 }
