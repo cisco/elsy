@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -11,6 +12,15 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"gopkg.in/yaml.v2"
+)
+
+// ComposeFileVersion inside the repo
+type ComposeFileVersion int
+
+const (
+	unknown ComposeFileVersion = iota
+	V1
+	V2
 )
 
 func DockerComposeCommand(args ...string) *exec.Cmd {
@@ -57,6 +67,7 @@ func DockerComposeServices() (services []string) {
 	return
 }
 
+// GetDockerComposeVersion returns version of the docker-compose binary
 // first return value is the human readable version
 // second return value is an array of the {majorVersion, minorVersion, patchVersion}
 func GetDockerComposeVersion(c *cli.Context) (string, []int, error) {
@@ -66,6 +77,56 @@ func GetDockerComposeVersion(c *cli.Context) (string, []int, error) {
 
 		return parseDockerComposeVersion(out)
 	}
+}
+
+// GetComposeFileVersion of the current repo
+// Will return the defaultVersion if it cannot determine the actual version
+func GetComposeFileVersion(file string, defaultVersion ComposeFileVersion) ComposeFileVersion {
+	version, _, err := parseComposeFile(file)
+	if err != nil {
+		logrus.Debugf("error parsing compose file found at %q, returning defaultVersion: %q, err: %q", file, defaultVersion, err)
+		return defaultVersion
+	}
+
+	if version == unknown {
+		logrus.Debugf("could not determine compospe version from file %q, returning defaultVersion: %q", file, defaultVersion)
+		return defaultVersion
+	}
+	return version
+}
+
+func getDockerComposeMap(file string) DockerComposeMap {
+	_, m, err := parseComposeFile(file)
+	if err != nil {
+		logrus.Errorf("error parsing compose file found at %q, err: %q", file, err)
+		panic(err)
+	}
+	return m
+}
+
+func parseComposeFile(file string) (ComposeFileVersion, DockerComposeMap, error) {
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return unknown, nil, fmt.Errorf("no docker-comopse file found at %q", file)
+	}
+
+	b, err := ioutil.ReadFile(file)
+	if err != nil {
+		return unknown, nil, fmt.Errorf("error reading compose file at %q, err: %q", file, err)
+	}
+
+	var v1Contents DockerComposeMap
+	if err := yaml.Unmarshal(b, &v1Contents); err == nil {
+		logrus.Debugf("found compose v1 file at %q", file)
+		return V1, v1Contents, nil
+	}
+
+	var v2Contents DockerComposeV2
+	if err := yaml.Unmarshal(b, &v2Contents); err == nil {
+		logrus.Debug("found compose v2 file at %q", file)
+		return V2, v2Contents.Services, nil
+	}
+
+	return unknown, nil, fmt.Errorf("error reading compose file at %q, could not parse as V1 or V2 version", file)
 }
 
 func parseDockerComposeVersion(versionString string) (string, []int, error) {
@@ -91,21 +152,6 @@ func parseDockerComposeVersion(versionString string) (string, []int, error) {
 		}
 	}
 	return version, versionNumbers, nil
-}
-
-func getDockerComposeMap(file string) (m DockerComposeMap) {
-	if s, err := ioutil.ReadFile(file); err != nil {
-		panic(err)
-	} else if err := yaml.Unmarshal(s, &m); err != nil {
-		var v2 DockerComposeV2
-		err2 := yaml.Unmarshal(s, &v2)
-		if err2 != nil {
-			panic(err)
-		}
-		logrus.Debug("found v2 docker-compose format, this is not compatible with lc templates")
-		m = v2.Services
-	}
-	return
 }
 
 func DockerComposeHasService(service string) bool {

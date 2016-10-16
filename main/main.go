@@ -136,19 +136,19 @@ func setComposeTemplate(c *cli.Context) {
 	templateName := c.GlobalString("template")
 	enableScratchVolume := c.GlobalBool("enable-scratch-volumes")
 	if len(templateName) > 0 {
-		if yaml, err := template.GetV1(templateName, enableScratchVolume); err == nil {
+		if yaml, err := template.GetTemplate(templateName, enableScratchVolume); err == nil {
 			file := createTempComposeFile(yaml)
 			logrus.Debugf("setting LC_BASE_COMPOSE_FILE to %v", file)
 			os.Setenv("LC_BASE_COMPOSE_FILE", file)
 		} else {
-			logrus.Panicf("template %q does not exist", templateName)
+			logrus.Panicf("error finding template %q, err: %q", templateName, err)
 		}
-	}
 
-	dataContainers := template.GetSharedExternalDataContainers(templateName)
-	for _, dataContainer := range dataContainers {
-		if err := dataContainer.Ensure(c.GlobalBool("offline")); err != nil {
-			logrus.Panic("unable to create data container")
+		dataContainers := template.GetSharedExternalDataContainers(templateName)
+		for _, dataContainer := range dataContainers {
+			if err := dataContainer.Ensure(c.GlobalBool("offline")); err != nil {
+				logrus.Panic("unable to create data container")
+			}
 		}
 	}
 }
