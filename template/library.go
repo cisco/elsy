@@ -121,9 +121,22 @@ func GetV2(name string, enableScratchVolume bool) (string, error) {
 	return yml, nil
 }
 
-// List will return a slice of all known templates
-func List() []string {
+// ListV1 will return a slice of all known v1 templates
+func ListV1() []string {
 	keys := make([]string, 0, len(templatesV1))
+
+	for k := range templatesV1 {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
+	return keys
+}
+
+// ListV2 will return a slice of all known v2 templates
+func ListV2() []string {
+	keys := make([]string, 0, len(templatesV2))
 
 	for k := range templatesV1 {
 		keys = append(keys, k)
