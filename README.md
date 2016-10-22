@@ -28,6 +28,13 @@ lc ci
 
 ## Getting Started
 
+### Prerequisites
+
+Please do not install latest version of docker and vagrant. These version are currently supported:
+
+* Docker 1.9.1 is latest supported version
+* Vagrant 1.8.5 is latest supported version
+
 Follow the below steps to install elsy:
 
 ```
@@ -40,6 +47,7 @@ export LC_DOCKER_COMPOSE=/usr/local/bin/docker-compose
 export DOCKER_HOST=tcp://docker-daemon-host:2375
 
 ```
+Alternatively there is an installation script `bootstrap` to compile and install binaries
 
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
 info on how to setup a repo to use elsy.
