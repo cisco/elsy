@@ -1,0 +1,3 @@
+project_name: scala-helloworld
+template: sbt
+docker_image_name: helloworld-jre
