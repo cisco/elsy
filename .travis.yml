@@ -2,8 +2,8 @@ language: bash
 sudo: required
 
 env:
-  DOCKER_COMPOSE_VERSION: 1.7.1
-  DOCKER_VERSION: 1.10.3
+  DOCKER_COMPOSE_VERSION: 1.8.1
+  DOCKER_VERSION: 1.11.2
   LC_VERSION: 1.2.1
 
 before_install:
@@ -33,7 +33,7 @@ script:
   - stty cols 200
   ## need to fix above docker-engine install to not require sudo
   - sudo lc ci
-  
+
 before_deploy:
   - sudo chown -R travis:travis target
 deploy:
