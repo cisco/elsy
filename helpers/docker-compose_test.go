@@ -18,6 +18,7 @@ var testComposeVersionData = []struct {
 	{"docker-compose version: 1.5.0", "1.5.0", []int{1, 5, 0}},
 	{"docker-compose version 1.5.2, build 7240ff3", "1.5.2", []int{1, 5, 2}},
 	{"docker-compose version: 1.6.0", "1.6.0", []int{1, 6, 0}},
+	{"docker-compose version 1.8.1, build 878cff1", "1.8.1", []int{1, 8, 1}},
 }
 
 func TestParseDockerCompseVersion(t *testing.T) {

@@ -1,12 +1,16 @@
 package command
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/elsy/helpers"
 )
+
+// commitLabel identifies the git commit the image was built from
+const commitLabel = "com.elsy.metadata.git-commit"
 
 // CmdPackage runs package service if present and then attempts to build Dockerfile.
 // Unless --skip-tests is passed, it *will* run the tests, and any failures will abort
@@ -50,7 +54,13 @@ func RunPackage(c *cli.Context) error {
 			logrus.Panic("you must use `--docker-image-name` to package a docker image")
 		}
 
-		commands = append(commands, exec.Command("docker", "build", "-t", dockerImageName, "."))
+		buildArgs := []string{"build", "-t", dockerImageName}
+		labelArgs := constructLabelArgs(c)
+		if len(labelArgs) > 0 {
+			buildArgs = append(buildArgs, labelArgs...)
+		}
+		buildArgs = append(buildArgs, ".")
+		commands = append(commands, exec.Command("docker", buildArgs...))
 	}
 
 	if err := helpers.ChainCommands(commands); err != nil {
@@ -65,4 +75,28 @@ func RunPackage(c *cli.Context) error {
 	}
 
 	return nil
+}
+
+func constructLabelArgs(c *cli.Context) (labelArgs []string) {
+	versionString, version, err := helpers.GetDockerVersion()
+	if err != nil {
+		logrus.Warnf("Skipping applying image labels: could not determine docker version, err: %q", err)
+		return nil
+	}
+
+	// 'docker build --label' was introduced in docker 1.11.1: https://github.com/docker/docker/releases/tag/v1.11.1-rc1
+	// assuming we won't see any docker versions less than 1.x
+	major, minor, patch := version[0], version[1], version[2]
+	if major == 1 && (minor < 11 || (minor == 11 && patch < 1)) {
+		logrus.Debugf("Skipping applying image labels: found docker version %s, 'docker build --label' only supported Docker 1.11.1 and higher", versionString)
+		return nil
+	}
+
+	commit := c.String("git-commit")
+	if commit != "" {
+		logrus.Infof("Attaching image label: %s=%s", commitLabel, commit)
+		labelArgs = append(labelArgs, "--label", fmt.Sprintf("%s=%s", commitLabel, commit))
+	}
+
+	return
 }

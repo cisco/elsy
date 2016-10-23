@@ -1,10 +1,12 @@
 package helpers
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
@@ -208,4 +210,45 @@ func DockerContainerDyanmicPorts(id string) (map[string]string, error) {
 		}
 	}
 	return portBindings, nil
+}
+
+// GetDockerVersion returns version of the docker binary
+// first return value is the human readable version
+// second return value is an array of the {majorVersion, minorVersion, patchVersion}
+func GetDockerVersion() (string, []int, error) {
+	env, err := GetDockerClient().Version()
+	if err != nil {
+		return "", nil, err
+	}
+
+	if !env.Exists("Version") {
+		return "", nil, errors.New("Could not obtain Version from docker server")
+	}
+
+	versionComponents, err := parseVersionString(env.Get("Version"))
+	if err != nil {
+		return "", nil, err
+	}
+	return env.Get("Version"), versionComponents, nil
+}
+
+// parseVersionString assumes version string of format <major>.<minor>.<patch>
+func parseVersionString(versionString string) ([]int, error) {
+	versionArray := strings.Split(versionString, ".")
+
+	if len(versionArray) != 3 {
+		logrus.Debugf("could not parse version, expected 3 version components, found %d", len(versionArray))
+		return nil, errors.New("could not parse version")
+	}
+
+	versionNumbers := []int{}
+	for _, x := range versionArray {
+		if val, err := strconv.Atoi(x); err == nil {
+			versionNumbers = append(versionNumbers, val)
+		} else {
+			logrus.Debugf("could not parse integers from version %s", version, err)
+			return nil, errors.New("could not parse version")
+		}
+	}
+	return versionNumbers, nil
 }

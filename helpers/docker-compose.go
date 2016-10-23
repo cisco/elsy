@@ -1,12 +1,10 @@
 package helpers
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
@@ -71,12 +69,11 @@ func DockerComposeServices() (services []string) {
 // first return value is the human readable version
 // second return value is an array of the {majorVersion, minorVersion, patchVersion}
 func GetDockerComposeVersion(c *cli.Context) (string, []int, error) {
-	if out, err := RunCommandWithOutput(exec.Command(c.GlobalString("docker-compose"), "--version")); err != nil {
+	out, err := RunCommandWithOutput(exec.Command(c.GlobalString("docker-compose"), "--version"))
+	if err != nil {
 		return "", nil, err
-	} else {
-
-		return parseDockerComposeVersion(out)
 	}
+	return parseDockerComposeVersion(out)
 }
 
 // GetComposeFileVersion of the current repo
@@ -135,23 +132,12 @@ func parseDockerComposeVersion(versionString string) (string, []int, error) {
 	versionComponent := strings.Split(firstLine, ",")[0]
 	words := strings.Split(versionComponent, " ")
 	version := strings.TrimSpace(words[len(words)-1])
-	versionArray := strings.Split(version, ".")
 
-	if len(versionArray) != 3 {
-		logrus.Debugf("could not parse version, expected 3 version components, found %d", len(versionArray))
-		return version, nil, errors.New("could not parse version")
+	versionComponents, err := parseVersionString(version)
+	if err != nil {
+		return "", nil, err
 	}
-
-	versionNumbers := []int{}
-	for _, x := range versionArray {
-		if val, err := strconv.Atoi(x); err == nil {
-			versionNumbers = append(versionNumbers, val)
-		} else {
-			logrus.Debugf("could not parse integers from version %s", version, err)
-			return version, nil, errors.New("could not parse version")
-		}
-	}
-	return version, versionNumbers, nil
+	return version, versionComponents, nil
 }
 
 func DockerComposeHasService(service string) bool {

@@ -118,6 +118,11 @@ func Commands() []cli.Command {
 					Usage:  "Git tag which is being published",
 					EnvVar: "GIT_TAG_NAME",
 				},
+				cli.StringFlag{
+					Name:   "git-commit",
+					Usage:  "Git commit that is being built",
+					EnvVar: "GIT_COMMIT",
+				},
 			},
 		},
 		{
@@ -185,6 +190,11 @@ func Commands() []cli.Command {
 				cli.BoolFlag{
 					Name:  "skip-tests",
 					Usage: "skip running of tests before packaging",
+				},
+				cli.StringFlag{
+					Name:   "git-commit",
+					Usage:  "Git commit that is being built",
+					EnvVar: "GIT_COMMIT",
 				},
 			},
 		},
