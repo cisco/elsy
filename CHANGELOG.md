@@ -1,6 +1,10 @@
 ## _Unreleased_
 
 - Add initial support for Compose v2 syntax when using templates [\#11](https://github.com/cisco/elsy/pull/11)
+- Update `lc package` to apply the label:
+`com.elsy.metadata.git-commit=<git-commit>` to the Docker image if the
+`GIT_COMMIT` env var is populated. Note that this only works for Docker 1.11.1 and
+higher. [\#13](https://github.com/cisco/elsy/pull/13)
 
 ## v1.2.1
 

@@ -192,6 +192,31 @@ Feature: package task
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"
 
+  ## Only works in docker 1.11 and higher
+  Scenario: with a docker artifact and image labels
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "Dockerfile" with:
+    """
+    FROM library/alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: projectlifecycleblackbox_docker_label_test
+    """
+    When I run `lc package --git-commit=c8dfd9f`
+    Then it should succeed
+    And the output should contain all of these:
+      | Image is up to date for alpine:latest                       |
+      | Attaching image label: com.elsy.metadata.git-commit=c8dfd9f |
+    And the image 'projectlifecycleblackbox_docker_label_test' should exist
+    And it should have the following labels:
+      | com.elsy.metadata.git-commit:c8dfd9f              |
+
   Scenario: custom package script generating the Dockerfile
     Given a file named "docker-compose.yml" with:
     """yaml

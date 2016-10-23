@@ -88,6 +88,13 @@ Note, when run on its own, `lc package` will also run `lc test` to
 ensure you are packaging working code, you can prevent this by using the
 `--skip-tests` flag.
 
+When using elsy with Docker 1.11.1 and higher, `lc package` will apply the following
+image labels during build time:
+
+- `com.elsy.metadata.git-commit=<git-commit>` - The git commit that the image was
+built from. The value of `<git-commit>` is taken from the `GIT_COMMIT` env var
+(it is up to your  build system to populate this env var).
+
 ### lc blackbox-test
 This is where the real power of docker-based development comes into play.
 
