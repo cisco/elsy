@@ -9,4 +9,3 @@ WORKDIR /opt/service
 EXPOSE 8080
 
 ENTRYPOINT ["/opt/init.d/server-entrypoint.sh"]
-# CMD ["server", "config.yml"]

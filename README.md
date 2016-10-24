@@ -30,10 +30,9 @@ lc ci
 
 ### Prerequisites
 
-Please do not install latest version of docker and vagrant. These version are currently supported:
+Please use version Docker 1.11.2 as it is latest supported by elsy.
 
-* Docker 1.9.1 is latest supported version
-* Vagrant 1.8.5 is latest supported version
+### Installation
 
 Follow the below steps to install elsy:
 

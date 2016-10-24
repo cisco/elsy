@@ -1,13 +1,12 @@
 sbt:
   image: hseeberger/scala-sbt
-
 test:
   image: hseeberger/scala-sbt
-
 package:
   image: hseeberger/scala-sbt
-
 publish:
+  image: hseeberger/scala-sbt
+clean:
   image: hseeberger/scala-sbt
 
 prodserver:
