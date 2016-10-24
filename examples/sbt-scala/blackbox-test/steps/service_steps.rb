@@ -6,7 +6,7 @@ step ":host is listening on :port" do |host, port|
 end
 
 step "the homepage should contain :content" do |content|
-  visit("/")
+  visit("/hello")
   eventually(timeout: 120) {
     expect(page).to have_content(content)
   }
