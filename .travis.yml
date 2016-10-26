@@ -4,7 +4,7 @@ sudo: required
 env:
   DOCKER_COMPOSE_VERSION: 1.8.1
   DOCKER_VERSION: 1.11.2
-  LC_VERSION: 1.2.1
+  LC_VERSION: 1.3.0
 
 before_install:
   # docker
@@ -19,7 +19,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   # elsy
-  - curl -L https://github.com/cisco/elsy/releases/download/v${LC_VERSION}/lc-linux-amd64-${LC_VERSION} > lc
+  - curl -L https://github.com/cisco/elsy/releases/download/v${LC_VERSION}/lc-linux-amd64-v${LC_VERSION} > lc
   - chmod +x lc
   - sudo mv lc /usr/local/bin
 
