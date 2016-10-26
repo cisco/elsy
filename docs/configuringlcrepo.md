@@ -21,7 +21,7 @@ elsy uses the `lc.yml` file at the root of the repo to figure out how it should
 work inside the repo. `lc.yml` supports the following configuration options:
 
 * `project_name`: name of your `docker-compose` project which is used as
-__COMPOSE_PROJECT_NAME__. This name should not contain any any spaces, underscores
+__COMPOSE_PROJECT_NAME__. This name should not contain any spaces, underscores
 or dashes.
 * `docker_compose`: basename or fully qualified path to the docker-compose binary.
 This will override the `LC_DOCKER_COMPOSE` environment variable to enable you
