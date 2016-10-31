@@ -1,5 +1,9 @@
 ## _Unreleased_
 
+- Added `lc run` to keep from having to type `lc dc run`. Any aguments that `lc dc run` takes,
+`lc run` can also take.
+- Added `lc bbtest` as an alias for `lc blackbox-test`.
+
 ## v1.3.0
 
 - Add initial support for Compose v2 syntax when using templates [\#11](https://github.com/cisco/elsy/pull/11)
