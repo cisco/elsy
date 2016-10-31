@@ -137,6 +137,12 @@ func Commands() []cli.Command {
 			Action: panicOnError(command.CmdDockerCompose),
 			Flags:  []cli.Flag{},
 		},
+    {
+			Name:   "run",
+			Usage:  "Runs a service from the docker-compose YAML file",
+			Action: panicOnError(command.CmdRun),
+			Flags:  []cli.Flag{},
+		},
 		{
 			Name:   "make",
 			Usage:  "Executes a specific make command. Depends on a `make` service in docker-compose.yml",
@@ -279,6 +285,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:   "blackbox-test",
+      Aliases: []string{"bbtest"},
 			Usage:  "Runs blackbox-test service. forwards arguments",
 			Action: panicOnError(command.CmdBlackbox),
 			Flags: []cli.Flag{

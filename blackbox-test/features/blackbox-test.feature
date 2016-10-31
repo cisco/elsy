@@ -16,6 +16,20 @@ Feature: blackbox-test task
     When I run `lc blackbox-test`
     Then it should succeed
 
+  Scenario: with passing bbtest alias
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    blackbox-test:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
+    """
+    When I run `lc bbtest`
+    Then it should succeed
+
   Scenario: with failing blackbox-test
     Given a file named "docker-compose.yml" with:
     """yaml
