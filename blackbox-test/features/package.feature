@@ -106,22 +106,22 @@ Feature: package task
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
+    When I run `lc package --docker-image-name=elsyblackbox_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
-    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact --skip-docker`
+    When I run `lc package --docker-image-name=elsyblackbox_docker_artifact --skip-docker`
     Then it should succeed
     And the output should not contain "Successfully built "
 
   Scenario: with a docker artifact based on a local image
     Given a file named "Dockerfile" with:
     """
-    FROM projectlifecycleblackbox_docker_artifact
+    FROM elsyblackbox_docker_artifact
     """
     And a file named "lc.yml" with:
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
+    When I run `lc package --docker-image-name=elsyblackbox_docker_artifact`
     Then it should succeed with "Successfully built "
 
   Scenario: with a failing package service
@@ -171,7 +171,7 @@ Feature: package task
     """yaml
     name: testpackage
     """
-    When I run `lc package --docker-image-name=projectlifecycleblackbox_docker_artifact`
+    When I run `lc package --docker-image-name=elsyblackbox_docker_artifact`
     Then it should succeed with "Image is up to date for alpine:latest"
 
   Scenario: with a docker artifact and configured image name via lc.yml
@@ -187,7 +187,7 @@ Feature: package task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: elsyblackbox_docker_artifact
     """
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"
@@ -206,14 +206,14 @@ Feature: package task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_label_test
+    docker_image_name: elsyblackbox_docker_label_test
     """
     When I run `lc package --git-commit=c8dfd9f`
     Then it should succeed
     And the output should contain all of these:
       | Image is up to date for alpine:latest                       |
       | Attaching image label: com.elsy.metadata.git-commit=c8dfd9f |
-    And the image 'projectlifecycleblackbox_docker_label_test' should exist
+    And the image 'elsyblackbox_docker_label_test' should exist
     And it should have the following labels:
       | com.elsy.metadata.git-commit:c8dfd9f              |
 
@@ -228,7 +228,7 @@ Feature: package task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: elsyblackbox_docker_artifact
     """
     When I run `lc package`
     Then it should succeed with "Image is up to date for alpine:latest"
@@ -241,26 +241,26 @@ Feature: package task
     And a file named "lc.yml" with:
     """yaml
     name: testpackage
-    docker_image_name: projectlifecycleblackbox_docker_artifact
+    docker_image_name: elsyblackbox_docker_artifact
     """
     When I run `lc --debug package`
     Then it should succeed with "Successfully built "
     And the output should contain all of these:
-      | removing all containers created from image projectlifecycleblackbox_docker_artifact |
+      | removing all containers created from image elsyblackbox_docker_artifact |
     And the output should not contain any of these:
       | removing container |
       | could not remove containers |
-    When I run `docker run projectlifecycleblackbox_docker_artifact /bin/echo test_package_container`
+    When I run `docker run elsyblackbox_docker_artifact /bin/echo test_package_container`
     Then it should succeed with "test_package_container"
     When I run `docker ps -a`
-    Then it should succeed with "projectlifecycleblackbox_docker_artifact"
+    Then it should succeed with "elsyblackbox_docker_artifact"
     When I run `lc --debug package`
     Then it should succeed with "Successfully built "
     And the output should contain all of these:
-      | removing all containers created from image projectlifecycleblackbox_docker_artifact |
+      | removing all containers created from image elsyblackbox_docker_artifact |
       | removing container |
     And the output should not contain any of these:
       | could not remove containers |
     When I run `docker ps -a`
     Then it should succeed
-    And the output should not contain "projectlifecycleblackbox_docker_artifact"
+    And the output should not contain "elsyblackbox_docker_artifact"

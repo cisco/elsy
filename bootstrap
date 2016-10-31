@@ -3,7 +3,7 @@
 # The script will create `lc` binaries in the `./target/` directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-export COMPOSE_PROJECT_NAME=projectlifecycle
+export COMPOSE_PROJECT_NAME=elsy
 set -e
 
 command -v docker >/dev/null 2>&1 || {
