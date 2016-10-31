@@ -52,7 +52,7 @@ blackbox-test: &BLACKBOXTEST
     - /var/run/docker.sock:/var/run/docker.sock
     - /tmp/lc_blackbox-test:/tmp/lc_blackbox-test
   environment:
-    - COMPOSE_PROJECT_NAME=projectlifecycleblackbox
+    - COMPOSE_PROJECT_NAME=elsyblackbox
     - TMPDIR=/tmp/lc_blackbox-test
   links:
     - registry1

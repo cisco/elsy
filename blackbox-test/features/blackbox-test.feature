@@ -46,11 +46,11 @@ Feature: blackbox-test task
 
   ## see US7549
   Scenario: with defaulting to first running lc package
-    Given I run `docker rmi -f projectlifecycleblackbox_docker_artifact_blackbox`
+    Given I run `docker rmi -f elsyblackbox_docker_artifact_blackbox`
     And a file named "docker-compose.yml" with:
     """yaml
     blackbox-test:
-      image: projectlifecycleblackbox_docker_artifact_blackbox
+      image: elsyblackbox_docker_artifact_blackbox
       command: /bin/true
     """
     And a file named "Dockerfile" with:
@@ -59,10 +59,10 @@ Feature: blackbox-test task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact_blackbox
+    docker_image_name: elsyblackbox_docker_artifact_blackbox
     """
     When I run `lc blackbox-test --skip-package`
-    Then it should fail with 'image library/projectlifecycleblackbox_docker_artifact_blackbox not found'
+    Then it should fail with 'image library/elsyblackbox_docker_artifact_blackbox not found'
     When I run `lc blackbox-test`
     Then it should succeed
     And the output should contain all of these:
@@ -73,7 +73,7 @@ Feature: blackbox-test task
     Given a file named "docker-compose.yml" with:
     """yaml
     blackbox-test:
-      image: projectlifecycleblackbox_docker_artifact_blackbox
+      image: elsyblackbox_docker_artifact_blackbox
       command: /bin/true
     package:
       image: busybox

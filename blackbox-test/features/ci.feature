@@ -54,13 +54,13 @@ Feature: ci task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact_ci
+    docker_image_name: elsyblackbox_docker_artifact_ci
     docker_registry: localhost:5000
     """
     And I run `lc ci --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact_ci]|
+      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact_ci]|
       | latest: digest: sha256                                                                      |
 
   ## Only works in docker 1.11 and higher
@@ -80,15 +80,15 @@ Feature: ci task
     """
     And a file named "lc.yml" with:
     """yaml
-    docker_image_name: projectlifecycleblackbox_docker_artifact_ci_labels
+    docker_image_name: elsyblackbox_docker_artifact_ci_labels
     docker_registry: localhost:5000
     """
     And I run `lc ci --git-commit=d8dfd9f --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/projectlifecycleblackbox_docker_artifact_ci_labels]|
+      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact_ci_labels]|
       | latest: digest: sha256                                                                             |
       | Attaching image label: com.elsy.metadata.git-commit=d8dfd9f                                        |
-    And the image 'projectlifecycleblackbox_docker_artifact_ci_labels' should exist
+    And the image 'elsyblackbox_docker_artifact_ci_labels' should exist
     And it should have the following labels:
       | com.elsy.metadata.git-commit:d8dfd9f              |
