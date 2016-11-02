@@ -1,4 +1,4 @@
-## _Unreleased_
+## v1.4.0
 
 - Added `lc run` to keep from having to type `lc dc run`. Any aguments that `lc dc run` takes,
 `lc run` can also take.
