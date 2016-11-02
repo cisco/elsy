@@ -115,6 +115,8 @@ Note, when run on its own, `lc blackbox-test` will also run `lc package` to
 ensure you  are testing the latest code, you can prevent this by using the
 `--skip-package` flag.
 
+You can also run the blackbox tests by running `lc bbtest`.
+
 ### lc publish
 Running `lc publish` does two things: First it will execute the repo's
 (optional) docker-compose `publish` service that will run repo-specific
@@ -153,6 +155,11 @@ schema:
 Where `X`, `Y` and `Z` are integers representing the Major, Minor, and Patch
 version (respectively) and `Q` is an optional string qualifier. In the future we
 plan to make this schema configurable.
+
+### lc run
+
+Running `lc run` will run a specific service that is contained in the `docker-compose.yml` file.
+This is equivalent to `lc dc run ...`.
 
 ## elsy Templates
 
