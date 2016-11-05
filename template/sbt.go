@@ -13,7 +13,7 @@ sbtscratch:
     {{.ScratchVolumes}}
 {{end}}
 sbt: &sbt
-  image: arch-docker.eng.lancope.local:5000/sbt
+  image: paulcichonski/sbt
   volumes:
     - ./:/opt/project
   working_dir: /opt/project
@@ -58,7 +58,7 @@ services:
       {{.ScratchVolumes}}
   {{end}}
   sbt: &sbt
-    image: arch-docker.eng.lancope.local:5000/sbt
+    image: paulcichonski/sbt
     volumes:
       - ./:/opt/project
     working_dir: /opt/project
