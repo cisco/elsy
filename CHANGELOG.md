@@ -1,3 +1,9 @@
+## Unreleased
+
+- sbt template now uses the `paulcichonski/sbt` Docker image. This is not an
+official Docker image (no official sbt image exists) so users should still
+override this image with an image they have vetted.
+
 ## v1.4.0
 
 - Added `lc run` to keep from having to type `lc dc run`. Any aguments that `lc dc run` takes,

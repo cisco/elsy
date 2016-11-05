@@ -128,8 +128,8 @@ clean:
 
 ### sbt
 
-**The sbt template currently leverages a private Docker image for its sbt install
-so to use this template you must override this image for now**
+**Currently there is no official sbt Docker image, it is STRONGLY recommended that
+you override the default image baked into the elsy sbt template.**
 
 To use the mvn template, ensure your `lc.yml` has the line:
 
