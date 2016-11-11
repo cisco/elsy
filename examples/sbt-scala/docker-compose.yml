@@ -1,0 +1,25 @@
+sbt:
+  image: hseeberger/scala-sbt
+test:
+  image: hseeberger/scala-sbt
+package:
+  image: hseeberger/scala-sbt
+publish:
+  image: hseeberger/scala-sbt
+clean:
+  image: hseeberger/scala-sbt
+
+prodserver:
+  image: helloworld-jre
+  ports:
+    - 8080
+
+blackbox-test:
+  build: ./blackbox-test
+  volumes:
+  - .:/opt/project/
+  links:
+  - prodserver
+  working_dir: /opt/project
+  entrypoint: ["rspec", "--require", "./blackbox-test/spec_helper.rb", "--format", "documentation"]
+  command: ["--pattern", "blackbox-test/**/*.feature"]

@@ -28,6 +28,8 @@ lc ci
 
 ## Getting Started
 
+### Installation
+
 Follow the below steps to install elsy:
 
 ```
@@ -40,6 +42,7 @@ export LC_DOCKER_COMPOSE=/usr/local/bin/docker-compose
 export DOCKER_HOST=tcp://docker-daemon-host:2375
 
 ```
+Alternatively there is an installation script, `./bootstrap` , to compile and install binaries
 
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
 info on how to setup a repo to use elsy.
