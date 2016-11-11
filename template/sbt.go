@@ -58,7 +58,7 @@ services:
       {{.ScratchVolumes}}
   {{end}}
   sbt: &sbt
-    image: hseeberger/scala-sbt
+    image: arch-docker.eng.lancope.local:5000/sbt
     volumes:
       - ./:/opt/project
     working_dir: /opt/project
