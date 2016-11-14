@@ -1,5 +1,9 @@
 ## Unreleased
 
+- If there's no `publish` service _and_ no Dockerfile, then instead of an error
+when using `lc ci`, it will simply print out an info log message that `publish`
+isn't being called.
+
 - sbt template now uses the `paulcichonski/sbt` Docker image. This is not an
 official Docker image (no official sbt image exists) so users should still
 override this image with an image they have vetted.
