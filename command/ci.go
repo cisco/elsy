@@ -34,6 +34,11 @@ func CmdCi(c *cli.Context) error {
 		}
 	}
 
-	logrus.Info("Running publish")
-	return CmdPublish(c)
+  if helpers.DockerComposeHasService("publish") || helpers.HasDockerfile() {
+    logrus.Info("Running publish")
+    return CmdPublish(c)
+  } else {
+    logrus.Info("No publish service defined, and no Dockerfile present.")
+    return nil
+  }
 }
