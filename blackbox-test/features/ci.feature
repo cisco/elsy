@@ -37,7 +37,6 @@ Feature: ci task
     When I run `lc ci`
     Then it should fail
 
-
   Scenario: with a Docker project
     Given a file named "docker-compose.yml" with:
     """yaml
@@ -92,3 +91,22 @@ Feature: ci task
     And the image 'elsyblackbox_docker_artifact_ci_labels' should exist
     And it should have the following labels:
       | com.elsy.metadata.git-commit:d8dfd9f              |
+
+  Scenario: with no publish service and no Dockerfile
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    test:
+      image: busybox
+      command: /bin/true
+    package:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: elsyblackbox_docker_artifact_ci
+    docker_registry: localhost:5000
+    """
+    And I run `lc ci --git-branch=origin/master`
+    Then it should succeed
+    And the output should contain "No publish service defined, and no Dockerfile present."
