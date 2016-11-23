@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v1.5.0
+
 - If there's no `publish` service _and_ no Dockerfile, then instead of an error
 when using `lc ci`, it will simply print out an info log message that `publish`
 isn't being called.
