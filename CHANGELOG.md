@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v1.5.1
+
 - Fix `publish` for docker 1.12 (see
 [https://github.com/cisco/elsy/issues/25](https://github.com/cisco/elsy/issues/25)).
 Note this breaks support for docker 1.9.x and below.
