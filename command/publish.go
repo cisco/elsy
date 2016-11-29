@@ -97,7 +97,7 @@ func publishImage(tagName string, c *cli.Context) error {
 
 		remoteSpec := fmt.Sprintf("%s/%s:%s", dockerRegistry, dockerImageName, tagName)
 		err := helpers.ChainCommands([]*exec.Cmd{
-			exec.Command("docker", "tag", "-f", dockerImageName, remoteSpec),
+			exec.Command("docker", "tag", dockerImageName, remoteSpec),
 			exec.Command("docker", "push", remoteSpec),
 		})
 		if err != nil {
