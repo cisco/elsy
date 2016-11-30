@@ -24,7 +24,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 // CmdPublish will publish all artifacts associated with the current repo

@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/codegangsta/cli"
-	"github.com/elsy/template"
+	"github.com/cisco/elsy/template"
 )
 
 // CmdListTemplates displays an alphabetical list of all available templates

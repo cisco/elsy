@@ -28,8 +28,8 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
-	"github.com/elsy/template"
+	"github.com/cisco/elsy/helpers"
+	"github.com/cisco/elsy/template"
 )
 
 func main() {

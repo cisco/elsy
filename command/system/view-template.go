@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/codegangsta/cli"
-	"github.com/elsy/template"
+	"github.com/cisco/elsy/template"
 )
 
 // CmdViewTemplate prints out a given template (all versions)

@@ -16,7 +16,7 @@
 
 package template
 
-import "github.com/elsy/helpers"
+import "github.com/cisco/elsy/helpers"
 
 var leinTemplateV1 = template{
 	name: "lein",

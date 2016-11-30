@@ -22,7 +22,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 // CmdRelease will create, and push a release tag

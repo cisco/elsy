@@ -18,7 +18,7 @@ package command
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 // CmdClean will run a "clean" service that will remove old build artifacts.

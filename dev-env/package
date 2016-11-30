@@ -34,8 +34,8 @@ fi
 
 for platform in "${platforms[@]}"; do
   GOOS=${platform} GOARCH=${arch} go build -v -o target/lc-${platform}-${arch}-${version} \
-    --ldflags "-X github.com/elsy/helpers.version=$version \
-    -X github.com/elsy/helpers.build=$build" \
+    --ldflags "-X github.com/cisco/elsy/helpers.version=$version \
+    -X github.com/cisco/elsy/helpers.build=$build" \
     ./main
 done
 

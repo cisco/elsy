@@ -19,7 +19,7 @@ package template
 import (
 	"testing"
 
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 func TestSharedExternalDataContainer(t *testing.T) {
