@@ -22,7 +22,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 func CmdStatus(c *cli.Context) error {

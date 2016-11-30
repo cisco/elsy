@@ -18,7 +18,7 @@ package command
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 func CmdSbt(c *cli.Context) error {

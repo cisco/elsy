@@ -23,7 +23,7 @@ import (
 	"sort"
 	tmpl "text/template"
 
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 var sharedExternalDataContainers = make(map[string][]helpers.DockerDataContainer)

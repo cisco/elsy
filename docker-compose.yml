@@ -15,8 +15,8 @@
 go: &go
   build: dev-env
   volumes:
-    - .:/go/src/github.com/elsy
-  working_dir: /go/src/github.com/elsy
+    - .:/go/src/github.com/cisco/elsy
+  working_dir: /go/src/github.com/cisco/elsy
   environment:
     - GOOS
     - GOARCH

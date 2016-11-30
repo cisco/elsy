@@ -16,7 +16,7 @@
 
 package template
 
-import "github.com/elsy/helpers"
+import "github.com/cisco/elsy/helpers"
 
 var sbtTemplateV1 = template{
 	name: "sbt",

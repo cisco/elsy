@@ -19,7 +19,7 @@ package command
 import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 // CmdCi runs ci loop

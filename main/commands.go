@@ -22,9 +22,9 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/elsy/command"
-	"github.com/elsy/command/server"
-	"github.com/elsy/command/system"
+	"github.com/cisco/elsy/command"
+	"github.com/cisco/elsy/command/server"
+	"github.com/cisco/elsy/command/system"
 )
 
 // GlobalFlags sets up flags on the lc command proper

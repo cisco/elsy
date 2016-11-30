@@ -23,7 +23,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/fsouza/go-dockerclient"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 func CmdTeardown(c *cli.Context) error {

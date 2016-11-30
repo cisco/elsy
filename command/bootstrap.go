@@ -21,7 +21,7 @@ import (
 	"regexp"
 
 	"github.com/codegangsta/cli"
-	"github.com/elsy/helpers"
+	"github.com/cisco/elsy/helpers"
 )
 
 // CmdBootstrap pulls and builds the services in the docker-compose file
