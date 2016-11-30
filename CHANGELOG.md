@@ -1,5 +1,10 @@
 ## Unreleased
 
+## v1.6.0
+
+- Added the ability to override the image that a template uses by setting 
+`template_name` to the desired image in the project's `lc.yml` file.
+
 ## v1.5.1
 
 - Fix `publish` for docker 1.12 (see

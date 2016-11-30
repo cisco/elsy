@@ -56,22 +56,6 @@ container called `lc_shared_mvndata`. This data container holds the `~/.m2`
 cache for the host, meaning that all elsy lein and elsy mvn repos running on a
 single host will share the same `~/.m2` cache.
 
-To override the lein image that comes pre-baked into the template, you must
-have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
-
-```
-lein:
-  image: <custom-image>
-test:
-  image: <custom-image>
-package:
-  image: <custom-image>
-publish:
-  image: <custom-image>
-clean:
-  image: <custom-image>
-```
-
 ### make
 
 To use the make template, ensure your `lc.yml` has the line:
@@ -82,19 +66,6 @@ template: make
 
 This template enables the `lc make` subcommand, you can run any make command in
 your repo by running `lc make -- <makecmd>`.
-
-To override the make image that comes pre-baked into the template, you must
-have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
-
-```
-make:
-  image: <custom-image>
-test:
-  image: <custom-image>
-clean:
-  image: <custom-image>
-
-```
 
 ### mvn
 
@@ -109,22 +80,6 @@ your repo by running `lc mvn -- <mvncmd>`. This template also adds a data
 container called `lc_shared_mvndata`. This data container holds the `~/.m2`
 cache for the host, meaning that all elsy mvn and elsy lein repos running on a
 single host will share the same `~/.m2` cache.
-
-To override the mvn image that comes pre-baked into the template, you must
-have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
-
-```
-mvn:
-  image: <custom-image>
-test:
-  image: <custom-image>
-package:
-  image: <custom-image>
-publish:
-  image: <custom-image>
-clean:
-  image: <custom-image>
-```
 
 ### sbt
 
@@ -143,18 +98,17 @@ container called `lc_shared_sbtdata`. This data container holds the `~/.ivy2`
 cache for the host, meaning that all elsy sbt repos running on a single host will
 share the same `~/.ivy2` cache.
 
-To override the sbt image that comes pre-baked into the template, you must
-have, at a minimum, the following overrides in the repo's `docker-compose.yml`:
+
+## Overriding the Image Specified By a Template
+
+It is possible to get the benefits of a template, but override the specific image
+that template will use. To do this, add a line with `template_image` to your `lc.yml`
+file. For example, with the `mvn` template, it might look like this
 
 ```
-sbt:
-  image: <custom-image>
-test:
-  image: <custom-image>
-package:
-  image: <custom-image>
-publish:
-  image: <custom-image>
-clean:
-  image: <custom-image>
+template: mvn
+template_image: joeygibson/maven
 ```
+
+Ordinarily the `mvn` template uses `maven:3.2-jdk-8` as its image, but with the
+above change, it will instead use `joeygibson/maven`.
