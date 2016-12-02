@@ -1,12 +1,12 @@
 /*
  *  Copyright 2016 Cisco Systems, Inc.
- *  
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +47,7 @@ type template struct {
 
 // toYml will take a template and prepare it for use by other packages
 // the string returned will be a valid docker-compose.yml string.
-func (t *template) toYml(enableScratchVolume bool) (string, error) {
+func (t *template) toYml(enableScratchVolume bool, templateImage string) (string, error) {
 	goTemplate, err := tmpl.New("composeTemplate").Parse(t.composeYmlTmpl)
 	if err != nil {
 		return "", fmt.Errorf("could not parse docker-compose yml for template %q, error: %q", t.name, err)
@@ -59,8 +59,10 @@ func (t *template) toYml(enableScratchVolume bool) (string, error) {
 	}
 	data := struct {
 		ScratchVolumes string
+    TemplateImage string
 	}{
 		scratchVolumes,
+    templateImage,
 	}
 	var finalYml bytes.Buffer
 	err = goTemplate.Execute(&finalYml, data)
@@ -96,13 +98,13 @@ func addV2(template template) error {
 // file version to use when retrieving the template
 //
 // currently defaults to V1 if no version found
-func GetTemplate(templateName string, enableScratchVolume bool) (string, error) {
+func GetTemplate(templateName string, enableScratchVolume bool, templateImage string) (string, error) {
 	version := helpers.GetComposeFileVersion("docker-compose.yml", helpers.V1)
 	switch version {
 	case helpers.V1:
-		return GetV1(templateName, enableScratchVolume)
+		return GetV1(templateName, enableScratchVolume, templateImage)
 	case helpers.V2:
-		return GetV2(templateName, enableScratchVolume)
+		return GetV2(templateName, enableScratchVolume, templateImage)
 	}
 	return "", errors.New("could not determine docker-compose.yml file version")
 }
@@ -110,12 +112,12 @@ func GetTemplate(templateName string, enableScratchVolume bool) (string, error) 
 // GetV1 will return the compose V1 template if it exists
 // If 'enableScratchVolume' is true and the target template supports
 // scratch-space optimization then Get will enable it.
-func GetV1(name string, enableScratchVolume bool) (string, error) {
+func GetV1(name string, enableScratchVolume bool, templateImage string) (string, error) {
 	tmpl, present := templatesV1[name]
 	if !present {
 		return "", fmt.Errorf("template %q is not a registered v1 template", name)
 	}
-	yml, err := tmpl.toYml(enableScratchVolume)
+	yml, err := tmpl.toYml(enableScratchVolume, templateImage)
 	if err != nil {
 		return "", err
 	}
@@ -125,12 +127,12 @@ func GetV1(name string, enableScratchVolume bool) (string, error) {
 // GetV2 will return the compose V2 template if it exists
 // If 'enableScratchVolume' is true and the target template supports
 // scratch-space optimization then Get will enable it.
-func GetV2(name string, enableScratchVolume bool) (string, error) {
+func GetV2(name string, enableScratchVolume bool, templateImage string) (string, error) {
 	tmpl, present := templatesV2[name]
 	if !present {
 		return "", fmt.Errorf("template %q is not a registered v2 template", name)
 	}
-	yml, err := tmpl.toYml(enableScratchVolume)
+	yml, err := tmpl.toYml(enableScratchVolume, templateImage)
 	if err != nil {
 		return "", err
 	}

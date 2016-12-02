@@ -16,3 +16,5 @@ project_name: javanoteservice
 docker_image_name: java-note-service
 docker_registry: internal-registry.companyfoo.com
 template: mvn
+template_image: library/maven:3.3.9
+
