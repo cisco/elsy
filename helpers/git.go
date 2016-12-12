@@ -1,12 +1,12 @@
 /*
  *  Copyright 2016 Cisco Systems, Inc.
- *  
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"os/exec"
+	"bytes"
 )
 
 var releaseTagRegexp = regexp.MustCompile(`^v\d+\.\d+\.\d+(-.{0,120})?$`)
@@ -28,6 +30,11 @@ var snapshotRegexp = regexp.MustCompile("^origin/(.+)$")
 
 // regex for valid tag name taken from https://github.com/docker/distribution/blob/b07d759241defb2f345e95ed04bfdeb8ac010ab2/reference/regexp.go#L25
 var validTagName = regexp.MustCompile(`^[\w][\w.-]{0,127}$`)
+
+const (
+  TagSearch byte = iota
+  BranchSearch byte = iota
+)
 
 /*
 *  extract tag name from branch
@@ -88,4 +95,31 @@ func CheckTag(v string) error {
 		return fmt.Errorf("release value syntax was not valid, it must adhere to: %s", releaseTagRegexp)
 	}
 	return nil
+}
+
+func IsTagNameAlreadyUsed(tag string) (bool, error) {
+  return doesTagExist(TagSearch, tag)
+}
+
+func IsTagNameAlreadyUsedAsABranchName(tag string) (bool, error) {
+  return doesTagExist(BranchSearch, tag)
+}
+
+func doesTagExist(searchType byte, tag string) (bool, error) {
+  var cmd *exec.Cmd
+
+  if searchType == TagSearch {
+    cmd = exec.Command("git", "tag")
+  } else {
+    cmd = exec.Command("git", "branch", "-a")
+  }
+
+  var out bytes.Buffer
+  cmd.Stdout = &out
+
+  if err := cmd.Run(); err != nil {
+    return false, err
+  }
+
+  return strings.Contains(out.String(), tag), nil
 }
