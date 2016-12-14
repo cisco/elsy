@@ -1,12 +1,12 @@
 /*
  *  Copyright 2016 Cisco Systems, Inc.
- *  
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -250,6 +250,13 @@ func GetDockerVersion() (string, []int, error) {
 
 // parseVersionString assumes version string of format <major>.<minor>.<patch>
 func parseVersionString(versionString string) ([]int, error) {
+
+	// This is to guard against beta or RC versions of Docker, which
+	// lookg like `1.13.0-rc2` breaking the parsing logic
+	if strings.Contains(versionString, "-") {
+		versionString = strings.Split(versionString, "-")[0]
+	}
+
 	versionArray := strings.Split(versionString, ".")
 
 	if len(versionArray) != 3 {
