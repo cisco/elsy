@@ -85,18 +85,22 @@ func RemoveContainersOfImage(image string) error {
 			// in the api responses, so for now just check all locations where docker
 			// lists the image value.
 			// It seems that client.InspectContainer.Config.Image is the most trustworthy though
+
 			inspection, err := client.InspectContainer(container.ID)
+
 			if err != nil {
 				logrus.Debugf("could not inspect container %q", container.ID)
-			}
-			if container.Image == image || inspection.Image == image || inspection.Config.Image == image {
-				logrus.Debugf("removing container: %s", container.ID)
-				options := docker.RemoveContainerOptions{ID: container.ID, RemoveVolumes: true, Force: true}
-				if err := client.RemoveContainer(options); err != nil {
-					return err
+			} else {
+				if container.Image == image || inspection.Image == image || inspection.Config.Image == image {
+					logrus.Debugf("removing container: %s", container.ID)
+					options := docker.RemoveContainerOptions{ID: container.ID, RemoveVolumes: true, Force: true}
+					if err := client.RemoveContainer(options); err != nil {
+						return err
+					}
 				}
 			}
 		}
+
 		return nil
 	}
 }
