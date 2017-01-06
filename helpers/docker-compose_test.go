@@ -58,7 +58,7 @@ func TestParseComposeFileV1(t *testing.T) {
 testservice1:
   image: image1
 `
-	expectedMap := DockerComposeMap{"testservice1": DockerComposeService{Image: "image1", Build: ""}}
+	expectedMap := DockerComposeMap{"testservice1": DockerComposeService{Image: "image1"}}
 	doTestParseComposeFile(t, yml, V1, expectedMap)
 }
 
@@ -69,7 +69,7 @@ services:
   testservice2:
     image: image2
 `
-	expectedMap := DockerComposeMap{"testservice2": DockerComposeService{Image: "image2", Build: ""}}
+	expectedMap := DockerComposeMap{"testservice2": DockerComposeService{Image: "image2"}}
 	doTestParseComposeFile(t, yml, V2, expectedMap)
 }
 

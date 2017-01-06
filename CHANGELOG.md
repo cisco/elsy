@@ -1,5 +1,6 @@
 ## Unreleased
 
+- support for v2 expanded build syntax
 - When releasing, it now checks for an existing tag or branch that is the same as the `--version` argument
 and gives a better explanation of what happened.
 - Fixed a bug that happened in packaging if the verison of Docker had something like `-rc2` at the end.
@@ -7,7 +8,7 @@ and gives a better explanation of what happened.
 
 ## v1.6.0
 
-- Added the ability to override the image that a template uses by setting 
+- Added the ability to override the image that a template uses by setting
 `template_name` to the desired image in the project's `lc.yml` file.
 
 ## v1.5.1

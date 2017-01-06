@@ -50,7 +50,6 @@ func DockerComposeCommand(args ...string) *exec.Cmd {
 }
 
 type DockerComposeService struct {
-	Build string
 	Image string
 }
 
