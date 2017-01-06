@@ -17,8 +17,8 @@
 package command
 
 import (
-	"github.com/codegangsta/cli"
 	"github.com/cisco/elsy/helpers"
+	"github.com/codegangsta/cli"
 )
 
 func CmdMvn(c *cli.Context) error {

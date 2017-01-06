@@ -21,10 +21,10 @@ import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/codegangsta/cli"
 	"github.com/cisco/elsy/command"
 	"github.com/cisco/elsy/command/server"
 	"github.com/cisco/elsy/command/system"
+	"github.com/codegangsta/cli"
 )
 
 // GlobalFlags sets up flags on the lc command proper
@@ -47,11 +47,11 @@ func GlobalFlags() []cli.Flag {
 			Value: GetConfigFileString("template"),
 			Usage: "the project template to include",
 		},
-    cli.StringFlag{
-      Name: "template-image",
-      Value: GetConfigFileString("template_image"),
-      Usage: "the image to override what's in the template",
-    },
+		cli.StringFlag{
+			Name:  "template-image",
+			Value: GetConfigFileString("template_image"),
+			Usage: "the image to override what's in the template",
+		},
 		cli.BoolFlag{
 			Name:   "enable-scratch-volumes",
 			Usage:  "EXPERIMENTAL: if true, will put scratch resources in a data container; defaults to 'false'. Turn this on to speed up local builds.",
@@ -158,7 +158,7 @@ func Commands() []cli.Command {
 			Action: panicOnError(command.CmdDockerCompose),
 			Flags:  []cli.Flag{},
 		},
-    {
+		{
 			Name:   "run",
 			Usage:  "Runs a service from the docker-compose YAML file",
 			Action: panicOnError(command.CmdRun),
@@ -305,10 +305,10 @@ func Commands() []cli.Command {
 			},
 		},
 		{
-			Name:   "blackbox-test",
-      Aliases: []string{"bbtest"},
-			Usage:  "Runs blackbox-test service. forwards arguments",
-			Action: panicOnError(command.CmdBlackbox),
+			Name:    "blackbox-test",
+			Aliases: []string{"bbtest"},
+			Usage:   "Runs blackbox-test service. forwards arguments",
+			Action:  panicOnError(command.CmdBlackbox),
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "skip-package",
