@@ -11,7 +11,7 @@ and gives a better explanation of what happened.
 ## v1.6.0
 
 - Added the ability to override the image that a template uses by setting
-`template_name` to the desired image in the project's `lc.yml` file.
+`template_image` to the desired image in the project's `lc.yml` file.
 
 ## v1.5.1
 

@@ -14,4 +14,4 @@
 
 project_name: javalibrary
 template: mvn
-template_name: library/maven:3.3.9
+template_image: library/maven:3.3.9
