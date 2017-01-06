@@ -29,6 +29,11 @@ installdependencies:
   entrypoint: govendor
   command: sync
 
+fmt:
+  <<: *go
+  entrypoint: ["/usr/local/go/bin/gofmt"]
+  command: ["-w", "/go/src/github.com/cisco/elsy/command", "/go/src/github.com/cisco/elsy/helpers", "/go/src/github.com/cisco/elsy/main", "/go/src/github.com/cisco/elsy/template"]
+
 package:
   <<: *go
   environment:
