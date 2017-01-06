@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v1.6.1
+
 - support for v2 expanded build syntax
 - When releasing, it now checks for an existing tag or branch that is the same as the `--version` argument
 and gives a better explanation of what happened.
