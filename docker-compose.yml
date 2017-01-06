@@ -15,6 +15,7 @@
 go: &go
   build: dev-env
   volumes:
+    - ./dev-env/lifecycle:/opt/lifecycle
     - .:/go/src/github.com/cisco/elsy
   working_dir: /go/src/github.com/cisco/elsy
   environment:
