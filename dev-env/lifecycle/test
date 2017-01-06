@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright 2016 Cisco Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM library/golang:latest
-RUN GOOS=darwin GOARCH=amd64 go install -v std
+set -e
 
-RUN go get -u github.com/kardianos/govendor
+files=$(gofmt -l ./command ./helpers ./main ./template)
+if [ -n "$files" ] ; then
+  echo "the following files are not formatted according to the gofmt rules;" >&2
+  echo $files >&2
+  exit 1
+fi
+
+echo go test ./command ./helpers ./main ./template
+go test ./command ./helpers ./main ./template
+
+echo go vet ./command ./helpers ./main ./template
+go vet ./command ./helpers ./main ./template

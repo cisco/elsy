@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/Sirupsen/logrus"
-	"github.com/codegangsta/cli"
-	"github.com/cisco/elsy/helpers"
 	"errors"
+	"github.com/Sirupsen/logrus"
+	"github.com/cisco/elsy/helpers"
+	"github.com/codegangsta/cli"
 )
 
 // CmdRelease will create, and push a release tag
@@ -40,21 +40,21 @@ func CmdRelease(c *cli.Context) error {
 		return err
 	}
 
-  if tagExists, err := helpers.IsTagNameAlreadyUsed(version); err != nil {
-    logrus.Errorf("Unable to check status of tag %s", version)
-  } else {
-    if tagExists {
-      return errors.New(fmt.Sprintf("There is already a tag with the name %s", version))
-    }
-  }
+	if tagExists, err := helpers.IsTagNameAlreadyUsed(version); err != nil {
+		logrus.Errorf("Unable to check status of tag %s", version)
+	} else {
+		if tagExists {
+			return errors.New(fmt.Sprintf("There is already a tag with the name %s", version))
+		}
+	}
 
-  if tagExists, err := helpers.IsTagNameAlreadyUsedAsABranchName(version); err != nil {
-    logrus.Errorf("Unable to check status of tag %s", version)
-  } else {
-    if tagExists {
-      return errors.New(fmt.Sprintf("There is already a branch with the name %s", version))
-    }
-  }
+	if tagExists, err := helpers.IsTagNameAlreadyUsedAsABranchName(version); err != nil {
+		logrus.Errorf("Unable to check status of tag %s", version)
+	} else {
+		if tagExists {
+			return errors.New(fmt.Sprintf("There is already a branch with the name %s", version))
+		}
+	}
 
 	// TODO: we might want to allow a '-f' option to support re-running a tag build
 	// since if a user pushes a tag and the build fails, it is not simple to rerun that build without

@@ -17,11 +17,11 @@
 package helpers
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
 	"regexp"
 	"strings"
-	"os/exec"
-	"bytes"
 )
 
 var releaseTagRegexp = regexp.MustCompile(`^v\d+\.\d+\.\d+(-.{0,120})?$`)
@@ -32,8 +32,8 @@ var snapshotRegexp = regexp.MustCompile("^origin/(.+)$")
 var validTagName = regexp.MustCompile(`^[\w][\w.-]{0,127}$`)
 
 const (
-  TagSearch byte = iota
-  BranchSearch byte = iota
+	TagSearch    byte = iota
+	BranchSearch byte = iota
 )
 
 /*
@@ -98,28 +98,28 @@ func CheckTag(v string) error {
 }
 
 func IsTagNameAlreadyUsed(tag string) (bool, error) {
-  return doesTagExist(TagSearch, tag)
+	return doesTagExist(TagSearch, tag)
 }
 
 func IsTagNameAlreadyUsedAsABranchName(tag string) (bool, error) {
-  return doesTagExist(BranchSearch, tag)
+	return doesTagExist(BranchSearch, tag)
 }
 
 func doesTagExist(searchType byte, tag string) (bool, error) {
-  var cmd *exec.Cmd
+	var cmd *exec.Cmd
 
-  if searchType == TagSearch {
-    cmd = exec.Command("git", "tag")
-  } else {
-    cmd = exec.Command("git", "branch", "-a")
-  }
+	if searchType == TagSearch {
+		cmd = exec.Command("git", "tag")
+	} else {
+		cmd = exec.Command("git", "branch", "-a")
+	}
 
-  var out bytes.Buffer
-  cmd.Stdout = &out
+	var out bytes.Buffer
+	cmd.Stdout = &out
 
-  if err := cmd.Run(); err != nil {
-    return false, err
-  }
+	if err := cmd.Run(); err != nil {
+		return false, err
+	}
 
-  return strings.Contains(out.String(), tag), nil
+	return strings.Contains(out.String(), tag), nil
 }

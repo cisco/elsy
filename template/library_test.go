@@ -81,6 +81,3 @@ func TestTemplateV2Registration(t *testing.T) {
 		t.Error("expected Add to return an error when registering an existing template")
 	}
 }
-
-
-

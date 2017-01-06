@@ -21,8 +21,8 @@ import (
 	"os/exec"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/codegangsta/cli"
 	"github.com/cisco/elsy/helpers"
+	"github.com/codegangsta/cli"
 )
 
 // commitLabel identifies the git commit the image was built from

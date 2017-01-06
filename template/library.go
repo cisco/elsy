@@ -59,10 +59,10 @@ func (t *template) toYml(enableScratchVolume bool, templateImage string) (string
 	}
 	data := struct {
 		ScratchVolumes string
-    TemplateImage string
+		TemplateImage  string
 	}{
 		scratchVolumes,
-    templateImage,
+		templateImage,
 	}
 	var finalYml bytes.Buffer
 	err = goTemplate.Execute(&finalYml, data)

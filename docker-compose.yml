@@ -15,6 +15,7 @@
 go: &go
   build: dev-env
   volumes:
+    - ./dev-env/lifecycle:/opt/lifecycle
     - .:/go/src/github.com/cisco/elsy
   working_dir: /go/src/github.com/cisco/elsy
   environment:
@@ -27,6 +28,11 @@ installdependencies:
   <<: *go
   entrypoint: govendor
   command: sync
+
+fmt:
+  <<: *go
+  entrypoint: ["/usr/local/go/bin/gofmt"]
+  command: ["-w", "/go/src/github.com/cisco/elsy/command", "/go/src/github.com/cisco/elsy/helpers", "/go/src/github.com/cisco/elsy/main", "/go/src/github.com/cisco/elsy/template"]
 
 package:
   <<: *go

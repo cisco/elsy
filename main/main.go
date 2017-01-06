@@ -27,9 +27,9 @@ import (
 	"syscall"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/codegangsta/cli"
 	"github.com/cisco/elsy/helpers"
 	"github.com/cisco/elsy/template"
+	"github.com/codegangsta/cli"
 )
 
 func main() {
@@ -151,7 +151,7 @@ func setComposeProjectName(c *cli.Context) {
 func setComposeTemplate(c *cli.Context) {
 	templateName := c.GlobalString("template")
 	enableScratchVolume := c.GlobalBool("enable-scratch-volumes")
-  templateImage := c.GlobalString("template-image")
+	templateImage := c.GlobalString("template-image")
 
 	if len(templateName) > 0 {
 		if yaml, err := template.GetTemplate(templateName, enableScratchVolume, templateImage); err == nil {
