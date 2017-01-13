@@ -121,5 +121,12 @@ func doesTagExist(searchType byte, tag string) (bool, error) {
 		return false, err
 	}
 
-	return strings.Contains(out.String(), tag), nil
+	for _, item := range strings.Fields(out.String()) {
+		if item == tag ||
+			strings.Contains(item, "/"+tag) {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

@@ -43,6 +43,19 @@ Feature: release task
     When I run `cd releasetest && lc release --version v1.0.0 --git-commit=HEAD`
     Then it should fail with "There is already a tag with the name v1.0.0"
 
+  Scenario: with a git project and a tag with a name that contains the tag
+    When I run `mkdir releasetest && cd releasetest && git init`
+    Then it should succeed
+    When I run `cd releasetest && echo "test" > test && git add test && git commit test -m "test"`
+    Then it should succeed
+    When I run `cd releasetest && git tag xxx-v1.0.0`
+    Then it should succeed
+    When I run `cd releasetest && lc release --version v1.0.0 --git-commit=HEAD`
+    Then it should fail
+    And the output should contain all of these:
+      | creating, and pushing, git tag v1.0.0 at commit HEAD     |
+      | 'origin' does not appear to be a git repository          |
+
   Scenario: with a git project and a branch with the same name as the release tag
     When I run `mkdir releasetest && cd releasetest && git init`
     Then it should succeed
@@ -52,4 +65,17 @@ Feature: release task
     Then it should succeed
     When I run `cd releasetest && git checkout master && lc release --version v1.0.0 --git-commit=HEAD`
     Then it should fail with "There is already a branch with the name v1.0.0"
+
+  Scenario: with a git project and a branch with a name that contains the tag
+    When I run `mkdir releasetest && cd releasetest && git init`
+    Then it should succeed
+    When I run `cd releasetest && echo "test" > test && git add test && git commit test -m "test"`
+    Then it should succeed
+    When I run `cd releasetest && git checkout -b release-v1.0.0 && echo "xxx" > xxx && git add xxx && git commit xxx -m "xxx"`
+    Then it should succeed
+    When I run `cd releasetest && git checkout master && lc release --version v1.0.0 --git-commit=HEAD`
+    Then it should fail
+    And the output should contain all of these:
+      | creating, and pushing, git tag v1.0.0 at commit HEAD     |
+      | 'origin' does not appear to be a git repository          |
 

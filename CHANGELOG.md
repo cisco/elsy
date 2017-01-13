@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Fixed [https://github.com/cisco/elsy/issues/46](https://github.com/cisco/elsy/issues/46)).
+
 ## v1.6.1
 
 - support for v2 expanded build syntax
