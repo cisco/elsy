@@ -5,3 +5,4 @@
 vendor/*/
 
 test-reports/
+build_logs/
