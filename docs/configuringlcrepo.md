@@ -31,6 +31,8 @@ to use a custom docker-compose version for your repo.
 * `docker_registry`: address of docker registry to publish to.
 * `docker_registries`: takes a yaml sequence containing multiple registries to publish to. Use either
 `docker_registry` or `docker_registries`, not both.
+* `build_logs_dir`: If populated, elsy will dump ALL docker-compose service logs into this
+directory, directory must be relative to the repo root.
 
 Some configuration options may also be specified as command line arguments.
 If a command line argument is present, it will take precedence and override any

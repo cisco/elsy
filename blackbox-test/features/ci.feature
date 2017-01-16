@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -124,3 +124,35 @@ Feature: ci task
     And I run `lc ci --git-branch=origin/master`
     Then it should succeed
     And the output should contain "No publish service defined, and no Dockerfile present."
+
+  Scenario: Printing build logs
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    test:
+      image: busybox
+      command: /bin/true
+      links:
+        - stderrtest
+        - stdouttest
+    stderrtest:
+      image: busybox
+      command: /bin/sh -c "echo test stderr capture >&2 && tail -f /dev/null"
+    stdouttest:
+      image: busybox
+      command: /bin/sh -c "echo test stdout capture >&2 && tail -f /dev/null"
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: elsyblackbox_docker_artifact_ci
+    docker_registry: localhost:5000
+    build_logs_dir: test_build_logs
+    """
+    And I run `lc ci --git-branch=origin/master`
+    Then it should succeed
+    And the output should contain "writing build logs to build-logs-dir"
+    And the file "test_build_logs/test" should contain the following:
+      | Attaching to         |
+    And the file "test_build_logs/stderrtest" should contain the following:
+      | test stderr capture  |
+    And the file "test_build_logs/stdouttest" should contain the following:
+      | test stdout capture  |
