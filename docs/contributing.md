@@ -5,8 +5,8 @@ submit a patch to elsy, please submit a PR to the `master` branch.
 
 ## Local Development
 
-Use elsy to develop elsy! Currently docker 1.11 is required to run
-blackbox-tests.
+Use elsy to develop elsy! Currently docker 1.12.x and
+docker-compose 1.9.x is required to fully run blackbox-tests.
 
 This repo exposes all of the core elsy tasks for ongoing development:
 
