@@ -23,9 +23,10 @@ import (
 	"os/exec"
 	"strings"
 
+	yaml "gopkg.in/yaml.v2"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"gopkg.in/yaml.v2"
 )
 
 // ComposeFileVersion inside the repo
@@ -89,6 +90,16 @@ func GetDockerComposeVersion(c *cli.Context) (string, []int, error) {
 		return "", nil, err
 	}
 	return parseDockerComposeVersion(out)
+}
+
+// ServiceLogs simply returns the both stderr and stdout logs for a service
+func ServiceLogs(service string) ([]byte, error) {
+	cmd := DockerComposeCommand("logs", "--no-color", service)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 // GetComposeFileVersion of the current repo
