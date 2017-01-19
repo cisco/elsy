@@ -31,8 +31,8 @@ lc ci
 Follow the below steps to install elsy:
 
 ```
-## install binary for your system and make it executable, for mac:
-$ wget -O /usr/local/bin/lc https://<github-url-here>
+## install binary for your system and make it executable:
+$ wget -O /usr/local/bin/l https://github.com/cisco/elsy/releases/download/v<release-version>/lc-<arch>-<release-version>
 $ chmod +x /usr/local/bin/lc
 
 ## Tell elsy where to find docker-compose and the docker daemon socket
@@ -40,6 +40,8 @@ export LC_DOCKER_COMPOSE=/usr/local/bin/docker-compose
 export DOCKER_HOST=tcp://docker-daemon-host:2375
 
 ```
+
+See [github releases page](https://github.com/cisco/elsy/releases) for latest versions and architectures.
 
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
 info on how to setup a repo to use elsy.
