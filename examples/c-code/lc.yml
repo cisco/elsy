@@ -13,3 +13,4 @@
 # limitations under the License.
 
 project_name: ccode
+build_logs_dir: build_logs

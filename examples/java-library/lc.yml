@@ -15,3 +15,4 @@
 project_name: javalibrary
 template: mvn
 template_image: library/maven:3.3.9
+build_logs_dir: build_logs

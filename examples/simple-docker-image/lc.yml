@@ -15,3 +15,4 @@
 project_name: simpledockerimage
 docker_image_name: simple-docker-image
 docker_registry: internal-registry.companyfoo.com
+build_logs_dir: build_logs
