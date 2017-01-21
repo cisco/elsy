@@ -4,7 +4,7 @@ sudo: required
 env:
   DOCKER_COMPOSE_VERSION: 1.9.0
   DOCKER_VERSION: 1.12.6
-  LC_VERSION: 1.6.1
+  LC_VERSION: 1.7.0
 
 before_install:
   # docker
