@@ -28,17 +28,18 @@ lc ci
 
 ## Getting Started
 
+**Prerequisites:** elsy requires both Docker and Docker Compose.
+
 Follow the below steps to install elsy:
 
 ```
-## install binary for your system and make it executable, for mac:
-$ wget -O /usr/local/bin/lc https://<github-url-here>
-$ chmod +x /usr/local/bin/lc
+## choose platform (darwin or linux) and versions (see releases page)
+PLATFORM=darwin
+VERSION=1.7.0
 
-## Tell elsy where to find docker-compose and the docker daemon socket
-export LC_DOCKER_COMPOSE=/usr/local/bin/docker-compose
-export DOCKER_HOST=tcp://docker-daemon-host:2375
-
+## install binary for your system
+curl -fL -o /usr/local/bin/lc https://github.com/cisco/elsy/releases/download/v$VERSION/lc-$PLATFORM-amd64-v$VERSION
+chmod +x /usr/local/bin/lc
 ```
 
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
