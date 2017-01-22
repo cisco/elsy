@@ -1,8 +1,10 @@
 ## Unreleased
 
+- Fixed [issue #50](https://github.com/cisco/elsy/issues/50).
+
 ## v1.7.0
 
-- Fixed [https://github.com/cisco/elsy/issues/46](https://github.com/cisco/elsy/issues/46)).
+- Fixed [https://github.com/cisco/elsy/issues/46](https://github.com/cisco/elsy/issues/46).
 - Added support for dumping build logs
 (See [#43](https://github.com/cisco/elsy/issues/43)).
 
