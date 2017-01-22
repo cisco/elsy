@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,6 +39,19 @@ end
 
 step "the output should not contain :expected" do |expected|
   expect(@output).not_to include(expected)
+end
+
+step "the output should contain one of the following:" do |table|
+  found = false
+
+  table.raw.flatten.each do |expected|
+    if @output.include? expected then
+      found = true
+      break
+    end
+  end
+
+  expect(found).to be(true), "the output should contain one of '#{table.raw.flatten}', but it did not. found: \n#{@output}"
 end
 
 step "the output should contain all of these:" do |table|

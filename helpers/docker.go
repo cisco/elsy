@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"runtime"
 	"strconv"
 	"strings"
 
@@ -199,11 +198,10 @@ func DockerIp() (string, error) {
 		} else {
 			return "", fmt.Errorf("DOCKER_HOST environment variable is in the wrong format")
 		}
-	} else if runtime.GOOS == "linux" {
-		ip = "127.0.0.1"
 	} else {
-		return "", fmt.Errorf("Unable to determine Docker daemon IP")
+		ip = "127.0.0.1"
 	}
+
 	return ip, nil
 }
 
