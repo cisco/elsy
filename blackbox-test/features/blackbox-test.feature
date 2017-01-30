@@ -117,3 +117,34 @@ Feature: blackbox-test task
     When I run `lc blackbox-test`
     Then it should succeed with "Running package before executing blackbox tests"
     And the output should not contain "Running tests before packaging"
+
+    ## Only works in docker 1.11 and higher
+  Scenario: with a Docker project and image labels
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    test:
+      image: busybox
+      command: /bin/true
+    blackbox-test:
+      image: elsyblackbox_docker_artifact_blackbox_labels
+      command: /bin/true
+    package:
+      image: busybox
+      command: /bin/true
+    """
+    And a file named "Dockerfile" with:
+    """
+    FROM alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    docker_image_name: elsyblackbox_docker_artifact_blackbox_labels
+    docker_registry: localhost:5000
+    """
+    And I run `lc blackbox-test --git-commit=d8dfd9f`
+    Then it should succeed
+    And the output should contain all of these:
+      | Attaching image label: com.elsy.metadata.git-commit=d8dfd9f                                   |
+    And the image 'elsyblackbox_docker_artifact_blackbox_labels' should exist
+    And it should have the following labels:
+      | com.elsy.metadata.git-commit:d8dfd9f |
