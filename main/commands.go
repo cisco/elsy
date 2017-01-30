@@ -324,6 +324,11 @@ func Commands() []cli.Command {
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "docker image name to create",
 				},
+				cli.StringFlag{
+					Name:   "git-commit",
+					Usage:  "Git commit that is being built",
+					EnvVar: "GIT_COMMIT",
+				},
 			},
 		},
 		{
