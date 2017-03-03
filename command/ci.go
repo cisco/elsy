@@ -37,6 +37,13 @@ func CmdCi(c *cli.Context) error {
 		return err
 	}
 
+	if helpers.DockerComposeHasService("clean") {
+		logrus.Info("Running clean")
+		if err := CmdClean(c); err != nil {
+			return err
+		}
+	}
+
 	if helpers.DockerComposeHasService("test") {
 		logrus.Info("Running test")
 		if err := CmdTest(c); err != nil {
