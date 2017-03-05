@@ -64,7 +64,7 @@ package:
   <<: *ember
   entrypoint: ["./dev-env/package.sh"]
 blackbox-test:
-  build: ./blackbox-test
+  image: joeygibson/elsy-bbtest
   volumes:
     - .:/opt/project/
   links:

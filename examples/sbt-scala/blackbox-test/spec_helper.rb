@@ -37,11 +37,5 @@ RSpec.configure do |config|
   Capybara.default_driver = :poltergeist
   Capybara.javascript_driver = :poltergeist
 
-  require 'gnawrnip'
-  Gnawrnip.configure do |c|
-    c.max_frame_size = 1280
-  end
-  Gnawrnip.ready!
-
   Capybara.app_host = "http://prodserver:8080"
 end

@@ -6,3 +6,6 @@ vendor/*/
 
 test-reports/
 build_logs/
+examples/sbt-scala/project/project/
+examples/sbt-scala/project/target
+examples/sbt-scala/target
