@@ -156,3 +156,57 @@ Feature: ci task
       | test stderr capture  |
     And the file "test_build_logs/stdouttest" should contain the following:
       | test stdout capture  |
+
+  Scenario: Run clean during ci
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: /bin/true
+    clean:
+      image: busybox
+      volumes:
+        - .:/test
+      command: ["rm", "/test/foo.txt"]
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    And a file named "foo.txt" with:
+    """
+    garbage file
+    """
+    When I run `lc ci`
+    Then it should succeed
+    And the file "/test/foo.txt" should not exist
+
+  Scenario: Run clean during ci with scratch volumes enabled
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    package:
+      image: busybox
+      command: echo foo
+    test:
+      image: busybox
+      command: /bin/true
+    clean:
+      image: busybox
+      volumes:
+        - .:/test
+      command: ["rm", "/test/foo.txt"]
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    """
+    And a file named "foo.txt" with:
+    """
+    garbage file
+    """
+    When I run `lc --enable-scratch-volumes ci`
+    Then it should succeed
+    And the file "/test/foo.txt" should not exist

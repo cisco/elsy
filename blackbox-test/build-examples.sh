@@ -25,7 +25,8 @@ function build() {
 set -e
 
 build "${DIR}/c-code" false true
-build "${DIR}/emberjs-ui" true true
+# The emberjs-ui example has gotten very flappy, so we're excluding it for now.
+# build "${DIR}/emberjs-ui" true true
 build "${DIR}/java-library" false false
 build "${DIR}/java-note-service" false true
 build "${DIR}/sbt-scala" false true

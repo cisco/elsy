@@ -72,6 +72,17 @@ service that will execute repo-specific command(s) to install external
 libraries. See the `docker-compose.yml` file inside the elsy repo itself for an
 example of this.
 
+### lc clean
+Running `lc clean` will ensure artifacts from previous builds are removed. Typically,
+this service is used before starting a new build. This is analogous to running
+`mvn clean` before running `mvn package`, for example. The `mvn`, `lein`, `make`, 
+and `sbt` templates all define `clean` services, so if the project uses one of those, 
+no additional work is required. 
+
+The difference between `clean` and `teardown`, which both
+perform similar actions, is that `teardown` only disposes of containers, whereas
+`clean` can remove artifacts from the local disk.
+
 ### lc test
 Running `lc test` will execute the repo's docker-compose `test` service, which will
 execute repo-specific command(s) to run all unit and integration tests for the
