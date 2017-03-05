@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v1.7.1
+
 - Fixed [issue #50](https://github.com/cisco/elsy/issues/50).
 - Fixed [issue #51](https://github.com/cisco/elsy/issues/51).
 - Fixed [issue #56](https://github.com/cisco/elsy/issues/56).
