@@ -13,6 +13,9 @@ function build() {
   echo "*** Building example: ${dir} ***"
   cd $dir
 
+  # Ensure nothing is left over from previous runs
+  $BBT_LC teardown
+
   if $has_tests; then
     $BBT_LC bootstrap 
   fi
@@ -25,8 +28,7 @@ function build() {
 set -e
 
 build "${DIR}/c-code" false true
-# The emberjs-ui example has gotten very flappy, so we're excluding it for now.
-# build "${DIR}/emberjs-ui" true true
+build "${DIR}/emberjs-ui" true true
 build "${DIR}/java-library" false false
 build "${DIR}/java-note-service" false true
 build "${DIR}/sbt-scala" false true

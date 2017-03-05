@@ -42,7 +42,7 @@ prodserver:
     - "8080"
 
 blackbox-test:
-  build: blackbox-test
+  image: joeygibson/elsy-bbtest
   volumes:
     - .:/opt/project/
   links:
