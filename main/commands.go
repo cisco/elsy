@@ -319,6 +319,10 @@ func Commands() []cli.Command {
 					Name:  "skip-package",
 					Usage: "do not run package service prior to executing blackbox tests",
 				},
+				cli.BoolFlag{
+					Name:  "keep-containers",
+					Usage: "don't teardown containers after tests finish",
+				},
 				cli.StringFlag{
 					Name:  "docker-image-name",
 					Value: GetConfigFileString("docker_image_name"),

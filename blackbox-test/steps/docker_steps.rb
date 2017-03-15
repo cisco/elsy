@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,4 +39,20 @@ step "it should have the following labels:" do |table|
   table.raw.flatten.each do |label|
     expect(labels).to include(label)
   end
+end
+
+step "the following containers :expectation still exist:" do |should, table|
+  container_names = table.raw.flatten.join(" ")
+
+  containers = %x{docker-compose ps -q #{container_names} 2>/dev/null}
+
+  count_to_look_for = if should then table.raw.flatten.length else 0 end
+
+  expect(containers.split(/\n/).length).to be(count_to_look_for)
+end
+
+step "kill the following containers:" do |table|
+  container_names = table.raw.flatten.join(" ")
+
+  %x{docker-compose kill #{container_names}}
 end

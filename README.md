@@ -129,6 +129,10 @@ ensure you  are testing the latest code, you can prevent this by using the
 
 You can also run the blackbox tests by running `lc bbtest`.
 
+At the end of the blackbox-test run, regardless of the outcome, all associated
+containers will be torn down. If you wish to leave them up, pass the 
+`--keep-containers` option.
+
 ### lc publish
 Running `lc publish` does two things: First it will execute the repo's
 (optional) docker-compose `publish` service that will run repo-specific
