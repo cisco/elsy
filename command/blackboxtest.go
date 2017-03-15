@@ -24,6 +24,10 @@ import (
 
 // CmdBlackbox processes cmd args and then runs blackbox tests
 func CmdBlackbox(c *cli.Context) error {
+	if !c.Bool("keep-containers") {
+		defer CmdTeardown(c)
+	}
+
 	if !c.Bool("skip-package") {
 		logrus.Info("Running package before executing blackbox tests")
 		if err := RunPackage(c); err != nil {

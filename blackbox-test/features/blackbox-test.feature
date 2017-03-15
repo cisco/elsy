@@ -148,3 +148,54 @@ Feature: blackbox-test task
     And the image 'elsyblackbox_docker_artifact_blackbox_labels' should exist
     And it should have the following labels:
       | com.elsy.metadata.git-commit:d8dfd9f |
+
+  Scenario: ensure linked containers are killed by default
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    blackbox-test:
+      image: busybox
+      command: /bin/true
+      links:
+        - registry1
+        - registry2
+    registry1:
+      image: registry:2
+    registry2:
+      image: registry:2
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
+    """
+    When I run `lc blackbox-test`
+    Then it should succeed
+    And the following containers should not still exist:
+      | registry1 |
+      | registry2 |
+
+  Scenario: ensure linked containers are not killed after run
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    blackbox-test:
+      image: busybox
+      command: /bin/true
+      links:
+        - registry1
+        - registry2
+    registry1:
+      image: registry:2
+    registry2:
+      image: registry:2
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testsmokes
+    """
+    When I run `lc blackbox-test --keep-containers`
+    Then it should succeed
+    And the following containers should still exist:
+      | registry1 |
+      | registry2 |
+    Then kill the following containers:
+      | registry1 |
+      | registry2 |
