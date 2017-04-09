@@ -25,8 +25,8 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // ComposeFileVersion inside the repo

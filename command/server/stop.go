@@ -17,9 +17,9 @@
 package server
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 func CmdStop(c *cli.Context) error {

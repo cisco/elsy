@@ -21,9 +21,9 @@ import (
 	"os/exec"
 
 	"errors"
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // CmdRelease will create, and push a release tag

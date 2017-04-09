@@ -24,8 +24,8 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // markerFiles holds files that mark the repo as "already initialized"

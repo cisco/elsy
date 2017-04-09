@@ -17,9 +17,9 @@
 package command
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 func CmdInstallDependencies(c *cli.Context) error {

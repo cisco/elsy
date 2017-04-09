@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/command"
 	"github.com/cisco/elsy/command/server"
 	"github.com/cisco/elsy/command/system"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // GlobalFlags sets up flags on the lc command proper
@@ -372,6 +372,12 @@ func Commands() []cli.Command {
 					Name:   "list-templates",
 					Usage:  "Displays the name of all available templates",
 					Action: panicOnError(system.CmdListTemplates),
+					Flags:  []cli.Flag{},
+				},
+				{
+					Name:   "upgrade",
+					Usage:  "Upgrades to the latest version",
+					Action: panicOnError(system.CmdUpgrade),
 					Flags:  []cli.Flag{},
 				},
 			},

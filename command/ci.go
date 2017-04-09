@@ -23,9 +23,9 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // CmdCi runs ci loop

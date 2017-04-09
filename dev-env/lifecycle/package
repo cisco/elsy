@@ -22,7 +22,7 @@ rm -f ./target/lc*
 arch=amd64
 platforms=(darwin linux)
 build=`git rev-parse HEAD`
-version="snaphshot-$build"
+version="snapshot-$build"
 
 ## the authoritative regex for release tags is in ./helpers/git.go
 if [ -n "$GIT_TAG_NAME" ] && [[ "$GIT_TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-.+)?$ ]]; then

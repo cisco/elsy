@@ -3,10 +3,22 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "QCAKzv0affIi7mlcGqPR8S3w6s0=",
-			"path": "github.com/Sirupsen/logrus",
-			"revision": "219c8cb75c258c552e999735be6df753ffc7afdc",
-			"revisionTime": "2016-02-24T21:10:30Z"
+			"checksumSHA1": "0EhLvZ6Og9HYqJtCc2Dzs1EgM30=",
+			"path": "github.com/bitly/go-simplejson",
+			"revision": "da1a8928f709389522c8023062a3739f3b4af419",
+			"revisionTime": "2017-02-06T15:46:32Z"
+		},
+		{
+			"checksumSHA1": "gntLgvUzJqZWf4NYxJr3p/3gcvk=",
+			"path": "github.com/blang/semver",
+			"revision": "4a1e882c79dcf4ec00d2e29fac74b9c8938d5052",
+			"revisionTime": "2017-02-02T18:38:21Z"
+		},
+		{
+			"checksumSHA1": "CmEZub5LMkcj2my3IwyntO9NhVM=",
+			"path": "github.com/cheggaaa/pb",
+			"revision": "9a180eb4617eb2112e01ca3fa25c61a6303afcaf",
+			"revisionTime": "2017-04-08T17:35:22Z"
 		},
 		{
 			"checksumSHA1": "i27YHcyHY4stkXm12/ztso3wHUo=",
@@ -23,12 +35,6 @@
 		{
 			"checksumSHA1": "rz0bI3Drq3xFCbrcG8mWwle7Qeg=",
 			"path": "github.com/fsouza/go-dockerclient",
-			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
-			"revisionTime": "2016-03-02T22:50:07Z"
-		},
-		{
-			"checksumSHA1": "7CvOHJK9x8GlFZmYe0nXMTz9teg=",
-			"path": "github.com/fsouza/go-dockerclient/external/github.com/Sirupsen/logrus",
 			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
 			"revisionTime": "2016-03-02T22:50:07Z"
 		},
@@ -117,6 +123,12 @@
 			"revisionTime": "2016-03-02T22:50:07Z"
 		},
 		{
+			"checksumSHA1": "EORrkaKJH6VDiwJhl0MkUSGrniw=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/Sirupsen/logrus",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
 			"checksumSHA1": "v9n1SOhjaR6eJd122dUWOfBDmN4=",
 			"path": "github.com/fsouza/go-dockerclient/external/golang.org/x/net/context",
 			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
@@ -141,6 +153,18 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "4f7bcef27eec7925456d0c30c5e7b0408b3339be",
 			"revisionTime": "2016-02-24T22:11:55Z"
+		},
+		{
+			"checksumSHA1": "MNkKJyk2TazKMJYbal5wFHybpyA=",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "14207d285c6c197daabb5c9793d63e7af9ab2d50",
+			"revisionTime": "2017-02-01T02:35:40Z"
+		},
+		{
+			"checksumSHA1": "SvwRupGQyowCe8fHGW1syQDXdG8=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "219c8cb75c258c552e999735be6df753ffc7afdc",
+			"revisionTime": "2016-02-24T21:10:30Z"
 		},
 		{
 			"checksumSHA1": "+OgOXBoiQ+X+C2dsAeiOHwBIEH0=",

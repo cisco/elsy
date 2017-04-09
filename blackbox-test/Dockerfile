@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,13 +15,15 @@
 FROM library/ruby:latest
 RUN apt-get update && \
     apt-get install -y \
-      netcat-openbsd && \
+      netcat-openbsd \
+      vim-common \
+      bsdmainutils && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 RUN gem install \
-    turnip \
-    turnip_formatter \
+    turnip:2.1.1 \
+    turnip_formatter:0.5.0 \
     rspec_junit_formatter \
     byebug \
     rspec-instafail
