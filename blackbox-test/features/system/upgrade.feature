@@ -14,8 +14,13 @@
 
 Feature: system upgrade task
   Scenario: try to upgrade snapshot build
+      If this is a non-release build, the test binary will have "snapshot" in the name, and the upgrade
+      will fail because we don't upgrade snapshots. If it's a release build, it will fail because the
+      current version is the same as the upgrade version.
     When I run `lc system upgrade`
-    Then it should fail with "Upgrade not available on snapshot versions"
+    Then the output should contain one of the following:
+        | Upgrade not available on snapshot versions |
+        | No new version available |
 
   Scenario: upgrade a non-snapshot build
     Given I run `mkdir -p /opt/bin`
