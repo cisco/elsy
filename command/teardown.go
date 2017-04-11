@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
 	"github.com/fsouza/go-dockerclient"
+	"github.com/sirupsen/logrus"
 )
 
 func CmdTeardown(c *cli.Context) error {

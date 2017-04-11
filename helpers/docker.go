@@ -24,8 +24,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/fsouza/go-dockerclient"
+	"github.com/sirupsen/logrus"
 )
 
 // EnsureDockerConnectivity will return an error if the docker daemon is not accessible

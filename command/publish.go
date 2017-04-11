@@ -22,9 +22,9 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // CmdPublish will publish all artifacts associated with the current repo

@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // commitLabel identifies the git commit the image was built from

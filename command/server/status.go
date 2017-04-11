@@ -19,10 +19,10 @@ package server
 import (
 	"fmt"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
 	"github.com/fatih/color"
+	"github.com/sirupsen/logrus"
 )
 
 func CmdStatus(c *cli.Context) error {

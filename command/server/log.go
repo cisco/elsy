@@ -19,9 +19,9 @@ package server
 import (
 	"fmt"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 func CmdLog(c *cli.Context) error {

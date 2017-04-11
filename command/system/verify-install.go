@@ -23,9 +23,9 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"github.com/sirupsen/logrus"
 )
 
 // file that we will use to verify volume mounts are working, assumption is that every lc repo should include this
