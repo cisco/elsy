@@ -1,5 +1,9 @@
 ## Unreleased
 
+## v2.1.0
+
+- Added `lc system upgrade` to fetch and install the latest verison of lc from Github.
+
 ## v2.0.0
 
 - Implemented [issue #64](https://github.com/cisco/elsy/issues/64).

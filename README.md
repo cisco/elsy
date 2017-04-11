@@ -42,6 +42,14 @@ curl -fL -o /usr/local/bin/lc https://github.com/cisco/elsy/releases/download/v$
 chmod +x /usr/local/bin/lc
 ```
 
+As of version v2.1.0 of Elsy, you can upgrade to the latest verison by running 
+```
+lc system upgrade
+```
+
+Previous versions require repeating the installation steps to manually download and 
+install the binary.
+
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
 info on how to setup a repo to use elsy.
 
