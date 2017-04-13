@@ -24,10 +24,15 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 func CmdTeardown(c *cli.Context) error {
 	if err := helpers.RunCommand(helpers.DockerComposeCommand("kill")); err != nil {
+		return err
+	}
+
+	if err := removeNetworks(); err != nil {
 		return err
 	}
 
@@ -40,6 +45,27 @@ func CmdTeardown(c *cli.Context) error {
 	} else {
 		return removeContainersWithoutGcLabel()
 	}
+}
+
+func removeNetworks() error {
+	projectName := os.Getenv("COMPOSE_PROJECT_NAME")
+
+	client := helpers.GetDockerClient()
+
+	networks, err := client.ListNetworks()
+	if err != nil {
+		return err
+	}
+
+	for _, network := range networks {
+		if strings.HasPrefix(network.Name, projectName) {
+			if err := client.RemoveNetwork(network.ID); err != nil {
+				logrus.Errorf("error removing network: %v", err)
+			}
+		}
+	}
+
+	return nil
 }
 
 func removeContainersWithoutGcLabel() error {
