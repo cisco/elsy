@@ -1,5 +1,9 @@
 ## Unreleased
 
+## v2.2.0
+
+- `lc teardown` will now remove all networks created by the project.
+
 ## v2.1.0
 
 - Added `lc system upgrade` to fetch and install the latest verison of lc from Github.
