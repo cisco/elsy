@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,7 @@ Feature: publish task
 
   Scenario: with an empty project, calling publish without the git branch
     When I run `lc publish`
-    Then it should fail with "The publish task requires that either a git branch or git tag be set"
+    Then it should fail with "expecting a git branch and/or a git tag be set, found neither"
 
   Scenario: with both docker_registry and docker_registries defined
     Given a file named "lc.yml" with:
