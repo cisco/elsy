@@ -29,49 +29,20 @@ import (
 
 // CmdPublish will publish all artifacts associated with the current repo
 func CmdPublish(c *cli.Context) error {
-	// first try to publish gitTag
-	gitTag := c.String("git-tag")
-	if len(gitTag) != 0 {
-		logrus.Infof("attempting to publish git tag %q", gitTag)
-		return publishTag(gitTag, c)
-	}
-
-	// if no tag was found, attempt to publish the branch
-	gitBranch := c.String("git-branch")
-	if len(gitBranch) == 0 {
-		return fmt.Errorf("The publish task requires that either a git branch or git tag be set, found neither")
-	}
-	logrus.Infof("attempting to publish git branch %q", gitBranch)
-	return publishBranch(gitBranch, c)
-}
-
-func publishTag(tag string, c *cli.Context) error {
-	tagName, err := helpers.ExtractTagFromTag(tag)
+	tagName, err := helpers.ExtractTag(c.String("git-tag"), c.String("git-branch"))
 	if err != nil {
 		return err
 	}
-	if err := customPublish(tagName); err != nil {
-		return err
-	}
-	return publishImage(tagName, c)
-}
-
-func publishBranch(branch string, c *cli.Context) error {
-	tagName, err := helpers.ExtractTagFromBranch(branch)
-	if err != nil {
-		return err
-	}
-
 	// don't run custom publish on non stable branches because custom publishes almost
 	// always require some modification of the source code (e.g., pom.xml version update) to change
 	// the identifier of the published artifact. We don't want to accidentally overwrite a previously
 	// published artifact because the developer forgot to change the version number in source code.
-	if !helpers.IsStableBranch(branch) {
-		logrus.Infof("skipping custom publish task because %q is not a stable branch", branch)
-	} else {
+	if len(c.String("git-tag")) > 0 || helpers.IsStableBranch(c.String("git-branch")) {
 		if err := customPublish(tagName); err != nil {
 			return err
 		}
+	} else {
+		logrus.Infof("skipping custom publish task because HEAD is not tagged or tip of a stable branch")
 	}
 
 	return publishImage(tagName, c)

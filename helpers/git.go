@@ -37,6 +37,20 @@ const (
 )
 
 /*
+*  extract tag name from git tag or git branch
+*  gives priority to git tag
+ */
+func ExtractTag(gitTag string, gitBranch string) (string, error) {
+	if len(gitTag) > 0 {
+		return ExtractTagFromTag(gitTag)
+	} else if len(gitBranch) > 0 {
+		return ExtractTagFromBranch(gitBranch)
+	} else {
+		return "", fmt.Errorf("expecting a git branch and/or a git tag be set, found neither")
+	}
+}
+
+/*
 *  extract tag name from branch
 *  branch: `master` becomes tag `latest`
 *  branch: `origin/release/xxx` becomes tag `xxx`
