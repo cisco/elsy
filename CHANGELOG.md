@@ -1,5 +1,9 @@
 ## Unreleased
 
+## v2.3.0
+
+- add `resolve-docker-tag` command
+
 ## v2.2.0
 
 - `lc teardown` will now remove all networks created by the project.
