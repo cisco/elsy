@@ -258,6 +258,23 @@ func Commands() []cli.Command {
 			},
 		},
 		{
+			Name:   "resolve-docker-tag",
+			Usage:  "outputs the docker tag which would be published given a git tag and branch",
+			Action: panicOnError(command.CmdResolveDockerTag),
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:   "git-branch",
+					Usage:  "Git branch which is being published",
+					EnvVar: "GIT_BRANCH",
+				},
+				cli.StringFlag{
+					Name:   "git-tag",
+					Usage:  "Git tag which is being published",
+					EnvVar: "GIT_TAG_NAME",
+				},
+			},
+		},
+		{
 			Name:   "release",
 			Usage:  "Creates a release tag for the current repo",
 			Action: panicOnError(command.CmdRelease),
