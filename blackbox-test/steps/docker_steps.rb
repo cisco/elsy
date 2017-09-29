@@ -12,10 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-step "it should pull :image" do |image|
-  expect(@output).to match(%r{(Pulling from (library/)?#{image})|(Downloaded newer image for #{image})}i)
-end
-
 step "it :expectation fail pulling :image" do |expectation, image|
   meth = expectation ? :to : :to_not
 

@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Begin pulling images in parallel during `lc bootstrap` (requires `compose` 1.12.0 or higher).
+This can be disabled using the flag `disable-parallel-pull`.
+
 ## v2.3.0
 
 - add `resolve-docker-tag` command
