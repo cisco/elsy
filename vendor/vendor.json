@@ -39,6 +39,12 @@
 			"revisionTime": "2016-03-02T22:50:07Z"
 		},
 		{
+			"checksumSHA1": "7CvOHJK9x8GlFZmYe0nXMTz9teg=",
+			"path": "github.com/fsouza/go-dockerclient/external/github.com/Sirupsen/logrus",
+			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
+			"revisionTime": "2016-03-02T22:50:07Z"
+		},
+		{
 			"checksumSHA1": "608Y3rj23jTnrZJjGaFRK+s5IcU=",
 			"path": "github.com/fsouza/go-dockerclient/external/github.com/docker/docker/opts",
 			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
@@ -119,12 +125,6 @@
 		{
 			"checksumSHA1": "VvGdEczw0JVJjvfY1AVWV/8xx00=",
 			"path": "github.com/fsouza/go-dockerclient/external/github.com/opencontainers/runc/libcontainer/user",
-			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
-			"revisionTime": "2016-03-02T22:50:07Z"
-		},
-		{
-			"checksumSHA1": "EORrkaKJH6VDiwJhl0MkUSGrniw=",
-			"path": "github.com/fsouza/go-dockerclient/external/github.com/Sirupsen/logrus",
 			"revision": "ddbe4ddacd876fa8f9202e656c1972124c4a665d",
 			"revisionTime": "2016-03-02T22:50:07Z"
 		},
