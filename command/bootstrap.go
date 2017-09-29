@@ -22,6 +22,7 @@ import (
 
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
+	"os/exec"
 )
 
 // CmdBootstrap pulls and builds the services in the docker-compose file
@@ -32,7 +33,14 @@ func CmdBootstrap(c *cli.Context) error {
 		if err := helpers.RunCommand(helpers.DockerComposeCommand("build", "--pull")); err != nil {
 			return err
 		}
-		pullCmd := helpers.DockerComposeCommand("pull", "--ignore-pull-failures")
+
+		var pullCmd *exec.Cmd
+		if c.GlobalBool("disable-parallel-pull") {
+			pullCmd = helpers.DockerComposeCommand("pull", "--ignore-pull-failures")
+		} else {
+			pullCmd = helpers.DockerComposeCommand("pull", "--ignore-pull-failures", "--parallel")
+		}
+
 		benignError := regexp.MustCompile(fmt.Sprintf(`Error: image library/%s(:latest|) not found`, c.String("docker-image-name")))
 		helpers.RunCommandWithFilter(pullCmd, benignError.MatchString)
 	}

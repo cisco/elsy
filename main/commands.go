@@ -67,6 +67,11 @@ func GlobalFlags() []cli.Flag {
 			Usage:  "will not attempt to pull any Docker images",
 			EnvVar: "LC_OFFLINE",
 		},
+		cli.BoolFlag{
+			Name:   "disable-parallel-pull",
+			Usage:  "will not pull images in parallel",
+			EnvVar: "LC_DISABLE_PARALLEL_PULL",
+		},
 	}
 }
 

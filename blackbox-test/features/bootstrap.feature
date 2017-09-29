@@ -1,11 +1,11 @@
 # Copyright 2016 Cisco Systems, Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,9 @@ Feature: bootstrap task
     name: testbootstrap
     """
     When I run `lc bootstrap`
-    Then it should pull "busybox"
+    Then it should succeed with "Pulling test"
+    When I run `lc --disable-parallel-pull bootstrap`
+    Then it should succeed with "Pulling from library/busybox"
 
   Scenario: with invalid images
     Given a file named "docker-compose.yml" with:
