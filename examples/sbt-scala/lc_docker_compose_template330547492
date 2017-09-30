@@ -1,0 +1,40 @@
+
+
+sbtscratch:
+  image: busybox
+  command: /bin/true
+  volumes:
+    
+    - /opt/project/target/resolution-cache
+    - /opt/project/target/scala-2.11/classes
+    - /opt/project/target/scala-2.11/test-classes
+    - /opt/project/target/streams
+    - /opt/project/project/project
+    - /opt/project/project/target
+
+
+sbt: &sbt
+
+  image: paulcichonski/sbt
+
+  volumes:
+    - ./:/opt/project
+  working_dir: /opt/project
+  entrypoint: sbt
+  volumes_from:
+    - lc_shared_sbtdata
+
+    - sbtscratch
+
+test:
+  <<: *sbt
+  entrypoint: [sbt, test]
+package:
+  <<: *sbt
+  command: [assembly]
+publish:
+  <<: *sbt
+  entrypoint: /bin/true
+clean:
+  <<: *sbt
+  entrypoint: [sbt, clean]

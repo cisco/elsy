@@ -17,21 +17,22 @@ function build() {
   $BBT_LC teardown
 
   if $has_tests; then
-    $BBT_LC bootstrap 
+    $BBT_LC bootstrap
   fi
 
   if $has_bbtests; then
-    $BBT_LC blackbox-test 
+    $BBT_LC blackbox-test
   fi
-} 
+}
 
 set -e
 
 build "${DIR}/c-code" false true
-build "${DIR}/emberjs-ui" true true
+
+# https://github.com/cisco/elsy/issues/81
+# build "${DIR}/emberjs-ui" true true
+
 build "${DIR}/java-library" false false
 build "${DIR}/java-note-service" false true
 build "${DIR}/sbt-scala" false true
 build "${DIR}/simple-docker-image" false true
-
-
