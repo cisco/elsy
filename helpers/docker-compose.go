@@ -67,6 +67,7 @@ type DockerComposeV2 struct {
 	Networks DockerComposeNetworkMap
 }
 
+// DockerComposeServices returns all docker-compose services found inside the project
 func DockerComposeServices() (services []string) {
 	if _, err := os.Stat("docker-compose.yml"); err == nil {
 		for k := range getDockerComposeMap("docker-compose.yml") {
@@ -79,6 +80,26 @@ func DockerComposeServices() (services []string) {
 		}
 	}
 	return
+}
+
+// DockerComposeServicesExcluding same as DockerComposeServices(), but will exclude any services that has an image
+// declaration matching the 'image' argument.
+func DockerComposeServicesExcluding(image string) []string {
+	services := getDockerComposeMap("docker-compose.yml")
+	if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
+		for k, v := range getDockerComposeMap(file) {
+			if _, ok := services[k]; !ok {
+				services[k] = v
+			}
+		}
+	}
+	var filtered []string
+	for k, v := range services {
+		if v.Image != image {
+			filtered = append(filtered, k)
+		}
+	}
+	return filtered
 }
 
 // GetDockerComposeVersion returns version of the docker-compose binary

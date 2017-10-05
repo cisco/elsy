@@ -18,6 +18,12 @@ step "it :expectation fail pulling :image" do |expectation, image|
   ## starting with docker 1.10 the error message changed to remove the 'latest' from the image name
   ## so this regex tests for both
   expect(@output).send(meth, match(%r{image library/#{image}(:latest|) not found}))
+
+  if meth == :to
+    send "it should fail"
+  else
+    send "it should succeed"
+  end
 end
 
 step "the image :image should exist" do |image_name|

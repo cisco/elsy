@@ -76,18 +76,20 @@ Feature: bootstrap task
     When I run `lc bootstrap`
     Then it should fail with "Service 'test' failed to build"
 
-  Scenario: with an image matching the docker artifact
+  Scenario: with an image matching the repo's docker artifact
     It is common to utilize the project's docker image artifact in a docker
     compose service. When docker-compose attempts to pull that service, it will
-    produce an error. In order to minimize developer confusion. That error
-    should be squelched while still showing errors where services pull images
-    which are not expected
+    produce an error. In order to minimize developer confusion elsy should not
+    attempt to pull any services using an image matching the repo's
+    docker-image-name config.
     Given a file named "docker-compose.yml" with:
     """yaml
     prodserver:
       image: baz
+    someotherserver:
+      image: baz
     other_service:
-      image: fdsafdsa
+      image: busybox
     """
     And a file named "lc.yml" with:
     """yaml
@@ -95,8 +97,7 @@ Feature: bootstrap task
     docker_image_name: baz
     """
     When I run `lc bootstrap`
-    Then it should fail pulling "fdsafdsa"
-    And it should not fail pulling "baz"
+    Then it should succeed
 
   Scenario: running in offline mode
     If we run with --offline, we should not try to pull any images.
