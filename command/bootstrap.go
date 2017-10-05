@@ -17,12 +17,9 @@
 package command
 
 import (
-	"fmt"
-	"regexp"
-
 	"github.com/cisco/elsy/helpers"
 	"github.com/codegangsta/cli"
-	"os/exec"
+	"github.com/sirupsen/logrus"
 )
 
 // CmdBootstrap pulls and builds the services in the docker-compose file
@@ -34,15 +31,22 @@ func CmdBootstrap(c *cli.Context) error {
 			return err
 		}
 
-		var pullCmd *exec.Cmd
+		var args []string
 		if c.GlobalBool("disable-parallel-pull") {
-			pullCmd = helpers.DockerComposeCommand("pull", "--ignore-pull-failures")
+			args = append(args, "pull")
 		} else {
-			pullCmd = helpers.DockerComposeCommand("pull", "--ignore-pull-failures", "--parallel")
+			args = append(args, "pull", "--parallel")
 		}
 
-		benignError := regexp.MustCompile(fmt.Sprintf(`Error: image library/%s(:latest|) not found`, c.String("docker-image-name")))
-		helpers.RunCommandWithFilter(pullCmd, benignError.MatchString)
+		if c.String("docker-image-name") != "" {
+			logrus.WithField("docker-image-name", c.String("docker-image-name")).Debug("not pulling services using repo's docker artifact")
+			args = append(args, helpers.DockerComposeServicesExcluding(c.String("docker-image-name"))...)
+		}
+
+		pullCmd := helpers.DockerComposeCommand(args...)
+		if err := helpers.RunCommand(pullCmd); err != nil {
+			return err
+		}
 	}
 
 	return CmdInstallDependencies(c)

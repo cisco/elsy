@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Improve `lc bootstrap` image pull logic so that elsy will never attempt to pull
+the image being packaged by the repo (i.e., the `docker-image-name` config). This
+means no more confusing error messages about "unable to pull image".
+- Start failing builds if images could not be pulled, this is now possible because
+we are no longer attempting to pull the repo's image (see above bullet).
 - Begin pulling images in parallel during `lc bootstrap` (requires `compose` 1.12.0 or higher).
 This can be disabled using the flag `disable-parallel-pull`.
 
