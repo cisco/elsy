@@ -1,5 +1,10 @@
 ## Unreleased
 
+## v3.0.0
+
+_Major version change because the exit code semantics around lc bootstrap have changed,
+it now fails builds if images cannot be pulled._
+
 - Improve `lc bootstrap` image pull logic so that elsy will never attempt to pull
 the image being packaged by the repo (i.e., the `docker-image-name` config). This
 means no more confusing error messages about "unable to pull image".
