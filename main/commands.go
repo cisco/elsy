@@ -88,6 +88,11 @@ func Commands() []cli.Command {
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "local docker image name to publish",
 				},
+				cli.StringSliceFlag{
+					Name:  "local-images",
+					Value: resolveLocalImagesFromConfig(),
+					Usage: "images to exclude from pulling",
+				},
 			},
 		},
 		{
@@ -128,6 +133,11 @@ func Commands() []cli.Command {
 					Name:  "docker-image-name",
 					Value: GetConfigFileString("docker_image_name"),
 					Usage: "local docker image name to publish",
+				},
+				cli.StringSliceFlag{
+					Name:  "local-images",
+					Value: resolveLocalImagesFromConfig(),
+					Usage: "images to exclude from pulling",
 				},
 				cli.StringSliceFlag{
 					Name:  "docker-registry",
@@ -463,5 +473,19 @@ func resolveDockerRegistryFromConfig() *cli.StringSlice {
 		return &v
 	}
 
+	return &cli.StringSlice{}
+}
+
+func resolveLocalImagesFromConfig() *cli.StringSlice {
+	seqK := "local_images"
+	if IsKeyInConfig(seqK) {
+		v := cli.StringSlice(GetConfigFileSlice(seqK))
+		if len(v) == 0 {
+			// this will happen if the yaml containing the sequence is not perfectly formatted (e.g., if '-value' instead of '- value')
+			// eventually we need to make our parsing logic more forgiving, but until then just make it crystal clear when we can't parse something.
+			panic(fmt.Errorf("Error parsing 'lc.yml': found %q key, but did not find any images, verify that yaml is correct", seqK))
+		}
+		return &v
+	}
 	return &cli.StringSlice{}
 }

@@ -38,9 +38,13 @@ func CmdBootstrap(c *cli.Context) error {
 			args = append(args, "pull", "--parallel")
 		}
 
-		if c.String("docker-image-name") != "" {
-			logrus.WithField("docker-image-name", c.String("docker-image-name")).Debug("not pulling services using repo's docker artifact")
-			args = append(args, helpers.DockerComposeServicesExcluding(c.String("docker-image-name"))...)
+		if c.String("docker-image-name") != "" || len(c.StringSlice("local-images")) > 0 {
+			excludes := c.StringSlice("local-images")
+			if c.String("docker-image-name") != "" {
+				excludes = append(excludes, c.String("docker-image-name"))
+			}
+			logrus.WithField("docker-image-name", excludes).Debug("not pulling services using repo's docker artifact")
+			args = append(args, helpers.DockerComposeServicesExcluding(excludes)...)
 		}
 
 		pullCmd := helpers.DockerComposeCommand(args...)
