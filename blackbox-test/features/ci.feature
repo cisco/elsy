@@ -210,3 +210,23 @@ Feature: ci task
     When I run `lc --enable-scratch-volumes ci`
     Then it should succeed
     And the file "/test/foo.txt" should not exist
+
+  Scenario: local images should not get pulled
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    prodserver:
+      image: baz
+    someotherserver:
+      image: bazlocal
+    other_service:
+      image: busybox
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    docker_image_name: baz
+    local_images:
+      - bazlocal
+    """
+    When I run `lc ci`
+    Then it should succeed

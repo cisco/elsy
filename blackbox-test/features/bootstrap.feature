@@ -99,6 +99,30 @@ Feature: bootstrap task
     When I run `lc bootstrap`
     Then it should succeed
 
+  Scenario: with local images
+    Sometimes a repo build assumes that a local docker image will be provided
+    by some external process. In these cases elsy should not attempt to pull
+    that image when running bootstrap. To support this use case repo owners
+    can use the local_images config in lc.yml to declare local images.
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    prodserver:
+      image: baz
+    someotherserver:
+      image: bazlocal
+    other_service:
+      image: busybox
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    docker_image_name: baz
+    local_images:
+      - bazlocal
+    """
+    When I run `lc bootstrap`
+    Then it should succeed
+
   Scenario: running in offline mode
     If we run with --offline, we should not try to pull any images.
     Given a file named "docker-compose.yml" with:

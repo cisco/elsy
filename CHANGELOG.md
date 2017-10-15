@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Add support for a `local_images` config in `lc.yml`. Images listed in this
+sequence will not be pulled during `lc bootstrap`.
+
 ## v3.0.0
 
 _Major version change because the exit code semantics around lc bootstrap have changed,

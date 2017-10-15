@@ -83,8 +83,8 @@ func DockerComposeServices() (services []string) {
 }
 
 // DockerComposeServicesExcluding same as DockerComposeServices(), but will exclude any services that has an image
-// declaration matching the 'image' argument.
-func DockerComposeServicesExcluding(image string) []string {
+// declaration in the 'excluded' slice.
+func DockerComposeServicesExcluding(excluded []string) []string {
 	services := getDockerComposeMap("docker-compose.yml")
 	if file := os.Getenv("LC_BASE_COMPOSE_FILE"); len(file) > 0 {
 		for k, v := range getDockerComposeMap(file) {
@@ -94,9 +94,15 @@ func DockerComposeServicesExcluding(image string) []string {
 		}
 	}
 	var filtered []string
-	for k, v := range services {
-		if v.Image != image {
-			filtered = append(filtered, k)
+	for service, image := range services {
+		var exclude bool
+		for _, i := range excluded {
+			if image.Image == i {
+				exclude = true
+			}
+		}
+		if !exclude {
+			filtered = append(filtered, service)
 		}
 	}
 	return filtered

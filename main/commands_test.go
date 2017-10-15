@@ -17,6 +17,7 @@
 package main
 
 import (
+	"github.com/codegangsta/cli"
 	"io/ioutil"
 	"reflect"
 	"strings"
@@ -30,27 +31,47 @@ type testCase struct {
 	expectedErrorText string
 }
 
-var testCases = []testCase{
-	{"", []string{}, false, ""},
-	{"docker_registry: registry", []string{"registry"}, false, ""},
-	{"docker_registries: [registry1, test]", []string{"registry1", "test"}, false, ""},
-	{"docker_registries: [singletonreg]", []string{"singletonreg"}, false, ""},
-	{"docker_registries: \n  - registryb\n  - registryc", []string{"registryb", "registryc"}, false, ""},
-	{"docker_registry: registry\ndocker_registries: [registry1, test]", []string{"registry"}, true, "multiple docker registry configs"},
-	{"docker_registries: \n  -registryb\n", []string{"registryb"}, true, "but did not find any registries, verify that yaml is correct"},
-}
-
 func TestResolveDockerRegistry(t *testing.T) {
+	testCases := []testCase{
+		{"", []string{}, false, ""},
+		{"docker_registry: registry", []string{"registry"}, false, ""},
+		{"docker_registries: [registry1, test]", []string{"registry1", "test"}, false, ""},
+		{"docker_registries: [singletonreg]", []string{"singletonreg"}, false, ""},
+		{"docker_registries: \n  - registryb\n  - registryc", []string{"registryb", "registryc"}, false, ""},
+		{"docker_registry: registry\ndocker_registries: [registry1, test]", []string{"registry"}, true, "multiple docker registry configs"},
+		{"docker_registries: \n  -registryb\n", []string{"registryb"}, true, "but did not find any registries, verify that yaml is correct"},
+	}
+
 	for _, test := range testCases {
 		if test.shouldPanic {
-			runAssertPanic(t, test)
+			runAssertPanic(t, test, resolveDockerRegistryFromConfig)
 		} else {
-			runAssertNoPanic(t, test)
+			runAssertNoPanic(t, test, resolveDockerRegistryFromConfig)
 		}
 	}
 }
 
-func runAssertPanic(t *testing.T, test testCase) {
+func TestResolveLocalImages(t *testing.T) {
+	testCases := []testCase{
+		{"", []string{}, false, ""},
+		{"local_images: [image1, test]", []string{"image1", "test"}, false, ""},
+		{"local_images: [singletonimage]", []string{"singletonimage"}, false, ""},
+		{"local_images: \n  - imageb\n  - imagec", []string{"imageb", "imagec"}, false, ""},
+		{"local_images: \n  -imageb\n", []string{"imageb"}, true, "but did not find any images, verify that yaml is correct"},
+	}
+
+	for _, test := range testCases {
+		if test.shouldPanic {
+			runAssertPanic(t, test, resolveLocalImagesFromConfig)
+		} else {
+			runAssertNoPanic(t, test, resolveLocalImagesFromConfig)
+		}
+	}
+}
+
+type retrieveKeyFunc func() *cli.StringSlice
+
+func runAssertPanic(t *testing.T, test testCase, fn retrieveKeyFunc) {
 	defer func() {
 		r := recover()
 		if r == nil {
@@ -60,17 +81,17 @@ func runAssertPanic(t *testing.T, test testCase) {
 		}
 	}()
 	loadConfig(t, test.config)
-	resolveDockerRegistryFromConfig()
+	fn()
 }
 
-func runAssertNoPanic(t *testing.T, test testCase) {
+func runAssertNoPanic(t *testing.T, test testCase, fn retrieveKeyFunc) {
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("The code panicked, but was not supposed to. test case: %v, error: %v", test, r)
 		}
 	}()
 	loadConfig(t, test.config)
-	if v := resolveDockerRegistryFromConfig(); !reflect.DeepEqual(test.expected, v.Value()) {
+	if v := fn(); !reflect.DeepEqual(test.expected, v.Value()) {
 		t.Errorf("expected to get %q, but got %q instead", test.expected, v.Value())
 	}
 }
