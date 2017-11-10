@@ -74,7 +74,7 @@ Feature: bootstrap task
     name: testbootstrap
     """
     When I run `lc bootstrap`
-    Then it should fail with "Service 'test' failed to build"
+    Then it should fail with "Dockerfile parse error line 1: unknown instruction: FRO"
 
   Scenario: with an image matching the repo's docker artifact
     It is common to utilize the project's docker image artifact in a docker

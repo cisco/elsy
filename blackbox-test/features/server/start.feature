@@ -60,8 +60,9 @@ Feature: server start task
     When I run `lc server start`
     Then it should fail
     And the output should contain one of the following:
-      |image library/somefakeimagethatdoesntexist:latest not found                        |
-      |repository somefakeimagethatdoesntexist not found: does not exist or no pull access|
+      |image library/somefakeimagethatdoesntexist:latest not found                                   |
+      |repository somefakeimagethatdoesntexist not found: does not exist or no pull access           |
+      |pull access denied for somefakeimagethatdoesntexist, repository does not exist or may require |
 
   @teardown
   Scenario: starting prod server with no prodserver service defined

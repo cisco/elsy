@@ -2,18 +2,19 @@ language: bash
 sudo: required
 
 env:
-  DOCKER_COMPOSE_VERSION: 1.16.1
-  DOCKER_VERSION: 1.12.6
+  DOCKER_COMPOSE_VERSION: 1.17.1
+  DOCKER_VERSION: 17.09.0
   LC_VERSION: 3.1.0
 
 before_install:
   # docker
-  - sudo apt-get update && sudo apt-get install apt-transport-https ca-certificates
-  - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-  - sudo bash -c "echo deb https://apt.dockerproject.org/repo ubuntu-precise main > /etc/apt/sources.list.d/docker.list"
+  - sudo apt-get update && sudo apt-get install -y curl apt-transport-https ca-certificates python-software-properties
+  - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo apt-key fingerprint 0EBFCD88
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
-  - sudo apt-get purge lxc-docker
-  - sudo apt-get install docker-engine=${DOCKER_VERSION}-0~ubuntu-precise
+  - sudo apt-get purge lxc-docker docker docker-engine docker.io
+  - sudo apt-get install docker-ce=${DOCKER_VERSION}~ce-0~ubuntu
   # docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
