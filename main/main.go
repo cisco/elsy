@@ -104,13 +104,12 @@ func preReqCheck(c *cli.Context) {
 		return
 	}
 
-	// TODO: replace this with checking presence and version of local-docker-stack
 	if _, err := exec.LookPath("docker"); err != nil {
-		logrus.Fatal("could not find docker, please install local-docker-stack")
+		logrus.Fatal("could not find docker, please make sure it is installed.")
 	}
 	dockerCompose := c.GlobalString("docker-compose")
 	if _, err := exec.LookPath(dockerCompose); err != nil {
-		logrus.Fatalf("could not find docker compose binary: %q, please install local-docker-stack", dockerCompose)
+		logrus.Fatalf("could not find docker compose binary: %q, please make sure it is installed.", dockerCompose)
 	}
 
 	if versionString, versionComponents, err := helpers.GetDockerComposeVersion(c); err != nil {
