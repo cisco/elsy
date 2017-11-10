@@ -72,7 +72,6 @@ Feature: blackbox-test task
     When I run `lc blackbox-test fdsa`
     Then it should succeed with "fdsa"
 
-  ## see US7549
   Scenario: with defaulting to first running lc package
     Given I run `docker rmi -f elsyblackbox_docker_artifact_blackbox`
     And a file named "docker-compose.yml" with:
@@ -90,7 +89,7 @@ Feature: blackbox-test task
     docker_image_name: elsyblackbox_docker_artifact_blackbox
     """
     When I run `lc blackbox-test --skip-package`
-    Then it should fail with 'image library/elsyblackbox_docker_artifact_blackbox:latest not found'
+    Then it should fail with 'pull access denied for elsyblackbox_docker_artifact_blackbox'
     When I run `lc blackbox-test`
     Then it should succeed
     And the output should contain all of these:

@@ -28,11 +28,11 @@ RUN gem install \
     byebug \
     rspec-instafail
 
-ENV DOCKER_VERSION 1.12.6
-RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz | tar -xzvf - --strip-components=1 -C /usr/bin docker/docker
+ENV DOCKER_VERSION 17.09.0-ce
+RUN curl -L https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz | tar -xzvf - --strip-components=1 -C /usr/bin docker/docker
 RUN chmod a+x /usr/bin/docker
 
-ENV DOCKER_COMPOSE_VERSION 1.16.0
+ENV DOCKER_COMPOSE_VERSION 1.17.1
 RUN curl -Lo /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-Linux-x86_64
 RUN chmod a+x /usr/local/bin/docker-compose
 
