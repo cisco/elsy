@@ -38,20 +38,30 @@ func CmdBootstrap(c *cli.Context) error {
 			args = append(args, "pull", "--parallel")
 		}
 
+		var skipPull bool
 		if c.String("docker-image-name") != "" || len(c.StringSlice("local-images")) > 0 {
 			excludes := c.StringSlice("local-images")
 			if c.String("docker-image-name") != "" {
 				excludes = append(excludes, c.String("docker-image-name"))
 			}
 			logrus.WithField("docker-image-name", excludes).Debug("not pulling services using repo's docker artifact")
-			args = append(args, helpers.DockerComposeServicesExcluding(excludes)...)
+
+			services := helpers.DockerComposeServicesExcluding(excludes)
+			if len(services) == 0 {
+				skipPull = true
+				logrus.Debug("no services to pull")
+			} else {
+				args = append(args, services...)
+			}
 		}
 
-		pullCmd := helpers.DockerComposeCommand(args...)
-		if err := helpers.RunCommand(pullCmd); err != nil {
-			return err
+		if !skipPull {
+			pullCmd := helpers.DockerComposeCommand(args...)
+			if err := helpers.RunCommand(pullCmd); err != nil {
+				return err
+			}
 		}
+
 	}
-
 	return CmdInstallDependencies(c)
 }

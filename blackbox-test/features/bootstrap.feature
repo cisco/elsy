@@ -123,6 +123,21 @@ Feature: bootstrap task
     When I run `lc bootstrap`
     Then it should succeed
 
+  ## https://github.com/cisco/elsy/issues/87
+  Scenario: with services only using local images
+    Given a file named "docker-compose.yml" with:
+    """yaml
+    prodserver:
+      image: bazzer
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testbootstrap
+    docker_image_name: bazzer
+    """
+    When I run `lc bootstrap`
+    Then it should succeed
+
   Scenario: running in offline mode
     If we run with --offline, we should not try to pull any images.
     Given a file named "docker-compose.yml" with:
