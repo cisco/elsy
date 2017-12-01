@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v3.1.1
+
 - Fix [issue](https://github.com/cisco/elsy/issues/87) where a docker-compose
 containing only services using local images would break bootstrapping.
 
