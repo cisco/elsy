@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Fix [issue](https://github.com/cisco/elsy/issues/87) where a docker-compose
+containing only services using local images would break bootstrapping.
+
 ## v3.1.0
 
 - Add support for a `local_images` config in `lc.yml`. Images listed in this
