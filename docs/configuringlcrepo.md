@@ -27,6 +27,7 @@ or dashes.
 This will override the `LC_DOCKER_COMPOSE` environment variable to enable you
 to use a custom docker-compose version for your repo.
 * `template`: [elsy template](./templates.md) to use for the project.
+* `template_image`: specify a docker image to [override the template image](./templates.md#overriding-the-image-specified-by-a-template).
 * `docker_image_name`: name of docker image to build.
 * `docker_registry`: address of docker registry to publish to.
 * `docker_registries`: takes a yaml sequence containing multiple registries to publish to. Use either
