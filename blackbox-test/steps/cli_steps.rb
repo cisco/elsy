@@ -33,6 +33,10 @@ step "it should fail" do
   expect(@rtn_status).not_to be_success, "expected process to fail. output was:\n#{@output}"
 end
 
+step "it should fail with exit code :number" do |expected|
+  expect(@rtn_status.exitstatus).to eq(expected.to_i), "expected process to exit with code #{expected} but got #{@rtn_status.exitstatus}"
+end
+
 step "the output should contain :expected" do |expected|
   expect(@output).to include(expected)
 end

@@ -19,7 +19,9 @@ package helpers
 import (
 	"os"
 	"os/exec"
+	"syscall"
 
+	"github.com/codegangsta/cli"
 	"github.com/sirupsen/logrus"
 )
 
@@ -28,9 +30,26 @@ func RunCommand(command *exec.Cmd) error {
 	command.Stderr = os.Stderr
 	command.Stdin = os.Stdin
 	logrus.Debugf("running command %s with args %v", command.Path, command.Args)
-	if err := command.Run(); err != nil {
-		logrus.Debug("last command was not successful")
+
+	if err := command.Start(); err != nil {
+		logrus.Error("unable to start command")
 		return err
+	}
+
+	if err := command.Wait(); err != nil {
+		logrus.Debug("last command was not successful")
+		// do the dance to get the exitcode
+		if exiterr, ok := err.(*exec.ExitError); ok {
+			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
+				return cli.NewExitError(err.Error(), status.ExitStatus())
+			} else {
+				logrus.Error("unable to cast to WaitStatus")
+				return err
+			}
+		} else {
+			logrus.Error("unable to cast to ExitError")
+			return err
+		}
 	}
 	return nil
 }
