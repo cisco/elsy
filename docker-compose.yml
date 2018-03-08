@@ -24,9 +24,12 @@ go: &go
   entrypoint: /bin/bash
     # /usr/local/go/bin/go
 
-installdependencies:
+govendor: &govendor
   <<: *go
   entrypoint: govendor
+
+installdependencies:
+  <<: *govendor
   command: sync
 
 fmt:
