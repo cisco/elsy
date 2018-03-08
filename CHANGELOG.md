@@ -1,5 +1,10 @@
 ## Unreleased
 
+## v4.0.0
+
+- *BREAKING* elsy no longer swallows exit codes. This is a breaking change if
+  you relied on exit codes always being `1`.
+
 ## v3.1.1
 
 - Fix [issue](https://github.com/cisco/elsy/issues/87) where a docker-compose
