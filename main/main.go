@@ -48,9 +48,7 @@ func main() {
 	app.CommandNotFound = CommandNotFound
 	app.Before = beforeHook
 	app.After = afterHook
-	app.RunAndExitOnError()
-
-	if !CommandSuccess {
+	if err := app.Run(os.Args); err != nil {
 		os.Exit(1)
 	}
 }
