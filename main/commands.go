@@ -417,21 +417,20 @@ func Commands() []cli.Command {
 	}
 }
 
-var CommandSuccess = true
-
 type cmdWithError func(c *cli.Context) error
 
-func panicOnError(f cmdWithError) func(c *cli.Context) {
-	return func(c *cli.Context) {
+func panicOnError(f cmdWithError) func(c *cli.Context) error {
+	return func(c *cli.Context) error {
 		if err := f(c); err != nil {
-			CommandSuccess = false
 			if c.GlobalBool("debug") {
 				panic(err)
 			} else {
 				logrus.Error(err)
 				logrus.Error("command failed. use --debug to see full stacktrace")
+				return err
 			}
 		}
+		return nil
 	}
 }
 
