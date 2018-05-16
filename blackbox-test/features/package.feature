@@ -222,14 +222,16 @@ Feature: package task
     """yaml
     docker_image_name: elsyblackbox_docker_label_test
     """
-    When I run `lc package --git-commit=c8dfd9f`
+    When I run `lc package --git-commit=c8dfd9f --git-url=foobaz`
     Then it should succeed
     And the output should contain all of these:
       | Image is up to date for alpine:latest                       |
       | Attaching image label: com.elsy.metadata.git-commit=c8dfd9f |
+      | Attaching image label: com.elsy.metadata.git-url=foobaz     |
     And the image 'elsyblackbox_docker_label_test' should exist
     And it should have the following labels:
-      | com.elsy.metadata.git-commit:c8dfd9f              |
+      | com.elsy.metadata.git-commit:c8dfd9f |
+      | com.elsy.metadata.git-url:foobaz     |
 
   Scenario: custom package script generating the Dockerfile
     Given a file named "docker-compose.yml" with:

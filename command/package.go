@@ -28,6 +28,9 @@ import (
 // commitLabel identifies the git commit the image was built from
 const commitLabel = "com.elsy.metadata.git-commit"
 
+// repoLabel identifies the git repo the image was built from
+const repoLabel = "com.elsy.metadata.git-url"
+
 // CmdPackage runs package service if present and then attempts to build Dockerfile.
 // Unless --skip-tests is passed, it *will* run the tests, and any failures will abort
 // the packaging process.
@@ -112,6 +115,12 @@ func constructLabelArgs(c *cli.Context) (labelArgs []string) {
 	if commit != "" {
 		logrus.Infof("Attaching image label: %s=%s", commitLabel, commit)
 		labelArgs = append(labelArgs, "--label", fmt.Sprintf("%s=%s", commitLabel, commit))
+	}
+
+	gitUrl := c.String("git-url")
+	if gitUrl != "" {
+		logrus.Infof("Attaching image label: %s=%s", repoLabel, gitUrl)
+		labelArgs = append(labelArgs, "--label", fmt.Sprintf("%s=%s", repoLabel, gitUrl))
 	}
 
 	return
