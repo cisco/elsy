@@ -1,5 +1,9 @@
 ## Unreleased
 
+## v4.1.0
+
+- `package` will now label the resulting docker image with the git repo if `--git-url` or the env var `GIT_URL` is present
+
 ## v4.0.0
 
 - *BREAKING* elsy no longer swallows exit codes. This is a breaking change if
