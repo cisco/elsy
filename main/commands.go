@@ -160,6 +160,11 @@ func Commands() []cli.Command {
 					EnvVar: "GIT_COMMIT",
 				},
 				cli.StringFlag{
+					Name:   "git-url",
+					Usage:  "Git repo that is being built",
+					EnvVar: "GIT_URL",
+				},
+				cli.StringFlag{
 					Name:  "build-logs-dir",
 					Value: GetConfigFileString("build_logs_dir"),
 					Usage: "If populated, elsy will dump ALL docker-compose service logs into this directory, directory must be relative to the repo root.",
@@ -242,6 +247,11 @@ func Commands() []cli.Command {
 					Name:   "git-commit",
 					Usage:  "Git commit that is being built",
 					EnvVar: "GIT_COMMIT",
+				},
+				cli.StringFlag{
+					Name:   "git-url",
+					Usage:  "Git repo that is being built",
+					EnvVar: "GIT_URL",
 				},
 			},
 		},
