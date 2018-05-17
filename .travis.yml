@@ -33,7 +33,7 @@ script:
   ## blackbox-tests need wide columns when inspecting logs
   - stty cols 200
   ## need to fix above docker-engine install to not require sudo
-  - sudo lc ci
+  - travis_wait sudo lc ci
   - sudo ./blackbox-test/build-examples.sh
 
 before_deploy:
