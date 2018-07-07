@@ -33,9 +33,9 @@ func CmdBootstrap(c *cli.Context) error {
 
 		var args []string
 		if c.GlobalBool("disable-parallel-pull") {
-			args = append(args, "pull")
+			args = append(args, "pull", "--no-parallel")
 		} else {
-			args = append(args, "pull", "--parallel")
+			args = append(args, "pull")
 		}
 
 		var skipPull bool

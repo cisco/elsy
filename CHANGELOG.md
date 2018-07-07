@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Remove `--parallel` flag when pulling images, since this is the default as
+of Compose [v1.21.0](https://github.com/docker/compose/releases/tag/1.21.0)
+
 ## v4.1.0
 
 - `package` will now label the resulting docker image with the git repo if `--git-url` or the env var `GIT_URL` is present
