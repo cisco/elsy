@@ -27,7 +27,7 @@ Feature: bootstrap task
     When I run `lc bootstrap`
     Then it should succeed with "Pulling test"
     When I run `lc --disable-parallel-pull bootstrap`
-    Then it should succeed with "Pulling from library/busybox"
+    Then it should succeed with "Pulling test"
 
   Scenario: with invalid images
     Given a file named "docker-compose.yml" with:

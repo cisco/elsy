@@ -104,7 +104,7 @@ Feature: publish task
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact1]   |
+      | The push refers to repository [localhost:5000/elsyblackbox_docker_artifact1]   |
       | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on the master branch with multiple registries
@@ -128,8 +128,8 @@ Feature: publish task
     When I run `lc package`
     And I run `lc publish --git-branch=origin/master`
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact2]   |
-      | The push refers to a repository [localhost:5001/elsyblackbox_docker_artifact2]   |
+      | The push refers to repository [localhost:5000/elsyblackbox_docker_artifact2]   |
+      | The push refers to repository [localhost:5001/elsyblackbox_docker_artifact2]   |
       | latest: digest: sha256                                                                       |
 
   Scenario: with a Docker project, calling publish on a feature branch
@@ -152,7 +152,7 @@ Feature: publish task
     And I run `lc publish --git-branch=origin/feature/thing`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact3]|
+      | The push refers to repository [localhost:5000/elsyblackbox_docker_artifact3]|
       | snapshot.feature.thing: digest: sha256                                                    |
 
   Scenario: with a publish service, calling publish on a release tag
@@ -212,7 +212,7 @@ Feature: publish task
     And I run `lc publish --git-tag=v0.2.2 --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact4]|
+      | The push refers to repository [localhost:5000/elsyblackbox_docker_artifact4]|
       | v0.2.2: digest: sha256                                                                    |
 
   Scenario: with a Docker project, calling publish on a non-release tag
@@ -235,5 +235,5 @@ Feature: publish task
     And I run `lc publish --git-tag=foo-test --git-branch=origin/master`
     Then it should succeed
     And the output should contain all of these:
-      | The push refers to a repository [localhost:5000/elsyblackbox_docker_artifact5|
+      | The push refers to repository [localhost:5000/elsyblackbox_docker_artifact5|
       | snapshot.foo-test: digest: sha256                                                        |
