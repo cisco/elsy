@@ -1,5 +1,7 @@
 ## Unreleased
 
+## v4.2.0
+
 - Remove `--parallel` flag when pulling images, since this is the default as
 of Compose [v1.21.0](https://github.com/docker/compose/releases/tag/1.21.0)
 
