@@ -42,12 +42,12 @@ curl -fL -o /usr/local/bin/lc https://github.com/cisco/elsy/releases/download/v$
 chmod +x /usr/local/bin/lc
 ```
 
-As of version v2.1.0 of Elsy, you can upgrade to the latest verison by running 
+As of version v2.1.0 of Elsy, you can upgrade to the latest verison by running
 ```
 lc system upgrade
 ```
 
-Previous versions require repeating the installation steps to manually download and 
+Previous versions require repeating the installation steps to manually download and
 install the binary.
 
 See the [Using elsy in a Project](docs/configuringlcrepo.md) document for
@@ -83,9 +83,9 @@ example of this.
 ### lc clean
 Running `lc clean` will ensure artifacts from previous builds are removed. Typically,
 this service is used before starting a new build. This is analogous to running
-`mvn clean` before running `mvn package`, for example. The `mvn`, `lein`, `make`, 
-and `sbt` templates all define `clean` services, so if the project uses one of those, 
-no additional work is required. 
+`mvn clean` before running `mvn package`, for example. The `mvn`, `lein`, `make`,
+and `sbt` templates all define `clean` services, so if the project uses one of those,
+no additional work is required.
 
 The difference between `clean` and `teardown`, which both
 perform similar actions, is that `teardown` only disposes of containers, whereas
@@ -138,7 +138,7 @@ ensure you  are testing the latest code, you can prevent this by using the
 You can also run the blackbox tests by running `lc bbtest`.
 
 At the end of the blackbox-test run, regardless of the outcome, all associated
-containers will be torn down. If you wish to leave them up, pass the 
+containers will be torn down. If you wish to leave them up, pass the
 `--keep-containers` option.
 
 ### lc publish
@@ -168,6 +168,19 @@ docker image.
 - If the git branch is `origin/<name>`, elsy will apply the tag `snapshot.<name>`
 - If a git tag exists and it is a valid elsy release tag, elsy will use that tag as
 the docker image tag.
+
+If you have defined a custom `publish` service in your `docker-compose.yml`, elsy
+will pass the service an env var called `LC_PUBLISH_DOCKER_TAG` that contains
+the tag elsy will use for the docker image, you just need to delcare the env
+var like so:
+
+```
+publish:
+  image: busybox
+  environment:
+    - LC_PUBLISH_DOCKER_TAG
+  command: echo custom publish of tag $LC_PUBLISH_DOCKER_TAG
+```
 
 **Valid Git Relase Tag:**
 
