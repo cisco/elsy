@@ -63,21 +63,21 @@ func RunPackage(c *cli.Context) error {
 	if helpers.HasDockerfile() && !c.Bool("skip-docker") {
 		logrus.Debug("detected Dockerfile for packaging")
 
-		if !c.GlobalBool("offline") {
-			if image, err := helpers.DockerImage("Dockerfile"); err == nil && image.IsRemote() {
-				commands = append(commands, exec.Command("docker", "pull", image.String()))
-			}
-		}
-
 		if len(dockerImageName) == 0 {
 			logrus.Panic("you must use `--docker-image-name` to package a docker image")
 		}
 
 		buildArgs := []string{"build", "-t", dockerImageName}
+
+		if !c.GlobalBool("offline") {
+			buildArgs = append(buildArgs, "--pull")
+		}
+
 		labelArgs := constructLabelArgs(c)
 		if len(labelArgs) > 0 {
 			buildArgs = append(buildArgs, labelArgs...)
 		}
+
 		buildArgs = append(buildArgs, ".")
 		commands = append(commands, exec.Command("docker", buildArgs...))
 	}

@@ -140,17 +140,37 @@ Feature: package task
     Then it should succeed
     And the output should not contain "Image is up to date for alpine:latest"
 
-  Scenario: with a docker artifact based on a local image
+  Scenario: with a multi-stage build docker artifact
     Given a file named "Dockerfile" with:
     """
-    FROM elsyblackbox_docker_artifact
+    FROM library/alpine
+    FROM library/busybox
+    COPY --from=0 /etc/os-release /alpine-release
     """
     And a file named "lc.yml" with:
     """yaml
     name: testpackage
+    docker_image_name: elsyblackbox_docker_artifact
     """
-    When I run `lc package --docker-image-name=elsyblackbox_docker_artifact`
-    Then it should succeed with "Successfully built "
+    When I run `lc package`
+    Then it should succeed
+    And the output should contain all of these:
+     | Image is up to date for alpine:latest  |
+     | Image is up to date for busybox:latest |
+
+   Scenario: with build docker artifact which derives image from a build-arg
+     Given a file named "Dockerfile" with:
+     """
+     ARG b=library/alpine
+     FROM ${b}
+     """
+     And a file named "lc.yml" with:
+     """yaml
+     name: testpackage
+     docker_image_name: elsyblackbox_docker_artifact
+     """
+     When I run `lc package`
+     Then it should succeed with "Image is up to date for alpine:latest"
 
   Scenario: with a failing package service
     Given a file named "docker-compose.yml" with:
