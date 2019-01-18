@@ -126,6 +126,20 @@ Feature: package task
     Then it should succeed
     And the output should not contain "Successfully built "
 
+  Scenario: with a docker artifact building offline
+    Given a file named "Dockerfile" with:
+    """
+    FROM library/alpine
+    """
+    And a file named "lc.yml" with:
+    """yaml
+    name: testpackage
+    docker_image_name: elsyblackbox_docker_artifact
+    """
+    When I run `lc --offline package`
+    Then it should succeed
+    And the output should not contain "Image is up to date for alpine:latest"
+
   Scenario: with a docker artifact based on a local image
     Given a file named "Dockerfile" with:
     """
