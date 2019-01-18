@@ -1,5 +1,12 @@
 ## Unreleased
 
+## v5.0.0
+
+- BREAKING: removed support for case when `Dockerfile` references a local only
+  image
+- support dockerfiles which use multi-stage builds or image names derived from
+  build arguments
+
 ## v4.2.0
 
 - Remove `--parallel` flag when pulling images, since this is the default as
