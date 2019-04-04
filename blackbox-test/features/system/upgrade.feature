@@ -17,7 +17,7 @@ Feature: system upgrade task
       If this is a non-release build, the test binary will have "snapshot" in the name, and the upgrade
       will fail because we don't upgrade snapshots. If it's a release build, it will fail because the
       current version is the same as the upgrade version.
-    When I run `lc system upgrade`
+    When I run `lc --debug system upgrade`
     Then the output should contain one of the following:
         | Upgrade not available on snapshot versions |
         | No new version available |
@@ -27,7 +27,7 @@ Feature: system upgrade task
     And I run `cp /opt/project/target/lc-blackbox /opt/bin/lc-test`
     And I run `chmod 755 /opt/bin/lc-test && ln -s /opt/bin/lc-test /opt/bin/lc`
     And I run `/opt/project/blackbox-test/bin/patch-strings-in-binary /opt/bin/lc-test "$(/opt/bin/lc --version|awk '{print $3}')" "v1.9.9"`
-    When I run `/opt/bin/lc system upgrade`
+    When I run `/opt/bin/lc --debug system upgrade`
     Then it should succeed
     And the output should contain all of these:
         | Upgrading to |
@@ -43,6 +43,6 @@ Feature: system upgrade task
     And I run `cp /opt/project/target/lc-blackbox /opt/bin/lc-test`
     And I run `chmod 755 /opt/bin/lc-test && ln -s /opt/bin/lc-test /opt/bin/lc`
     And I run `/opt/project/blackbox-test/bin/patch-strings-in-binary /opt/bin/lc-test "$(/opt/bin/lc --version|awk '{print $3}')" $(curl https://api.github.com/repos/cisco/elsy/releases/latest 2>/dev/null|grep tag_name|awk '{print $2}'|sed "s/\"\|,//g")`
-    When I run `/opt/bin/lc system upgrade`
+    When I run `/opt/bin/lc --debug system upgrade`
     Then it should succeed
     And the output should contain "No new version available"
