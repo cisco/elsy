@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM library/golang:1.10
+FROM library/golang:1.15
 RUN GOOS=darwin GOARCH=amd64 go install -v std
 
 RUN go get -u github.com/kardianos/govendor
