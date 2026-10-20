@@ -134,12 +134,12 @@ func ServiceLogs(service string) ([]byte, error) {
 func GetComposeFileVersion(file string, defaultVersion ComposeFileVersion) ComposeFileVersion {
 	version, _, err := parseComposeFile(file)
 	if err != nil {
-		logrus.Debugf("error parsing compose file found at %q, returning defaultVersion: %q, err: %q", file, defaultVersion, err)
+		logrus.Debugf("error parsing compose file found at %q, returning defaultVersion: %v, err: %v", file, defaultVersion, err)
 		return defaultVersion
 	}
 
 	if version == unknown {
-		logrus.Debugf("could not determine compospe version from file %q, returning defaultVersion: %q", file, defaultVersion)
+		logrus.Debugf("could not determine compospe version from file %q, returning defaultVersion: %v", file, defaultVersion)
 		return defaultVersion
 	}
 	return version
@@ -172,7 +172,7 @@ func parseComposeFile(file string) (ComposeFileVersion, DockerComposeMap, error)
 
 	var v2Contents DockerComposeV2
 	if err := yaml.Unmarshal(b, &v2Contents); err == nil {
-		logrus.Debug("found compose v2 file at %q", file)
+		logrus.Debugf("found compose v2 file at %q", file)
 		return V2, v2Contents.Services, nil
 	}
 

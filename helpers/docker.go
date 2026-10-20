@@ -271,7 +271,7 @@ func parseVersionString(versionString string) ([]int, error) {
 		if val, err := strconv.Atoi(x); err == nil {
 			versionNumbers = append(versionNumbers, val)
 		} else {
-			logrus.Debugf("could not parse integers from version %s", version, err)
+			logrus.Debugf("could not parse integers from version %s: %v", version, err)
 			return nil, errors.New("could not parse version")
 		}
 	}

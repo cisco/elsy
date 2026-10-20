@@ -36,7 +36,7 @@ func TestParseVersionString(t *testing.T) {
 	for _, data := range testVersionStringData {
 		components, _ := parseVersionString(data.Version)
 		if !reflect.DeepEqual(data.ExpectedComponents, components) {
-			t.Errorf("expected version to be: %q but got %q instead", data.ExpectedComponents, components)
+			t.Errorf("expected version to be: %v but got %v instead", data.ExpectedComponents, components)
 		}
 	}
 }
