@@ -44,7 +44,7 @@ func TestParseDockerCompseVersion(t *testing.T) {
 			t.Errorf("expected version to be: %q but got %q instead", data.ExpectedString, version)
 		}
 		if !reflect.DeepEqual(data.ExpectedComponents, components) {
-			t.Errorf("expected version to be: %q but got %q instead", data.ExpectedComponents, components)
+			t.Errorf("expected version to be: %v but got %v instead", data.ExpectedComponents, components)
 		}
 	}
 }
@@ -89,7 +89,7 @@ func doTestParseComposeFile(t *testing.T, yml string, expectedVersion ComposeFil
 	version, composeMap, _ := parseComposeFile(file.Name())
 
 	if version != expectedVersion {
-		t.Errorf("expected version to be: %q but got %q instead", expectedVersion, version)
+		t.Errorf("expected version to be: %v but got %v instead", expectedVersion, version)
 	}
 
 	if !reflect.DeepEqual(expectedMap, composeMap) {
@@ -122,6 +122,6 @@ func testVersion(t *testing.T, yml string, expectedVersion ComposeFileVersion, d
 
 	version := GetComposeFileVersion(file.Name(), defaultVersion)
 	if version != expectedVersion {
-		t.Errorf("expected version to be: %q but got %q instead", expectedVersion, version)
+		t.Errorf("expected version to be: %v but got %v instead", expectedVersion, version)
 	}
 }
